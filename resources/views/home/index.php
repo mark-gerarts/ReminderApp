@@ -21,7 +21,7 @@
                 </ul>
                 <ul class="nav-right">
                     <li><a href="#">About</a></li>
-                    <li><a href="#">Pricing</a></li>
+                    <li><a href="/www/webontwikkelaar/eindwerk/ReminderApp/public/pricing">Pricing</a></li>
                     <li class="highlight-text no-padding-right"><a href="#">Sign in</a></li>
                 </ul>
             </nav>
@@ -42,7 +42,7 @@
                         <li>Consectetur ipse.</li>
                     </ol>
                     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio quo, corrupti laudantium harum similique nobis aspernatur eius, minus impedit, quod consequuntur! Itaque mollitia facere obcaecati nesciunt. Porro, sit perspiciatis. Nulla.</p>
-                    <a href="signup.html" class="btn sign-up">Sign up</a>
+                    <a href="register" class="btn sign-up">Sign up</a>
                 </div>
                 <div class="col-md-4 col-md-offset-2">
                     <section class="section-right">
