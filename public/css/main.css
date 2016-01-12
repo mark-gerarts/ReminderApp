@@ -1,0 +1,243 @@
+/*
+ *
+   shade 0 = #4EBBB7 = rgb( 78,187,183) = rgba( 78,187,183,1) = rgb0(0.306,0.733,0.718)
+   shade 1 = #ADEDEA = rgb(173,237,234) = rgba(173,237,234,1) = rgb0(0.678,0.929,0.918)
+   shade 2 = #78D6D3 = rgb(120,214,211) = rgba(120,214,211,1) = rgb0(0.471,0.839,0.827)
+   shade 3 = #2F9E99 = rgb( 47,158,153) = rgba( 47,158,153,1) = rgb0(0.184,0.62,0.6)
+   shade 4 = #168E89 = rgb( 22,142,137) = rgba( 22,142,137,1) = rgb0(0.086,0.557,0.537)
+
+   Font dark: #525252
+   Font light: #7f8c8d
+ * 
+ */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Source Sans Pro', sans-serif;
+    color: #7f8c8d;
+}
+ul {
+    margin: 0;
+    padding: 0;
+}
+a{
+    text-decoration: none;
+    color: inherit;
+}
+.btn {
+    
+}
+/** general **/
+.highlight-text {
+    color: #4EBBB7;
+}
+
+.no-padding-left {
+    padding-left: 0;
+}
+.no-padding-right {
+    padding-right: 0;
+}
+/** Logo **/
+.logo {
+    font-size: 28px;
+}
+.logo-brand {
+    font-weight: bold;
+    color: #4EBBB7;
+    border-bottom: 2px solid #7F8C8D;
+}
+.logo-name {
+    color: #7f8c8d;
+    border-bottom: 2px solid #4EBBB7;
+}
+
+/** nav **/
+nav {
+    
+}
+
+nav ul {
+    list-style-type: none;
+}
+.nav-left {
+    float: left;
+}
+.nav-right {
+    float: right;
+}
+nav li {
+    float: left;
+    text-align: center;
+    display: inline-block;
+    padding: 0 50px;
+    height: 50px;
+    line-height: 50px;
+}
+nav a {
+    display: inline-block;
+}
+
+/** Main **/
+h1 {
+    text-align: center;
+    padding: 40px 0;
+    color: #525252;
+}
+main {
+}
+main p {
+    line-height: 26px;
+}
+/** main - section left **/
+.btn {
+    border: 1px solid #7f8c8d;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+.sign-up {
+    border-color: #4EBBB7;
+    color: #4EBBB7;
+    transition: 1s ease;
+}
+.sign-up:hover {
+    background: #ADEDEA;
+}
+.section-left ol li {
+    height: 26px;
+    line-height: 26px;
+}
+
+/** main - Section Right **/
+.section-right {
+    text-align: left;
+}
+
+/** main - quick reminder form **/
+.quick-reminder-form label, .quick-reminder-form input, .quick-reminder-form textarea {
+    clear: both;
+    float: left;
+}
+.quick-reminder-form label {
+    margin: 12px 0;
+    font-size: 20px;
+}
+.quick-reminder-form .number {
+    background: #4EBBB7;/* alt #1abc9c */
+    color: #FFFFFF;
+    height: 30px;
+    width: 30px;
+    display: inline-block;
+    font-size: 0.8em;
+    margin-right: 8px;
+    line-height: 30px;
+    text-align: center;
+    text-shadow: 0 1px 0 rgba(255,255,255,0.2);
+    border-radius: 15px 15px 15px 0px;
+}
+.quick-reminder-form input[type="text"],
+.quick-reminder-form input[type="date"],
+.quick-reminder-form input[type="datetime"],
+.quick-reminder-form input[type="email"],
+.quick-reminder-form input[type="number"],
+.quick-reminder-form input[type="time"],
+.quick-reminder-form textarea,
+.quick-reminder-form select
+{
+    -webkit-transition: all 0.30s ease-in-out;
+    -moz-transition: all 0.30s ease-in-out;
+    -ms-transition: all 0.30s ease-in-out;
+    -o-transition: all 0.30s ease-in-out;
+    outline: none;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    width: 100%;
+    background: #fff;
+    border: 1px solid #ccc;
+    padding: 3%;
+    color: #555;
+    font: 95% Arial, Helvetica, sans-serif;
+    margin-bottom: 20px;
+}
+.quick-reminder-form input[type="text"]:focus,
+.quick-reminder-form input[type="date"]:focus,
+.quick-reminder-form input[type="datetime"]:focus,
+.quick-reminder-form input[type="email"]:focus,
+.quick-reminder-form input[type="number"]:focus,
+.quick-reminder-form input[type="time"]:focus,
+.quick-reminder-form textarea:focus,
+.quick-reminder-form select:focus
+{
+    box-shadow: 0 0 5px #4EBBB7;
+    padding: 3%;
+    border: 1px solid #4EBBB7;
+}
+.btn-submit
+{
+    position: relative;
+    display: block;
+    padding: 19px 39px 18px 39px;
+    color: #FFF;
+    margin: 0 auto;
+    background: #4EBBB7;
+    font-size: 18px;
+    text-align: center;
+    font-style: normal;
+    width: 100%;
+    border: 1px solid #4EBBB7;
+    border-width: 1px 1px 3px;
+    margin-bottom: 10px;
+}
+.btn-submit:hover
+{
+    background: #2F9E99;
+    border: 1px solid #2F9E99;
+    border-width: 1px 1px 3px;
+}
+
+/** Arrow **/
+.arrow-down {
+    width: 100%;
+    text-align: center;
+    font-size: 40px;
+    transform: rotate(90deg) scaleX(0.5);
+    margin: 50px 0;
+}
+
+/** Example Section **/
+.example-section {
+    text-align: center;
+}
+.example-placeholder {
+    width: 150px;
+    height: 150px;
+    line-height: 150px;
+    text-align: center;
+    background: #E4E4E4;
+    color: #FFF;
+}
+.example {
+    display: inline-block;
+    margin: 25px 0;
+}
+.example div {
+    float: left;
+}
+.example-arrow {
+    width: 100px;
+    line-height: 150px;
+    height: 150px;
+    text-align: center;
+}
+
+/** DEBUG **/
+.blue {
+    background: rgba(0, 0, 255, 0.1);
+}
+.green {
+    background: rgba(0, 255, 0, 0.1);
+}
+.red {
+    background: rgba(255, 0, 0, 0.1);
+}

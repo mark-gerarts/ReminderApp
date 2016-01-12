@@ -1,0 +1,2 @@
+users(id, name);
+reminders(id, message, user_id)
