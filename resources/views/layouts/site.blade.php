@@ -73,41 +73,32 @@
 -->
    
 <body>
-    <div class="container-fluid">
-        <header>
-            <nav class="container">
-                <ul class="nav-left">
-                    <li class="no-padding-left">
-                        <a href="{{ url('/') }}"><span class="logo"><span class="logo-brand">Brand</span><span class="logo-name">Name</span></span></a>
-                    </li>
-                </ul>
-                <ul class="nav-right">
-                    <li><a href="#">About</a></li>
-                    <li><a href="{{ url('/pricing') }}">Pricing</a></li>
-                    @if (Auth::guest())
-                        <li><a href="{{ url('/login') }}" class="highlight-text no-padding-right">Sign in</a></li>
-                    @else
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                {{ Auth::user()->name }} <span class="caret"></span>
-                            </a>
-
-                            <ul class="dropdown-menu" role="menu">
-                                <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>Logout</a></li>
-                            </ul>
-                        </li>
-                    @endif
-                </ul>
-            </nav>
-        </header>
-        
+    <header>
+        <nav class="container">
+            <ul class="nav-left">
+                <li class="no-padding-left">
+                    <a href="{{ url('/') }}"><span class="logo"><span class="logo-brand">Brand</span><span class="logo-name">Name</span></span></a>
+                </li>
+            </ul>
+            <ul class="nav-right">
+                <li><a href="{{ url('home/faq') }}">FAQ</a></li>
+                <li><a href="{{ url('/home/pricing') }}">Pricing</a></li>
+                @if (Auth::guest())
+                    <li class="no-padding-right"><a href="{{ url('/login') }}" class="highlight-text">Sign in</a></li>
+                @else
+                    <li class="no-padding-right"><a href="{{ url('/dashboard') }}" class="highlight-text">Dashboard</a></li>
+                @endif
+            </ul>
+        </nav>
+    </header>
+    <div class="wrapper">
         @yield('content')
-        
+        <!-- Scripts used on all pages -->
+
+        <footer>
+            &copy; 2015
+        </footer>
     </div>
-    <script src="js/main.js"></script>
-</body>
-    <!-- Scripts used on all pages -->
-    
     <!-- Page specific scripts -->
     @yield('scripts')
 </body>

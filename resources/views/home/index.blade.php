@@ -14,19 +14,24 @@
     <div class="row">
         <div class="col-md-6 section-left">
             <h2>Easy to use</h2>
-            <p>Get your reminders sent to you -or a friend- through SMS. </p>
-            <ol>
-                <li>Lorem ipsum.</li>
-                <li>Dolor sit amet.</li>
-                <li>Consectetur ipse.</li>
-            </ol>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio quo, corrupti laudantium harum similique nobis aspernatur eius, minus impedit, quod consequuntur! Itaque mollitia facere obcaecati nesciunt. Porro, sit perspiciatis. Nulla.</p>
-            <a href="register" class="btn sign-up">Sign up</a>
+            <p>Create a reminder and receive a text message at the specified date &amp; time.</p>
+            <p>Don't want to create an account? No problem. You can use the quick reminder form without signing up.</p>
+            
+            <h2>Signing up is <span class="highlight-text">free</span></h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis mollitia natus quas, repudiandae necessitatibus perspiciatis dignissimos libero minus neque dolore quo modi, voluptates, praesentium recusandae accusantium dolorum obcaecati quis excepturi.</p>
+            <ul>
+                <li>Save money</li>
+                <li>Create a contact list</li>
+                <li>Schedule repeated reminders</li>
+                <li>Get reminders in your mailbox</li>
+            </ul>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi, consectetur nisi!</p>
+            <a href="{{ url('register') }}" class="btn sign-up">Sign up</a>
         </div>
         <div class="col-md-4 col-md-offset-2">
             <section class="section-right">
                 <h2>Quick Reminder</h2>
-                <p>You can schedule a quick reminder without the need of creating an account.</p>
+                <p>Schedule a quick reminder without the need of creating an account.</p>
                 <form class="quick-reminder-form">
                     <label><span class="number">1</span>Phone Number</label>
                     <input type="text" placeholder="International format">
@@ -41,27 +46,36 @@
             </section>
         </div>
     </div>
-    <div class="hidden-sm arrow-down">
-        &gt;
-    </div>
 </main>
-<main class="container">
-    <section class="example-section">
-        <h2>Lorem ipsum dolor sit amet, consectetur.</h2>
-        <div class="example">
-            <div class="example-placeholder">Placeholder</div>
-            <div class="example-arrow"><i class="fa fa-arrow-right"></i></div>
-            <div class="example-placeholder">Placeholder</div>
-            <div class="example-arrow"><i class="fa fa-arrow-right"></i></div>
-            <div class="example-placeholder">Placeholder</div>
-        </div>
-    </section>
-    <div class="row">
-        <div class="col-md-4">lorem</div>
-        <div class="col-md-4">lorem</div>
-        <div class="col-md-4">lorem</div>
-    </div>
-</main>
+<div class="container-fluid features">
+    <main class="container">
+        <section class="example-section">
+            <h2 class="features-title">Sign up to...</h2>
+            <div class="row">
+                <div class="col-md-4 col-md-offset-0 col-sm-8 col-sm-offset-2">
+                    <span class="icon-bubble"><i class="fa fa-eur fa-lg"></i></span>
+                    <h2>Save money</h2>
+                    <p>Signing up gives you the ability to top up your account. This results in cheaper reminders!</p>
+                </div>
+                <div class="col-md-4 col-md-offset-0 col-sm-8 col-sm-offset-2">
+                    <span class="icon-bubble"><i class="fa fa-calendar fa-lg"></i></span>
+                    <h2>Set up repeated reminders</h2>
+                    <p>Schedule a reminder to be send daily, weekly, monthly or even yearly.</p>
+                </div>
+                <div class="col-md-4 col-md-offset-0 col-sm-8 col-sm-offset-2">
+                    <span class="icon-bubble"><i class="fa fa-users fa-lg"></i></span>
+                    <h2>Save contacts</h2>
+                    <p>No more need to find everyone's number. Save frequently used numbers in your contact book.</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <a class="btn btn-signup-big" href="{{ url('/register') }}">Sign up</a>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
 @endsection
 
 

@@ -10,13 +10,18 @@
    Font light: #7f8c8d
  * 
  */
+html {
+    height: 100%;
+}
 body {
     margin: 0;
     padding: 0;
     font-family: 'Source Sans Pro', sans-serif;
     color: #7f8c8d;
+    position: relative;
+    height: 100%;
 }
-ul {
+nav ul {
     margin: 0;
     padding: 0;
 }
@@ -97,13 +102,17 @@ main p {
 }
 .sign-up {
     border-color: #4EBBB7;
+    border-radius: 10px;
     color: #4EBBB7;
-    transition: 1s ease;
+    padding: 5px 20px;
+    transition: 0.5s ease;
+    font-size: 20px;
 }
 .sign-up:hover {
-    background: #ADEDEA;
+    background: #4EBBB7;
+    color: #FFF;
 }
-.section-left ol li {
+.section-left ul li {
     height: 26px;
     line-height: 26px;
 }
@@ -135,17 +144,11 @@ main p {
     margin-right: 8px;
     line-height: 30px;
     text-align: center;
-    text-shadow: 0 1px 0 rgba(255,255,255,0.2);
     border-radius: 15px 15px 15px 0px;
 }
 .quick-reminder-form input[type="text"],
-.quick-reminder-form input[type="date"],
 .quick-reminder-form input[type="datetime"],
-.quick-reminder-form input[type="email"],
-.quick-reminder-form input[type="number"],
-.quick-reminder-form input[type="time"],
-.quick-reminder-form textarea,
-.quick-reminder-form select
+.quick-reminder-form textarea
 {
     -webkit-transition: all 0.30s ease-in-out;
     -moz-transition: all 0.30s ease-in-out;
@@ -164,13 +167,8 @@ main p {
     margin-bottom: 20px;
 }
 .quick-reminder-form input[type="text"]:focus,
-.quick-reminder-form input[type="date"]:focus,
 .quick-reminder-form input[type="datetime"]:focus,
-.quick-reminder-form input[type="email"]:focus,
-.quick-reminder-form input[type="number"]:focus,
-.quick-reminder-form input[type="time"]:focus,
-.quick-reminder-form textarea:focus,
-.quick-reminder-form select:focus
+.quick-reminder-form textarea:focus
 {
     box-shadow: 0 0 5px #4EBBB7;
     padding: 3%;
@@ -244,3 +242,56 @@ main p {
 .red {
     background: rgba(255, 0, 0, 0.1);
 }
+
+/** features **/
+.features {
+    background: #F9F9F9;
+    padding: 20px;
+    color: #525252;
+    margin-top: 75px;
+}
+.features-title {
+    font-size: 36px;
+    padding-bottom: 25px;
+}
+.icon-bubble {
+    background: #525252;
+    width: 100px;
+    height: 100px;
+    line-height: 100px;
+    font-size: 36px;
+    border-radius: 100px;
+    display: inline-block;
+    color: #FFF;
+    
+}
+.btn-signup-big {
+    display: inline-block;
+    margin: 50px 0;
+    border:2px solid #4EBBB7;
+    color: #4EBBB7;
+    padding: 5px 25px;
+    font-size: 32px;
+    border-radius: 25px;
+    transition: 0.5s;
+}
+.btn-signup-big:hover {
+    cursor: pointer;
+    background: #4EBBB7;
+    color: #FFF;
+}
+.wrapper {
+    min-height: 100%;
+    position: relative;
+}
+footer {
+    background: #525252;
+    color: white;
+    width: 100%;
+    text-align: center;
+    padding: 5px;
+    position: absolute;
+    bottom: 0;    
+}
+/*Font dark: #525252
+   Font light: #7f8c8d*/
