@@ -29,6 +29,11 @@ class HomeController extends Controller
     
     public function pricing()
     {
-        return 'pricing';
+        return view('home.pricing');
+    }
+    
+    public function faq()
+    {
+        return view('home.faq');
     }
 }

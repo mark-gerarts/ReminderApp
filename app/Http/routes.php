@@ -11,9 +11,6 @@
 |
 */
 
-
-Route::get('/pricing', 'HomeController@pricing');
-
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -31,7 +28,12 @@ Route::group(['middleware' => ['web']], function () {
 
 Route::group(['middleware' => 'web'], function () {
     Route::auth();
+    
+    //Homepage
     Route::get('/', 'HomeController@index');
     Route::get('/home', 'HomeController@index');
+    Route::get('/home/pricing', 'HomeController@pricing');
+    Route::get('/home/faq', 'HomeController@faq');
+    
     Route::get('/dashboard', 'DashboardController@index');
 });

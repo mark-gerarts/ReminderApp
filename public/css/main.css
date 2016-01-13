@@ -33,6 +33,9 @@ a{
     
 }
 /** general **/
+.container {
+    display: block; /* IE */
+}
 .highlight-text {
     color: #4EBBB7;
 }
@@ -95,6 +98,9 @@ main p {
     line-height: 26px;
 }
 /** main - section left **/
+.title-margin {
+    margin-top: 40px;
+}
 .btn {
     border: 1px solid #7f8c8d;
     padding: 5px 10px;
@@ -115,6 +121,7 @@ main p {
 .section-left ul li {
     height: 26px;
     line-height: 26px;
+    list-style-type: none;
 }
 
 /** main - Section Right **/
@@ -267,7 +274,7 @@ main p {
 }
 .btn-signup-big {
     display: inline-block;
-    margin: 50px 0;
+    margin: 50px 0 70px 0;
     border:2px solid #4EBBB7;
     color: #4EBBB7;
     padding: 5px 25px;

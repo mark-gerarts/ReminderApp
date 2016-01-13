@@ -1,0 +1,55 @@
+/*
+ *
+   shade 0 = #4EBBB7 = rgb( 78,187,183) = rgba( 78,187,183,1) = rgb0(0.306,0.733,0.718)
+   shade 1 = #ADEDEA = rgb(173,237,234) = rgba(173,237,234,1) = rgb0(0.678,0.929,0.918)
+   shade 2 = #78D6D3 = rgb(120,214,211) = rgba(120,214,211,1) = rgb0(0.471,0.839,0.827)
+   shade 3 = #2F9E99 = rgb( 47,158,153) = rgba( 47,158,153,1) = rgb0(0.184,0.62,0.6)
+   shade 4 = #168E89 = rgb( 22,142,137) = rgba( 22,142,137,1) = rgb0(0.086,0.557,0.537)
+
+   Font dark: #525252
+   Font light: #7f8c8d
+ * 
+ */
+
+/** general **/
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Source Sans Pro', sans-serif;
+}
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+/** navbar **/
+.navbar {
+    background: #F0EDED;
+    color: #525252;
+    box-shadow: 0px -2px 5px #aaa inset
+}
+nav div, .user {
+    float: left;
+    padding: 20px 35px;
+    font-size: 18px;
+    font-weight: bold;
+    position: relative;
+}
+.user {
+    float: right;
+    font-weight: normal;
+}
+.user a {
+    color: #2F9E99;
+}
+.arrow {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -15px;
+    margin: 0 auto;
+    width: 26px;
+    font-size: 45px;
+    color: #FFF;
+    text-shadow: 0px -3px 2px #aaa;
+}
