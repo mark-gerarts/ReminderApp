@@ -12,21 +12,9 @@
 */
 
 Route::get('/', 'HomeController@index');
+Route::get('/home', 'HomeController@index');
 Route::get('/pricing', 'HomeController@pricing');
 
-Route::get('/test/', 'TestController@Index');
-Route::get('/test/{id}', 'TestController@showProfile');
-
-// Authentication routes...
-//Route::get('auth/login', 'Auth\AuthController@getLogin');
-//Route::post('auth/login', 'Auth\AuthController@postLogin');
-//Route::get('auth/logout', 'Auth\AuthController@getLogout');
-
-// Registration routes...
-Route::group(['middleware' => ['web']], function () {
-    Route::get('/register', 'Auth\AuthController@getRegister');
-    Route::post('/register', 'Auth\AuthController@postRegister');
-});
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -40,4 +28,10 @@ Route::group(['middleware' => ['web']], function () {
 
 Route::group(['middleware' => ['web']], function () {
     //
+});
+
+Route::group(['middleware' => 'web'], function () {
+    Route::auth();
+
+    Route::get('/dashboard', 'DashboardController@index');
 });

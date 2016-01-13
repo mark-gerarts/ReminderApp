@@ -118,6 +118,9 @@ main p {
     clear: both;
     float: left;
 }
+.quick-reminder-form textarea {
+    resize: vertical;
+}
 .quick-reminder-form label {
     margin: 12px 0;
     font-size: 20px;
