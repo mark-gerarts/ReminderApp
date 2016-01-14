@@ -23,7 +23,7 @@
     <div class="container-fluid navbar">
         <div class="container">
             <nav>
-                <div>
+                <div class="no-padding-left">
                     <a href="{{ url('/dashboard') }}">Dashboard</a>
                     <i class="fa fa-caret-up fa-fw arrow"></i>
                 </div>
