@@ -26,9 +26,4 @@ class DashboardController extends Controller
     {
         return view('dashboard.home');
     }
-    
-    public function contacts()
-    {
-        return view('dashboard.contacts');
-    }
 }

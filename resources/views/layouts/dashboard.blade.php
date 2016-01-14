@@ -20,29 +20,23 @@
 
    
 <body>
-    <div class="container-fluid height">
-        <div class="row height">
-            <div class="col-sm-2 navcol">
-                <nav>
-                    <div class="user">Logged in as {{ Auth::user()->name }}. <a href="{{ url('/logout') }}">Log out <i class="fa fa-sign-out"></i></a></div>
-                    <div>
-                        <a href="{{ url('/dashboard') }}">Dashboard</a>
-                        <i class="fa fa-caret-up fa-fw arrow"></i>
-                    </div>
-                    <div><a href="{{ url('/dashboard/contacts') }}">Contacts</a></div>
-                    <div><a href="{{ url('/dashboard') }}">History</a></div>
-                    <div><a href="{{ url('/dashboard') }}">Account</a></div>
-                </nav>
-            </div>
-            <div class="col-sm-10 maincol height">
-                <main class="dashboard-main height">
-                    @yield('content')
-                </main>
-            </div>
+    <div class="container-fluid navbar">
+        <div class="container">
+            <nav>
+                <div>
+                    <a href="{{ url('/dashboard') }}">Dashboard</a>
+                    <i class="fa fa-caret-up fa-fw arrow"></i>
+                </div>
+                <div><a href="{{ url('/dashboard') }}">Contacts</a></div>
+                <div><a href="{{ url('/dashboard') }}">History</a></div>
+                <div><a href="{{ url('/dashboard') }}">Account</a></div>
+            </nav>
+            <div class="user">Logged in as {{ Auth::user()->name }}. <a href="{{ url('/logout') }}">Log out <i class="fa fa-sign-out"></i></a></div>
         </div>
-        
-       </div>
     </div>
+    <div class="container">
+    </div>
+    @yield('content')
     
     <!-- Scripts used on all pages -->
     <!-- Page specific scripts -->

@@ -12,115 +12,44 @@
  */
 
 /** general **/
-html {
-    height: 100%;
-}
 body {
     margin: 0;
     padding: 0;
     font-family: 'Source Sans Pro', sans-serif;
-    color: #7f8c8d;
-    height: 100%;
 }
 a {
     color: inherit;
     text-decoration: none;
 }
-h2 {
-    color: #525252;
-}
-.height {
-    height: 100%;
-}
+
 /** navbar **/
-.navcol {
-    background: #ccc;
-    height: 100%;
+.navbar {
+    background: #F0EDED;
+    color: #525252;
+    box-shadow: 0px -2px 5px #aaa inset
 }
-nav {
-    height: 100%;
-}
-nav > div {
-    padding: 25px 0;
-}
-
-
-/** reminder form **/
-.reminder-form {
-    overflow: auto;
-}
-.reminder-form label, .reminder-form input, .reminder-form textarea, .reminder-form select {
-    clear: both;
+nav div, .user {
     float: left;
-}
-.reminder-form textarea {
-    resize: vertical;
-}
-.reminder-form label {
-    margin: 12px 0;
-    font-size: 20px;
-}
-.reminder-form .number {
-    background: #4EBBB7;/* alt #1abc9c */
-    color: #FFFFFF;
-    height: 30px;
-    width: 30px;
-    display: inline-block;
-    font-size: 0.8em;
-    margin-right: 8px;
-    line-height: 30px;
-    text-align: center;
-    border-radius: 15px 15px 15px 0px;
-}
-.reminder-form input[type="text"],
-.reminder-form input[type="datetime"],
-.reminder-form textarea,
-.reminder-form select
-{
-    -webkit-transition: all 0.30s ease-in-out;
-    -moz-transition: all 0.30s ease-in-out;
-    -ms-transition: all 0.30s ease-in-out;
-    -o-transition: all 0.30s ease-in-out;
-    outline: none;
-    box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    width: 100%;
-    background: #fff;
-    border: 1px solid #ccc;
-    padding: 3%;
-    color: #555;
-    font: 95% Arial, Helvetica, sans-serif;
-    margin-bottom: 20px;
-}
-.reminder-form input[type="text"]:focus,
-.reminder-form input[type="datetime"]:focus,
-.reminder-form textarea:focus,
-.reminder-form select:focus
-{
-    box-shadow: 0 0 5px #4EBBB7;
-    padding: 3%;
-    border: 1px solid #4EBBB7;
-}
-.btn-submit
-{
-    position: relative;
-    display: block;
-    padding: 19px 39px 18px 39px;
-    color: #FFF;
-    margin: 0 auto;
-    background: #4EBBB7;
+    padding: 20px 35px;
     font-size: 18px;
-    text-align: center;
-    font-style: normal;
-    width: 100%;
-    border: 1px solid #4EBBB7;
-    border-width: 1px 1px 3px;
-    margin-bottom: 10px;
+    font-weight: bold;
+    position: relative;
 }
-.btn-submit:hover
-{
-    background: #2F9E99;
-    border: 1px solid #2F9E99;
-    border-width: 1px 1px 3px;
+.user {
+    float: right;
+    font-weight: normal;
+}
+.user a {
+    color: #2F9E99;
+}
+.arrow {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -15px;
+    margin: 0 auto;
+    width: 26px;
+    font-size: 45px;
+    color: #FFF;
+    text-shadow: 0px -3px 2px #aaa;
 }

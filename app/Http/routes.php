@@ -35,7 +35,5 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('/home/pricing', 'HomeController@pricing');
     Route::get('/home/faq', 'HomeController@faq');
     
-    //Dashboard
     Route::get('/dashboard', 'DashboardController@index');
-    Route::get('/dashboard/contacts', 'DashboardController@contacts');
 });
