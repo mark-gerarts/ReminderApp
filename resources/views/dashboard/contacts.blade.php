@@ -6,28 +6,36 @@
 
 @section('content')
 <div class="container" id="app">
-    <div class="row">
-        <div class="col-md-4">
+    <h1>Contacts</h1>
+    <div class="row row-grid">
+        <div class="col-md-7">
             <!--<p>Contacts</p>
             <ol>
             @foreach($contacts as $contact)
                 <li>{{ $contact->name }}, {{ $contact->number }}</li>
             @endforeach
             </ol>-->
-            <ul>
-                <li v-for="contact in contacts">
-                    @{{ contact.name }} - @{{ contact.number }}
-                    <a @click.prevent="deleteContact(contact)">delete</a>
-                </li>
-            </ul>
-            
+            <table class="contacts">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Number</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="contact in contacts">
+                        <td>@{{ contact.name }}</td>
+                        <td>@{{ contact.number }}</td>
+                        <td><i class="fa fa-pencil"></i></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-        <div class="col-md-8">
-           <p>Add a contact:</p>
-            <form action="{{ url('dashboard/contacts') }}" method="post" @submit.prevent="insertContact()">
-            {!! csrf_field() !!}
-            <span style="display:none" id="csrf_token">{{ csrf_token() }}</span>
-            <p>
+        <div class="col-md-4 col-md-offset-1">
+            <form action="{{ url('dashboard/contacts') }}" method="post" @submit.prevent="insertContact()" class="contact-form">
+                {!! csrf_field() !!}
+                <span style="display:none" id="csrf_token">{{ csrf_token() }}</span>
                 <label>Name</label>
                 @if ($errors->has('name'))
                     <span class="error-message">
@@ -35,8 +43,6 @@
                     </span>
                 @endif
                 <input type="text" name="name" id="name" v-model="newContact.name">
-            </p>
-            <p>
                 <label>Number</label>
                 @if ($errors->has('number'))
                     <span class="error-message">
@@ -44,12 +50,8 @@
                     </span>
                 @endif
                 <input type="text" name="number" id="number" v-model="newContact.number">
-            </p>
-            <p>
-                <input type="submit">
-            </p>
+                <input type="submit" class="btn-submit">
             </form>
-            <pre>@{{ $data.newContact | json }}</pre>
         </div>
     </div>
 </div>

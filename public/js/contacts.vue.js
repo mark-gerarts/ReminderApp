@@ -45,7 +45,18 @@ var vm = new Vue({
         },
         
         deleteContact: function(contact) {
-            console.log(contact.id);
+            this.$http.delete('api/contacts/' + contact.id).then(function(response) {
+                console.log(response);
+                for(var i=0; i<this.contacts.length; i++) {
+                    if(this.contacts[i].id == contact.id) {
+                       this.contacts.splice(i, 1);
+                    }
+                }
+            }, function(error) {
+                console.log(error);
+            }).finally(function() {
+                console.log('delete finished');
+            })
         }
     }
 });

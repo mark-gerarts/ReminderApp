@@ -41,7 +41,8 @@ Route::group(['middleware' => 'web'], function () {
     Route::post('/dashboard/contacts', 'DashboardController@contacts');
     
     //API
+    //Contacts
     Route::get('api/contacts/{id?}', 'API\ContactsController@get');
     Route::post('api/contacts', 'API\ContactsController@insert');
-    Route::delete('api/contacts/:id', 'API\ContactsController@delete');
+    Route::delete('api/contacts/{id?}', 'API\ContactsController@delete');
 });

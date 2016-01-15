@@ -1,4 +1,96 @@
-li a {
-    text-decoration: underline;
-    cursor: pointer;
+/**  contacts table **/
+table.contacts {
+    width: 100%;
+    border-collapse: collapse;
+}
+table.contacts th {
+    text-align: left;
+    padding: 5px 10px;
+    border-bottom: 1px solid #7f8c8d;
+}
+table.contacts td {
+    padding: 10px 10px;
+}
+table.contacts tbody tr:nth-child(even) {
+    background: #F9F9F9;
+}
+
+/** contacts form **/
+.contact-form {
+    overflow: auto;
+}
+.contact-form label, .contact-form input, .contact-form textarea, .contact-form select {
+    clear: both;
+    float: left;
+}
+.contact-form textarea {
+    resize: vertical;
+}
+.contact-form label {
+    margin: 12px 0;
+    font-size: 20px;
+}
+.contact-form .number {
+    background: #4EBBB7;/* alt #1abc9c */
+    color: #FFFFFF;
+    height: 30px;
+    width: 30px;
+    display: inline-block;
+    font-size: 0.8em;
+    margin-right: 8px;
+    line-height: 30px;
+    text-align: center;
+    border-radius: 15px 15px 15px 0px;
+}
+.contact-form input[type="text"],
+.contact-form input[type="datetime"],
+.contact-form textarea,
+.contact-form select
+{
+    -webkit-transition: all 0.30s ease-in-out;
+    -moz-transition: all 0.30s ease-in-out;
+    -ms-transition: all 0.30s ease-in-out;
+    -o-transition: all 0.30s ease-in-out;
+    outline: none;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    width: 100%;
+    background: #fff;
+    border: 1px solid #ccc;
+    padding: 3%;
+    color: #555;
+    font: 95% Arial, Helvetica, sans-serif;
+    margin-bottom: 20px;
+}
+.contact-form input[type="text"]:focus,
+.contact-form input[type="datetime"]:focus,
+.contact-form textarea:focus,
+.contact-form select:focus
+{
+    box-shadow: 0 0 5px #4EBBB7;
+    padding: 3%;
+    border: 1px solid #4EBBB7;
+}
+.btn-submit
+{
+    position: relative;
+    display: block;
+    padding: 19px 39px 18px 39px;
+    color: #FFF;
+    margin: 0 auto;
+    background: #4EBBB7;
+    font-size: 18px;
+    text-align: center;
+    font-style: normal;
+    width: 100%;
+    border: 1px solid #4EBBB7;
+    border-width: 1px 1px 3px;
+    margin-bottom: 10px;
+}
+.btn-submit:hover
+{
+    background: #2F9E99;
+    border: 1px solid #2F9E99;
+    border-width: 1px 1px 3px;
 }

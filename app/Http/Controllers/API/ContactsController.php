@@ -27,13 +27,13 @@ class ContactsController extends Controller
      * @return Response
      */
 
-    public function get(equest $request, $id)
+    public function get(Request $request, $id = NULL)
     {
         $user = Auth::user();
         
-        if(isset($request->id)) 
+        if(isset($id)) 
         {
-            $contact = $user->contacts->where('id', $id)
+            $contact = $user->contacts->where('id', $id);
         }
         else
         {
@@ -67,9 +67,9 @@ class ContactsController extends Controller
         }
     }
     
-    public function delete(Request $request)
+    public function delete(Request $request, $id)
     {
-        $result = Contact::destroy($request->id);
-        return resposne()->json($result);
+        $result = Contact::destroy($id);
+        return response()->json($result);
     }
 }
