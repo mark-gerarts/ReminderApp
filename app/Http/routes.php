@@ -22,9 +22,9 @@
 |
 */
 
-Route::group(['middleware' => ['web']], function () {
+/*Route::group(['middleware' => ['web']], function () {
     //
-});
+});*/
 
 Route::group(['middleware' => 'web'], function () {
     Route::auth();
@@ -39,4 +39,9 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('/dashboard', 'DashboardController@index');
     Route::get('/dashboard/contacts', 'DashboardController@contacts');
     Route::post('/dashboard/contacts', 'DashboardController@contacts');
+    
+    //API
+    Route::get('api/contacts/{id?}', 'API\ContactsController@get');
+    Route::post('api/contacts', 'API\ContactsController@insert');
+    Route::delete('api/contacts/:id', 'API\ContactsController@delete');
 });
