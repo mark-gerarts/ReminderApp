@@ -27,7 +27,7 @@
                     <a href="{{ url('/dashboard') }}">Dashboard</a>
                     <i class="fa fa-caret-up fa-fw arrow"></i>
                 </div>
-                <div><a href="{{ url('/dashboard') }}">Contacts</a></div>
+                <div><a href="{{ url('/dashboard/contacts') }}">Contacts</a></div>
                 <div><a href="{{ url('/dashboard') }}">History</a></div>
                 <div><a href="{{ url('/dashboard') }}">Account</a></div>
             </nav>

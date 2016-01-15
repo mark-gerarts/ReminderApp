@@ -1,20 +1,8 @@
 <?php
-/*
+
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
-class User extends Model
-{
-    public function reminders()
-    {
-        return $this->hasMany('Reminder');
-    }
-    public $timestamps = false;  
-}
-*/
-namespace App\Models;
-
+use App\Models\Contact; //Not working
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
@@ -40,5 +28,10 @@ class User extends Authenticatable
     public function reminders()
     {
         return $this->hasMany('Reminder');
+    }
+    
+    public function contacts()
+    {
+        return $this->hasMany('App\Models\Contact'); //Use not working here ..?
     }
 }
