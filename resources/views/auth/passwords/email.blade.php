@@ -1,4 +1,9 @@
-@extends('layouts.app')
+@extends('layouts.site')
+
+@section('style')
+<link rel="stylesheet" href="{{ url('css/main.css') }}">
+<link rel="stylesheet" href="{{ url('css/register.css') }}">
+@endsection
 
 <!-- Main Content -->
 @section('content')
@@ -6,7 +11,7 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading">Reset Password</div>
+                <h1>Reset Password</h1>
                 <div class="panel-body">
                     @if (session('status'))
                         <div class="alert alert-success">
@@ -14,7 +19,7 @@
                         </div>
                     @endif
 
-                    <form class="form-horizontal" role="form" method="POST" action="{{ url('/password/email') }}">
+                    <form class="form-horizontal register-form" role="form" method="POST" action="{{ url('/password/email') }}">
                         {!! csrf_field() !!}
 
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
@@ -33,8 +38,8 @@
 
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fa fa-btn fa-envelope"></i>Send Password Reset Link
+                                <button type="submit" class="btn btn-primary btn-submit">
+                                    <i class="fa fa-btn fa-envelope"></i> Send Password Reset Link
                                 </button>
                             </div>
                         </div>

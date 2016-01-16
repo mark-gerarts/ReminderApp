@@ -1,6 +1,13 @@
 h2 {
     border-bottom: none;
 }
+.try-again {
+    text-decoration: underline;
+    color: #525252;
+}
+.try-again:hover {
+    cursor: pointer;
+}
 
 /**  contacts table **/
 table.contacts {
@@ -34,12 +41,14 @@ table.contacts tbody tr:hover {
 .edit, .save, .delete, .cancel:hover {
     cursor: pointer;
 }
-
+.error {
+    color: red;
+}
 /** contacts form **/
 .contact-form {
     overflow: auto;
 }
-.contact-form label, .contact-form input, .contact-form textarea, .contact-form select {
+.contact-form label, .contact-form input, .contact-form textarea, .contact-form select, .error-message {
     clear: both;
     float: left;
 }

@@ -14,7 +14,7 @@
     </div>
     <div class="row">
         <div class="col-md-4 col-md-offset-4">
-            <form method="post" action="{{ url('login') }}" class="register-form">
+            <form method="post" action="{{ url('register') }}" class="register-form">
                 {!! csrf_field() !!}
                 <label for="name"><span class="number">1</span>Name</label>
                 @if ($errors->has('name'))

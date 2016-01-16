@@ -1,7 +1,7 @@
 @extends('layouts.site')
 
 @section('style')
-    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="{{ url('css/main.css') }}">
 @endsection
 
 @section('content')
@@ -84,5 +84,4 @@
 
 
 @section('scripts')
-    <script>console.log('scripts rendered!')</script>
 @endsection
