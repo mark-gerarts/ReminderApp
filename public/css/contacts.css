@@ -1,3 +1,7 @@
+h2 {
+    border-bottom: none;
+}
+
 /**  contacts table **/
 table.contacts {
     width: 100%;
@@ -13,6 +17,22 @@ table.contacts td {
 }
 table.contacts tbody tr:nth-child(even) {
     background: #F9F9F9;
+}
+table.contacts tbody tr:hover {
+    background: #EEE;
+}
+.actions {
+    text-align: right;
+}
+
+.edit, .save {
+    margin-right: 15px;
+}
+.delete {
+    color: #FFC2C2;
+}
+.edit, .save, .delete, .cancel:hover {
+    cursor: pointer;
 }
 
 /** contacts form **/

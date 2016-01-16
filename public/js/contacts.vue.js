@@ -1,6 +1,24 @@
 Vue.http.options.root = 'http://localhost:8080/www/webontwikkelaar/eindwerk/ReminderApp/public/';
 Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#csrf_token').innerHTML;
 
+var contactRow = Vue.extend({
+    template: '#contact-template',
+    props: {
+        contact: {},
+        editing: false
+    },
+    methods: {
+        updateContact: function() {
+            console.log('updating');
+            this.$parent.updateContact(this.contact);
+            this.editing = false;
+        }
+    }
+});
+
+Vue.component('contact-row', contactRow)
+
+
 var vm = new Vue({
     el: '#app',
     
@@ -14,10 +32,10 @@ var vm = new Vue({
             name: '',
             number: ''
         },
-        item: {}
+        editing: false
     },
     
-    methods: {
+    methods: {        
         getContacts: function() {
             this.$http.get('api/contacts').then(function(response) {
                 this.$set('contacts', response.data);
@@ -47,15 +65,22 @@ var vm = new Vue({
         deleteContact: function(contact) {
             this.$http.delete('api/contacts/' + contact.id).then(function(response) {
                 console.log(response);
-                for(var i=0; i<this.contacts.length; i++) {
-                    if(this.contacts[i].id == contact.id) {
-                       this.contacts.splice(i, 1);
-                    }
-                }
+                this.contacts.$remove(contact);
             }, function(error) {
                 console.log(error);
             }).finally(function() {
                 console.log('delete finished');
+                return true; //ToDo: add check to see if successful
+            })
+        },
+        
+        updateContact: function(contact) {
+            this.$http.put('api/contacts', JSON.stringify(contact)).then(function(response) {
+                console.log(response);
+            }, function(error) {
+                console.log(error);
+            }).finally(function() {
+                console.log('update finished')
             })
         }
     }
