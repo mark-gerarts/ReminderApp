@@ -5,18 +5,69 @@
 Vue.http.options.root = 'http://localhost:8080/www/webontwikkelaar/eindwerk/ReminderApp/public/'; //Set root
 Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#csrf_token').value; //csrf token is extracted from the page & put in the header
 
-//A reusable component for a contact table row
+//A component for a contact table row
 var contactRow = Vue.extend({ 
     template: '#contact-template', //Consists of a table row, template stored in contacts.blade.php
     props: {
-        contact: {},
-        editing: false //Flag to check if the contact is being edited
+        contact: {} //Binds the contact in v-for
+    },
+    data: function() {
+        return {
+            editing: false,
+            isLoading: {
+                delete: false,
+                update: false
+            },
+            hasError: {
+                delete: false,
+                update: false
+            },
+            validationErrors: {}
+        }
     },
     methods: {
         updateContact: function() {
-            //Calls the parent's update method and cancels editing mode
-            this.$parent.updateContact(this.contact);
-            this.editing = false;
+            //Reset flags
+            this.isLoading.delete = true;
+            this.hasError.delete = false;
+            
+            this.$http.put('api/contacts', JSON.stringify(this.contact)).then(function(response) {
+                if(response.status != 200) {
+                    this.hasError.update = true;
+                } else {
+                    this.editing = false;
+                }
+            }, function(error) {
+                if(error.status == 422) {
+                    this.$set('validationErrors', error.data);
+                } else {
+                    this.hasError.update = true;
+                }
+                console.log(error);
+            }).finally(function() {
+                this.isLoading.delete = false;
+            })
+        },
+        deleteContact: function(contact) {
+            //Reset flags
+            this.isLoading.delete = true;
+            this.hasError.delete = false;
+            
+            this.$http.delete('api/contacts/' + this.contact.id).then(function(response) {
+                //Success
+                console.log(response)
+                if(response.status == 200 && response.data) {
+                    this.$remove();
+                } else {
+                    this.hasError.delete = true;
+                }
+            }, function(error) {
+                //Error
+                console.log(error);
+                this.hasError.delete = true;
+            }).finally(function() {
+                this.isLoading.delete = false;
+            });
         }
     }
 });
@@ -32,7 +83,7 @@ var vm = new Vue({
     },
     
     data: {
-        contacts: [], //Lis tof all contacts, filled via getContacts()
+        contacts: [], //List of all contacts, filled via getContacts()
         newContact: {}, //the viewmodel of a new contact, filled through the form
         isLoading: { //container object for all loading flags
             getContacts: false,
@@ -59,11 +110,12 @@ var vm = new Vue({
                     this.hasError.getContacts = true; 
                 }
             }, function(error) {
+                //Error
                 console.log(error);
                 this.hasError.getContacts = true;
             }).finally(function() {
                 this.isLoading.getContacts = false;
-            })
+            });
         },
         
         insertContact: function() {
@@ -83,37 +135,16 @@ var vm = new Vue({
                     this.hasError.insertContact = true;
                 }
             }, function(error) {
+                //Error
                 if(error.status == 422) { //422 = validation errors
-                    this.$set('validationErrors', error.data);
+                    this.$set('validationErrors', error.data); //Bind the data
                 } else {
                     this.hasError.insertContact = true;
                 }
                 console.log(error);
             }).finally(function() {
                 this.isLoading.insertContact = false;
-            })
-        },
-        
-        deleteContact: function(contact) {
-            this.$http.delete('api/contacts/' + contact.id).then(function(response) {
-                console.log(response);
-                this.contacts.$remove(contact);
-            }, function(error) {
-                console.log(error);
-            }).finally(function() {
-                console.log('delete finished');
-                return true; //ToDo: add check to see if successful
-            })
-        },
-        
-        updateContact: function(contact) {
-            this.$http.put('api/contacts', JSON.stringify(contact)).then(function(response) {
-                console.log(response);
-            }, function(error) {
-                console.log(error);
-            }).finally(function() {
-                console.log('update finished')
-            })
+            });
         }
     }
 });
