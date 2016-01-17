@@ -58,7 +58,7 @@
     </div>
 </div>
 
-<template id="contact-template">
+<script type="x/template" id="contact-template">
     <tr>
         <td v-show="!editing">@{{ contact.name }}</td>
         <td v-else>
@@ -85,7 +85,7 @@
             </span>
         </td>
     </tr>
-</template>
+</script>
 @endsection
 
 
