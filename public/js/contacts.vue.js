@@ -16,7 +16,7 @@ var contactRow = Vue.extend({
             editing: false,
             isLoading: {
                 delete: false,
-                update: false
+                update: false //ToDo: add loading indicator in html
             },
             hasError: {
                 delete: false,
