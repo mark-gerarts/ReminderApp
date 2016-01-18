@@ -29,6 +29,9 @@
                         </td>
                     </tr>
                     <tr v-for="contact in contacts | orderBy 'name'" is="contact-row" :contact.sync="contact"></tr>
+                    <tr v-if="contacts.length == 0 && !isLoading.getContacts">
+                        <td colspan="3">No contacts yet!</td>
+                    </tr>
                 </tbody>
             </table>
         </div>
