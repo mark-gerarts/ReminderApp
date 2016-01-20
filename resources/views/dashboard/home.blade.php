@@ -14,12 +14,10 @@
                 
                 <label><span class="number">1</span>Phone Number</label>
                 <div class="suggestion-wrapper">
-                    <input type="text" placeholder="International format" id="fi_search">
-                    <div class="suggestionbox-wrapper">
+                    <input type="text" placeholder="International format" id="fi_search" v-model="query" @focus="focused = true" @blur="focused = false">
+                    <div class="suggestionbox-wrapper" v-show="query.length > 1 && focused">
                         <div class="suggestionbox">
-                            <p>Testsuggestion</p>
-                            <p>Testsuggestion</p>
-                            <p>Testsuggestion</p>
+                            <p v-for="contact in contacts | filterBy query in '[name,number]' | limitBy 6 | orderBy 'name'">@{{contact.name}} (@{{contact.number}})</p>
                         </div>
                     </div>
                 </div>

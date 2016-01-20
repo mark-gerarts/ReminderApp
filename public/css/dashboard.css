@@ -40,6 +40,7 @@ nav div, .user {
 .user {
     float: right;
     font-weight: normal;
+    padding-right: 0;
 }
 .user a {
     color: #168E89;

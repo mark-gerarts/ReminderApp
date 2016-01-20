@@ -15,7 +15,9 @@ var vm = new Vue({
     },
     
     data: {
-        contacts: []
+        contacts: [],
+        query: '',
+        focused: false
     },
     
     methods: {
