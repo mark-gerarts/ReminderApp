@@ -1,18 +1,28 @@
 @extends('layouts.dashboard')
 
 @section('style')
-    
 @endsection
 
 @section('content')
-<div class="container">
+<div class="container" id="app">
     <div class="row">
        <div class="col-md-4">
            <h2>Schedule a Reminder</h2>
             <form class="reminder-form">
+                <input type="hidden" id="csrf_token" value="{{ csrf_token()}}">
+                
+                
                 <label><span class="number">1</span>Phone Number</label>
-                <input type="text" placeholder="International format">
-
+                <div class="suggestion-wrapper">
+                    <input type="text" placeholder="International format" id="fi_search">
+                    <div class="suggestionbox-wrapper">
+                        <div class="suggestionbox">
+                            <p>Testsuggestion</p>
+                            <p>Testsuggestion</p>
+                            <p>Testsuggestion</p>
+                        </div>
+                    </div>
+                </div>
                 <label><span class="number">2</span>Date &amp; time</label>
                 <input type="datetime" placeholder="DD/MM/YY hh:mm">
 
@@ -31,12 +41,21 @@
                 <input type="submit" class="btn btn-submit" value="Submit">
             </form>
        </div>
-        <div class="col-md-3">
-            <section>
-                <h2>Balance:</h2>
-                <p>&euro; 15</p>
-                <a href=" {{ url('/') }}">Top up</a>
-            </section>
+        <div class="col-md-7 col-md-offset-1">
+           <h2>Upcoming reminders</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>To</th>
+                        <th>Date</th>
+                        <th>Message</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        <p>DEBUG</p>
+        <pre>@{{ $data | json }}</pre>
         </div>
     </div>
 </div>
@@ -44,5 +63,7 @@
 
 
 @section('scripts')
-    <script>console.log('scripts rendered!')</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.14/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/0.6.1/vue-resource.js"></script>
+    <script src="{{ url('js/dashboard.vue.js')}}"></script>
 @endsection

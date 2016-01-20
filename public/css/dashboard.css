@@ -142,3 +142,28 @@ h2 {
 }
 
 /* main */
+
+
+/* suggestionbox */
+.suggestion-wrapper {
+    position: relative;
+    width: 100%;
+    float: left;
+    margin-bottom: 20px;
+}
+.suggestion-wrapper input {
+    float: none;
+    margin-bottom: 0!important;
+}
+.suggestionbox-wrapper {
+    position: relative;
+}
+.suggestionbox {
+    position: absolute;
+    background: #FFF;
+    border: 1px solid #ccc;
+    width: 100%;
+}
+.suggestionbox p {
+    padding: 0 20px;
+}
