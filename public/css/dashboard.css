@@ -166,5 +166,10 @@ h2 {
     width: 100%;
 }
 .suggestionbox p {
-    padding: 0 20px;
+    padding: 10px 20px;
+    margin: 0;
+}
+.suggestionbox p:hover {
+    background: #E3E3E3;
+    cursor: default;
 }

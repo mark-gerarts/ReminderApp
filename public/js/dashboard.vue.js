@@ -17,7 +17,8 @@ var vm = new Vue({
     data: {
         contacts: [],
         query: '',
-        focused: false
+        showSuggestions: false,
+        selectedContact: {}
     },
     
     methods: {
@@ -41,6 +42,12 @@ var vm = new Vue({
                 //this.isLoading.getContacts = false;
                 console.log('getContacts finished')
             });
-        }    
+        },
+        
+        selectContact(contact) {
+            console.log('clicked')
+            this.selectedContact = contact;
+            this.query = contact.name + ' (' + contact.number + ')';
+        }
     }
 });
