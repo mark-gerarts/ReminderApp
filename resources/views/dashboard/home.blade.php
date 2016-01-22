@@ -18,10 +18,11 @@
                             v-model="query" 
                             @focus="showSuggestions = true" 
                             @blur="showSuggestions = false"
+                            autocomplete="off"
                     >
                     <div class="suggestionbox-wrapper" v-show="query.length > 1 && showSuggestions">
                         <div class="suggestionbox">
-                            <p v-for="contact in contacts | filterBy query in '[name,number]' | limitBy 6 | orderBy 'name'" @mousedown="selectContact(contact)">@{{contact.name}} (@{{contact.number}})</p>
+                            <p v-for="contact in contacts | filterBy query in '[name,number]' | orderBy 'name' | limitBy 6 " @mousedown="selectContact(contact)">@{{contact.name}} (@{{contact.number}})</p>
                         </div>
                     </div>
                 </div>

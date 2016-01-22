@@ -11,7 +11,7 @@ var contactRow = Vue.extend({
     props: {
         contact: {} //Binds the contact in v-for
     },
-    data: function() {
+    data: function() { //Data models initialiseren
         return {
             editing: false,
             isLoading: {
@@ -25,7 +25,7 @@ var contactRow = Vue.extend({
             validationErrors: {}
         }
     },
-    methods: {
+    methods: { //Methods voor elke component
         updateContact: function() {
             //Reset flags
             this.isLoading.delete = true;
