@@ -17,10 +17,34 @@
     width: 100%;
     text-align: center;
 }
-.datetime-table td,
+
 .datetime-table thead tr:nth-child(2) th {
     width: 14.286%;
-    padding: 5px 0;
+}
+
+.datetime-table td {
+    width: 14.286%;
+    position: relative;
+}
+.datetime-table td:after {
+    content: '';
+    display: block;
+    margin-top: 100%;
+}
+.datetime-table .content {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: absolute;
+
+}
+.datetime-table .content span {
+    margin-top: 50%;
+    display: block;
+    width: 100%;
+    position: absolute;
+    transform: translateY(-50%)
 }
 
 .table-day:hover,
@@ -28,4 +52,36 @@
 .datetime-table tr:first-child th:last-child:hover {
     background: #E3E3E3;
     cursor: pointer;
+}
+
+.datetime-divider {
+    height: 1px;
+    width: 90%;
+    margin: 0px auto;
+    background: #E3E3E3;
+    margin-top: 5px;
+    margin-bottom: 55px;
+}
+.datetime-time {
+    text-align: center;
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    padding: 0;
+    transition-duration: 0.5s;
+    height: 50px;
+    background: #FFF;
+    overflow: hidden;
+}
+.datetime-time.visible{
+    height: 100%
+}
+.datetime-icon {
+    height: 45px;
+    line-height: 45px;
+    width: 90%;
+    margin: 0 auto;
+}
+.datetime-icon:hover {
+    background: #E3E3E3;
 }

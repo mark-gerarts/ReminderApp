@@ -16,7 +16,7 @@
 
 <template id="datetimepicker-template"><!-- todo: move to <script> bc IE //-->
     <div class="datetimepicker-group-wrapper">
-        <input type="text" name="@{{name}}">
+        <input type="text" name="@{{name}}" v-model="result">
         <div class="datetimepicker-wrapper">
             <div class="datetimepicker">
                 <table class="datetime-table">
@@ -25,23 +25,30 @@
                             <th @click="previousMonth">
                                 <i class="fa fa-caret-left"></i>
                             </th>
-                            <th colspan="5">
-                                @{{ labels.months[activeMonth.month] }} @{{ activeMonth.year }}
-                            </th>
+                            <th colspan="5">@{{ labels.months[activeMonth.month] }} @{{ activeMonth.year }}</th>
                             <th @click="nextMonth">
                                 <i class="fa fa-caret-right"></i>
                             </th>
                         </tr>
                         <tr>
-                            <th v-for="dayLabel in labels.days">@{{ dayLabel }}</th>
+                            <th v-for="dayLabel in labels.days">
+                                @{{ dayLabel }}
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="week in activeMonth.days">
-                            <td v-for="dayNumber in week" track-by="$index" :class="dayNumber ? 'table-day' : ''">@{{ dayNumber }}</td>
+                            <td v-for="dayNumber in week" track-by="$index" :class="dayNumber ? 'table-day' : ''">
+                                <div class="content" @click="selectDay(dayNumber)"><span>@{{ dayNumber }}</span></div>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
+                <div class="datetime-divider"></div>
+                <div :class="['datetime-time', showTime ? 'visible' : '']" @click="showTime = !showTime">
+                    <div class="datetime-icon"><i class="fa fa-clock-o"></i></div>
+                    <h1>Its showtime</h1>
+                </div>
             </div>
         </div>    
     </div>
