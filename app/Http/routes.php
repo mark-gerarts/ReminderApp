@@ -39,11 +39,18 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('/dashboard', 'DashboardController@index');
     Route::get('/dashboard/contacts', 'DashboardController@contacts');
     Route::post('/dashboard/contacts', 'DashboardController@contacts');
-    
+    Route::get('/dashboard/history', 'DashboardController@history');
+});
+
+Route::group(['namespace' => 'API', 'prefix' => 'api', 'middleware' => 'web'], function()
+{
     //API
     //Contacts
-    Route::get('api/contacts/{id?}', 'API\ContactsController@get');
-    Route::post('api/contacts', 'API\ContactsController@insert');
-    Route::delete('api/contacts/{id}', 'API\ContactsController@delete');
-    Route::put('api/contacts', 'API\ContactsController@update');
+    Route::get('/contacts/{id?}', 'ContactsController@get');
+    Route::post('/contacts', 'ContactsController@insert');
+    Route::delete('/contacts/{id}', 'ContactsController@delete');
+    Route::put('/contacts', 'ContactsController@update');
+    
+    //Reminders
+    Route::get('/reminders/upcoming', 'RemindersController@getUpcomingReminders');
 });

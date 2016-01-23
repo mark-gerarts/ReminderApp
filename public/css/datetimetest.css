@@ -1,0 +1,25 @@
+.datetimepicker-group-wrapper {
+    position: relative;
+    width: 100%;
+}
+.datetimepicker-group-wrapper input {
+    width: 100%;
+}
+.datetimepicker-wrapper {
+    position: relative;
+}
+.datetimepicker {
+    position: absolute;
+    width: 100%;
+    border: 1px solid #E3E3E3;
+}
+.datetime-table {
+    width: 100%;
+    text-align: center;
+}
+.datetime-table td:hover,
+.datetime-table tr:first-child th:first-child:hover,
+.datetime-table tr:first-child th:last-child:hover {
+    background: #E3E3E3;
+    cursor: pointer;
+}

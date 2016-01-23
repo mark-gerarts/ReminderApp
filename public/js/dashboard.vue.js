@@ -6,19 +6,27 @@ Vue.http.options.root = 'http://localhost:8080/www/webontwikkelaar/eindwerk/Remi
 Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#csrf_token').value; //csrf token is extracted from the page & put in the header
 
 
-
 var vm = new Vue({
     el: '#app',
     
     ready: function() {
         this.getContacts();
+        this.getUpcomingReminders();
     },
     
     data: {
         contacts: [],
+        upcomingReminders: [],
         query: '',
         showSuggestions: false,
-        selectedContact: {}
+        selectedContact: {},
+        newReminder: {
+            recipient: null,
+            contactId: null,
+            datetime: '',
+            message: '',
+            repeatId: 0 //list of repeats is not retrieved from the db because it is -very- unlikely to ever change
+        }
     },
     
     methods: {
@@ -44,10 +52,36 @@ var vm = new Vue({
             });
         },
         
-        selectContact(contact) {
-            console.log('clicked')
+        selectContact: function(contact) {
             this.selectedContact = contact;
             this.query = contact.name + ' (' + contact.number + ')';
+        },
+        
+        getUpcomingReminders() {            
+            this.$http.get('api/reminders/upcoming').then(function(response) {
+                //Success
+                if(response.status == 200) {
+                    this.$set('upcomingReminders', response.data); //Binds the response object to the data object
+                } else {
+                    //error
+                }
+            }, function(error) {
+                //Error
+                console.log(error);
+            }).finally(function() {
+                console.log('getUpcomingReminders finished')
+            });
+        },
+        
+        submitReminder: function() {
+            console.log('submitting reminder..');
         }
     }
+    
+});
+
+Vue.filter('exactFilterBy', function(array, needle, inKeyword, key) {
+    return array.filter(function(item) {
+        return item[key] == needle;
+    })
 });

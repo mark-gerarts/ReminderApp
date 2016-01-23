@@ -173,3 +173,23 @@ h2 {
     background: #E3E3E3;
     cursor: default;
 }
+
+/** reminder table **/
+table.upcoming-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+table.upcoming-table th {
+    text-align: left;
+    padding: 5px 10px;
+    border-bottom: 1px solid #7f8c8d;
+}
+table.upcoming-table td {
+    padding: 15px 10px;
+}
+table.upcoming-table tbody tr:nth-child(even) {
+    background: #F9F9F9;
+}
+table.upcoming-table tbody tr:hover {
+    background: #EEE;
+}

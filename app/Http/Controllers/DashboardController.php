@@ -34,4 +34,9 @@ class DashboardController extends Controller
     {
         return view('dashboard.contacts');
     }
+    
+    public function history()
+    {
+        return view('dashboard.history');
+    }
 }

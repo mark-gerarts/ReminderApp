@@ -28,7 +28,7 @@
                     <i class="fa fa-caret-up fa-fw arrow"></i>
                 </div>
                 <div><a href="{{ url('/dashboard/contacts') }}">Contacts</a></div>
-                <div><a href="{{ url('/dashboard') }}">History</a></div>
+                <div><a href="{{ url('/dashboard/history') }}">History</a></div>
                 <div><a href="{{ url('/dashboard') }}">Account</a></div>
             </nav>
             <div class="user">Logged in as {{ Auth::user()->name }}. <a href="{{ url('/logout') }}">Log out <i class="fa fa-sign-out"></i></a></div>
