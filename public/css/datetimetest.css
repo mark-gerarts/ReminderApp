@@ -17,7 +17,13 @@
     width: 100%;
     text-align: center;
 }
-.datetime-table td:hover,
+.datetime-table td,
+.datetime-table thead tr:nth-child(2) th {
+    width: 14.286%;
+    padding: 5px 0;
+}
+
+.table-day:hover,
 .datetime-table tr:first-child th:first-child:hover,
 .datetime-table tr:first-child th:last-child:hover {
     background: #E3E3E3;
