@@ -84,4 +84,13 @@
 }
 .datetime-icon:hover {
     background: #E3E3E3;
+    cursor: pointer;
+}
+.timepicker {
+    width: 100%;
+    height: 100%;
+}
+.timepicker-column {
+    float: left;
+    width: 50%;
 }

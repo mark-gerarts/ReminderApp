@@ -45,9 +45,20 @@
                     </tbody>
                 </table>
                 <div class="datetime-divider"></div>
-                <div :class="['datetime-time', showTime ? 'visible' : '']" @click="showTime = !showTime">
-                    <div class="datetime-icon"><i class="fa fa-clock-o"></i></div>
-                    <h1>Its showtime</h1>
+                <div :class="['datetime-time', showTime ? 'visible' : '']">
+                    <div class="datetime-icon" @click="showTime = !showTime"><i class="fa fa-clock-o"></i></div>
+                    <div class="timepicker">
+                        <div class="timepicker-column timepicker-hours">
+                            <div class="timepicker-arrow-up" @click="selectedValues.hour = format(increment(selectedValues.hour, 0, 23))"><i class="fa fa-caret-up"></i></div>
+                            <div class="timepicker-hours-digits">@{{ selectedValues.hour }}</div>
+                            <div class="timepicker-arrow-down" @click="selectedValues.hour = format(increment(selectedValues.hour, 0, 23, -1))"><i class="fa fa-caret-down"></i></div>
+                        </div>
+                        <div class="timepicker-column timepicker-minutes">
+                            <div class="timepicker-arrow-up" @click="selectedValues.minute = format(increment(selectedValues.minute, 0, 59))"><i class="fa fa-caret-up"></i></div>
+                            <div class="timepicker-minutes-digits">@{{ selectedValues.minute }}</div>
+                            <div class="timepicker-arrow-down" @click="selectedValues.minute = format(increment(selectedValues.minute, 0, 59, -1))"><i class="fa fa-caret-down"></i></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>    

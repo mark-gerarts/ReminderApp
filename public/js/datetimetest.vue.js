@@ -6,8 +6,8 @@ var dateTimePicker = Vue.extend({
         this.selectedValues.year = this.currentDate.getFullYear();
         this.selectedValues.month = this.currentDate.getMonth() + 1;
         this.selectedValues.date = this.currentDate.getDate();
-        this.selectedValues.hour = this.currentDate.getHours();
-        this.selectedValues.minute = this.currentDate.getMinutes();
+        this.selectedValues.hour = this.format(this.currentDate.getHours());
+        this.selectedValues.minute = this.format(this.currentDate.getMinutes());
     },
     data: function() {
         return {
@@ -34,13 +34,11 @@ var dateTimePicker = Vue.extend({
     },
     computed: {
         result: function() {
-            function format(number) {
-                if(number < 10) {
-                    return '0' + number;
-                }
-                return number;    
-            }
-            return this.selectedValues.year + '-' + format(this.selectedValues.month) + '-' + format(this.selectedValues.date) + ' ' + format(this.selectedValues.hour) + ':' + format(this.selectedValues.minute);
+            return this.selectedValues.year + '-' 
+                    + this.format(this.selectedValues.month) + '-' 
+                    + this.format(this.selectedValues.date) + ' ' 
+                    + this.format(this.selectedValues.hour) + ':' 
+                    + this.format(this.selectedValues.minute);
         } 
     },
     methods: {
@@ -100,6 +98,23 @@ var dateTimePicker = Vue.extend({
                 this.selectedValues.month = this.activeMonth.month + 1;
                 this.selectedValues.date = dayNumber;
             }
+        },
+        
+        format: function(number) {
+            if(number.toString().length < 2) {
+                return '0' + number;
+            }
+            return number;    
+        },
+        
+        increment(myVar, min, max, increment = 1) {
+            myVar = parseInt(myVar) + increment;
+            if(myVar > max) {
+                myVar = min;
+            } else if(myVar < min) {
+                myVar = max;
+            }
+            return myVar;
         }
     }
 });
