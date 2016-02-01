@@ -1,6 +1,7 @@
 .datetimepicker-group-wrapper {
     position: relative;
     width: 100%;
+    min-width: 240px;
 }
 .datetimepicker-group-wrapper input {
     width: 100%;
@@ -16,6 +17,10 @@
 .datetime-table {
     width: 100%;
     text-align: center;
+}
+
+.datetime-table thead tr:first-child {
+    line-height: 30px;
 }
 
 .datetime-table thead tr:nth-child(2) th {
@@ -80,7 +85,7 @@
     height: 45px;
     line-height: 45px;
     width: 90%;
-    margin: 0 auto;
+    margin: 5px auto 0 auto;
 }
 .datetime-icon:hover {
     background: #E3E3E3;
@@ -93,4 +98,10 @@
 .timepicker-column {
     float: left;
     width: 50%;
+}
+.timepicker-column {
+    font-size: 32px;
+}
+.timepicker-arrow-up, .timepicker-arrow-down {
+    cursor: pointer;
 }

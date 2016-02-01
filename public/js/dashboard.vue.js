@@ -57,6 +57,10 @@ var vm = new Vue({
             this.query = contact.name + ' (' + contact.number + ')';
         },
 
+        highlightContact: function() {
+            console.log('highlighted!');
+        },
+
         getUpcomingReminders() {
             this.$http.get('api/reminders/upcoming').then(function(response) {
                 //Success

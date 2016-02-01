@@ -11,18 +11,24 @@
             <form class="reminder-form">
                 <input type="hidden" id="csrf_token" value="{{ csrf_token()}}">
 
-
+                <pre>@{{ $data | json }}</pre>
                 <label><span class="number">1</span>Phone Number</label>
+                <!-- Suggestion dropdown for contacts //-->
                 <div class="suggestion-wrapper">
                     <input  type="text" placeholder="International format" id="fi_search"
                             v-model="query"
                             @focus="showSuggestions = true"
                             @blur="showSuggestions = false"
+                            @keyup.down.prevent="highlightContact"
                             autocomplete="off"
                     >
                     <div class="suggestionbox-wrapper" v-show="query.length > 1 && showSuggestions">
                         <div class="suggestionbox">
-                            <p v-for="contact in contacts | filterBy query in 'name' 'number' | orderBy 'name' | limitBy 6 " @mousedown="selectContact(contact)">@{{contact.name}} (@{{contact.number}})</p>
+                            <p  v-for="contact in contacts | filterBy query in 'name' 'number' | orderBy 'name' | limitBy 6"
+                                @mousedown="selectContact(contact)"
+                            >
+                                @{{contact.name}} (@{{contact.number}})
+                            </p>
                         </div>
                     </div>
                 </div>
