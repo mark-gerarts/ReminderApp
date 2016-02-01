@@ -75,8 +75,8 @@
         </td>
         <td class="actions">
             <span v-show="!editing">
-                <i class="fa fa-pencil edit" @click="editing = true"></i> 
-                <i class="fa fa-times delete" @click="deleteContact" v-show="!isLoading.delete && !hasError.delete"></i>   
+                <i class="fa fa-pencil edit" @click="editing = true"></i>
+                <i class="fa fa-times delete" @click="deleteContact" v-show="!isLoading.delete && !hasError.delete"></i>
                 <i class="fa fa-spinner fa-pulse delete" v-show="isLoading.delete"></i>
                 <i class="fa fa-exclamation-triangle error" v-show="hasError.delete" title="An error has occurred"></i>
             </span>
@@ -93,6 +93,9 @@
 
 
 @section('scripts')
+    <script>
+        var myRootUrl = "{{ env('MY_ROOT_URL') }}"; //Temporary because multiple envs
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.14/vue.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/0.6.1/vue-resource.js"></script>
     <script src=" {{ url('js/contacts.vue.js') }}"></script>

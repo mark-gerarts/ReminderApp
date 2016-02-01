@@ -2,18 +2,18 @@
 // Vue setup for the dashboard homepage
 //
 
-Vue.http.options.root = 'http://localhost:8080/www/webontwikkelaar/eindwerk/ReminderApp/public/'; //Set root
+Vue.http.options.root = myRootUrl;//'http://localhost:8080/www/webontwikkelaar/eindwerk/ReminderApp/public/'; //Set root
 Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#csrf_token').value; //csrf token is extracted from the page & put in the header
 
 
 var vm = new Vue({
     el: '#app',
-    
+
     ready: function() {
         this.getContacts();
         this.getUpcomingReminders();
     },
-    
+
     data: {
         contacts: [],
         upcomingReminders: [],
@@ -28,19 +28,19 @@ var vm = new Vue({
             repeatId: 0 //list of repeats is not retrieved from the db because it is -very- unlikely to ever change
         }
     },
-    
+
     methods: {
         getContacts: function() {
             //Reset flags
             //this.isLoading.getContacts = true;
             //this.hasError.getContacts = false;
-            
+
             this.$http.get('api/contacts').then(function(response) {
                 //Success
                 if(response.status == 200) {
                     this.$set('contacts', response.data); //Binds the response object to the data object
                 } else {
-                    //this.hasError.getContacts = true; 
+                    //this.hasError.getContacts = true;
                 }
             }, function(error) {
                 //Error
@@ -51,13 +51,13 @@ var vm = new Vue({
                 console.log('getContacts finished')
             });
         },
-        
+
         selectContact: function(contact) {
             this.selectedContact = contact;
             this.query = contact.name + ' (' + contact.number + ')';
         },
-        
-        getUpcomingReminders() {            
+
+        getUpcomingReminders() {
             this.$http.get('api/reminders/upcoming').then(function(response) {
                 //Success
                 if(response.status == 200) {
@@ -72,12 +72,12 @@ var vm = new Vue({
                 console.log('getUpcomingReminders finished')
             });
         },
-        
+
         submitReminder: function() {
             console.log('submitting reminder..');
         }
     }
-    
+
 });
 
 Vue.filter('exactFilterBy', function(array, needle, inKeyword, key) {

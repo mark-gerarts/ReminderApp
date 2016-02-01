@@ -10,13 +10,13 @@
            <h2>Schedule a Reminder</h2>
             <form class="reminder-form">
                 <input type="hidden" id="csrf_token" value="{{ csrf_token()}}">
-                
-                
+
+
                 <label><span class="number">1</span>Phone Number</label>
                 <div class="suggestion-wrapper">
-                    <input  type="text" placeholder="International format" id="fi_search" 
-                            v-model="query" 
-                            @focus="showSuggestions = true" 
+                    <input  type="text" placeholder="International format" id="fi_search"
+                            v-model="query"
+                            @focus="showSuggestions = true"
                             @blur="showSuggestions = false"
                             autocomplete="off"
                     >
@@ -31,7 +31,7 @@
 
                 <label><span class="number">3</span>Message</label>
                 <textarea placeholder="Your message!" v-model="newReminder.message"></textarea>
-                
+
                 <label><span class="number">4</span>Repeat</label>
                 <select v-model="newReminder.repeatId">
                     <option value="0">Never</option>
@@ -40,7 +40,7 @@
                     <option value="3">Monthly</option>
                     <option value="4">Yearly</option>
                 </select>
-                
+
                 <input type="submit" class="btn btn-submit" value="Submit" @click.prevent="submitReminder">
             </form>
        </div>
@@ -72,6 +72,9 @@
 
 
 @section('scripts')
+    <script>
+        var myRootUrl = "{{ env('MY_ROOT_URL') }}";
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.14/vue.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/0.6.1/vue-resource.js"></script>
     <script src="{{ url('js/dashboard.vue.js')}}"></script>
