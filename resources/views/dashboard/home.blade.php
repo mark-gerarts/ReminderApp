@@ -8,10 +8,9 @@
     <div class="row">
        <div class="col-md-4">
            <h2>Schedule a Reminder</h2>
+           <pre>@{{ $data.newReminder | json }}</pre>
             <form class="reminder-form">
                 <input type="hidden" id="csrf_token" value="{{ csrf_token()}}">
-
-                <pre>@{{ $data | json }}</pre>
                 <label><span class="number">1</span>Phone Number</label>
                 <!-- Suggestion dropdown for contacts //-->
                 <div class="suggestion-wrapper">
@@ -33,18 +32,18 @@
                     </div>
                 </div>
                 <label><span class="number">2</span>Date &amp; time</label>
-                <input type="text" placeholder="DD/MM/YY hh:mm" v-model="newReminder.datetime">
+                <input type="text" placeholder="DD/MM/YY hh:mm" v-model="newReminder.send_datetime">
 
                 <label><span class="number">3</span>Message</label>
                 <textarea placeholder="Your message!" v-model="newReminder.message"></textarea>
 
                 <label><span class="number">4</span>Repeat</label>
-                <select v-model="newReminder.repeatId">
-                    <option value="0">Never</option>
-                    <option value="1">Daily</option>
-                    <option value="2">Weekly</option>
-                    <option value="3">Monthly</option>
-                    <option value="4">Yearly</option>
+                <select v-model="newReminder.repeat_id">
+                    <option value="1">Never</option>
+                    <option value="2">Daily</option>
+                    <option value="3">Weekly</option>
+                    <option value="4">Monthly</option>
+                    <option value="5">Yearly</option>
                 </select>
 
                 <input type="submit" class="btn btn-submit" value="Submit" @click.prevent="submitReminder">

@@ -28,13 +28,13 @@
 
 Route::group(['middleware' => 'web'], function () {
     Route::auth();
-    
+
     //Homepage
     Route::get('/', 'HomeController@index');
     Route::get('/home', 'HomeController@index');
     Route::get('/home/pricing', 'HomeController@pricing');
     Route::get('/home/faq', 'HomeController@faq');
-    
+
     //Dashboard
     Route::get('/dashboard', 'DashboardController@index');
     Route::get('/dashboard/contacts', 'DashboardController@contacts');
@@ -50,7 +50,8 @@ Route::group(['namespace' => 'API', 'prefix' => 'api', 'middleware' => 'web'], f
     Route::post('/contacts', 'ContactsController@insert');
     Route::delete('/contacts/{id}', 'ContactsController@delete');
     Route::put('/contacts', 'ContactsController@update');
-    
+
     //Reminders
     Route::get('/reminders/upcoming', 'RemindersController@getUpcomingReminders');
+    Route::post('/reminders', 'RemindersController@insertReminder');
 });
