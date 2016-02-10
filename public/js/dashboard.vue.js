@@ -80,6 +80,10 @@ var vm = new Vue({
         },
 
         submitReminder: function() {
+            if(!this.newReminder.contact_id) {
+                this.newReminder.recipient = this.query;
+            }
+
             this.$http.post('api/reminders', JSON.stringify(this.newReminder)).then(function(response) {
                 //Success
                 console.log(response);

@@ -9,7 +9,8 @@
        <div class="col-md-4">
            <h2>Schedule a Reminder</h2>
            <pre>@{{ $data.newReminder | json }}</pre>
-            <form class="reminder-form">
+           <!-- @submit was first @click on submit button, in case it breaks something // Remove me //-->
+            <form class="reminder-form" @submit.prevent="submitReminder">
                 <input type="hidden" id="csrf_token" value="{{ csrf_token()}}">
                 <label><span class="number">1</span>Phone Number</label>
                 <!-- Suggestion dropdown for contacts //-->
@@ -46,7 +47,7 @@
                     <option value="5">Yearly</option>
                 </select>
 
-                <input type="submit" class="btn btn-submit" value="Submit" @click.prevent="submitReminder">
+                <input type="submit" class="btn btn-submit" value="Submit">
             </form>
        </div>
         <div class="col-md-7 col-md-offset-1">
@@ -62,7 +63,9 @@
                 <tbody>
                     <tr v-for="reminder in upcomingReminders | orderBy 'send_datetime'">
                         <td v-if="reminder.contact_id">
-                            <span v-for="contact in contacts | exactFilterBy reminder.contact_id in 'id'">@{{ contact.name }}</span>
+                            <span v-for="contact in contacts | exactFilterBy reminder.contact_id in 'id'">
+                                @{{ contact.name }}
+                            </span>
                         </td>
                         <td v-else>@{{ reminder.recipient }}</td>
                         <td>@{{ reminder.send_datetime.substr(0, reminder.send_datetime.length-3) }}</td>

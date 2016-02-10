@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Requests;
 use App\Models\User_reminder;
+use App\Models\Quick_reminder;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Auth;
@@ -43,6 +44,25 @@ class RemindersController extends Controller
     {
         $user = Auth::user();
 
+        if($user)
+        {
+            return $this->_createUserReminder($user->id, $request);
+        }
+        else
+        {
+            // ToDo: What if a logged in user uses the quick reminder form
+            // on the homepage? Maybe make it invisible or maybe change it
+            // into a regular form.
+            // Also, what if the user is logged in for too long and auto-
+            // matically logs out from the server, but still tries to send
+            // a new reminder request?
+            // Perhaps it's better to do this in a seperate route. 
+            return $this->_createQuickReminder($request);
+        }
+    }
+
+    private function _createUserReminder($user_id, $request)
+    {
         $this->validate($request, [
                 'recipient' => 'max:255',
                 'contact_id' => 'numeric',
@@ -58,7 +78,7 @@ class RemindersController extends Controller
         $reminder->send_datetime = $request->send_datetime;
         $reminder->message = $request->message;
         $reminder->repeat_id = $request->repeat_id;
-        $reminder->user_id = $user->id;
+        $reminder->user_id = $user_id;
 
         if($reminder->save())
         {
@@ -66,9 +86,31 @@ class RemindersController extends Controller
         }
         else
         {
-            return response()->json(false);
+            return response()->json(false); //ToDo: Maybe return something more meaningful? Like a http code
         }
-
     }
 
+    private function _createQuickReminder($request)
+    {
+        $this->validate($request, [
+                'recipient' => 'max:255',
+                'send_datetime' => 'required',
+                'message' => 'required|max:255'
+            ]);
+
+        $reminder = new Quick_reminder;
+
+        $reminder->recipient = $request->recipient;
+        $reminder->send_datetime = $request->send_datetime;
+        $reminder->message = $request->message;
+
+        if($reminder->save())
+        {
+            return response()->json(true);
+        }
+        else
+        {
+            return response()->json(false);
+        }
+    }
 }

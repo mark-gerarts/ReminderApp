@@ -16,7 +16,7 @@
             <h2>Easy to use</h2>
             <p>Create a reminder and receive a text message at the specified date &amp; time.</p>
             <p>Don't want to create an account? No problem. You can use the quick reminder form without signing up.</p>
-            
+
             <h2 class="title-margin">Signing up is <span class="highlight-text">free</span></h2>
             <p>//ToDo: Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis mollitia natus quas, repudiandae necessitatibus perspiciatis dignissimos libero minus neque dolore quo modi, voluptates, praesentium recusandae accusantium dolorum obcaecati quis excepturi.</p>
             <ul>
@@ -33,18 +33,20 @@
             </div>
         </div>
         <div class="col-md-4 col-md-offset-2">
-            <section class="section-right">
+            <section class="section-right" id="app">
                 <h2>Quick Reminder</h2>
                 <p>Schedule a quick reminder without the need of creating an account.</p>
-                <form class="quick-reminder-form">
+                <pre>@{{ $data.newReminder | json}}</pre>
+                <form class="quick-reminder-form" @submit.prevent="submitReminder">
+                    <input type="hidden" id="csrf_token" value="{{ csrf_token()}}">
                     <label><span class="number">1</span>Phone Number</label>
-                    <input type="text" placeholder="International format">
+                    <input type="text" placeholder="International format" v-model="newReminder.recipient">
 
                     <label><span class="number">2</span>Date &amp; time</label>
-                    <input type="datetime" placeholder="DD/MM/YY hh:mm">
+                    <input type="datetime" placeholder="DD/MM/YY hh:mm" v-model="newReminder.send_datetime">
 
                     <label><span class="number">3</span>Message</label>
-                    <textarea placeholder="Your message!"></textarea>
+                    <textarea placeholder="Your message!" v-model="newReminder.message"></textarea>
                     <input type="submit" class="btn btn-submit" value="Submit">
                 </form>
             </section>
@@ -84,4 +86,10 @@
 
 
 @section('scripts')
+    <script>
+        var myRootUrl = "{{ env('MY_ROOT_URL') }}";
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.14/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/0.6.1/vue-resource.js"></script>
+    <script src="{{ url('js/home.vue.js')}}"></script>
 @endsection
