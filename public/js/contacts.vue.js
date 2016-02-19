@@ -102,7 +102,7 @@ var vm = new Vue({
             this.isLoading.getContacts = true;
             this.hasError.getContacts = false;
 
-            this.$http.get('api/contacts').then(function(response) {
+            this.$http.get('api/contacts', null, {headers: { "Authorization": "Bearer "}}).then(function(response) {
                 //Success
                 if(response.status == 200) {
                     this.$set('contacts', response.data); //Binds the response object to the data object
@@ -111,7 +111,11 @@ var vm = new Vue({
                 }
             }, function(error) {
                 //Error
-                console.log(error);
+                //For debugging, PLEASE delete me for production
+                var win = window.open("", "Title");
+                win.document.body.innerHTML = error.data;
+
+                //console.log(error);
                 this.hasError.getContacts = true;
             }).finally(function() {
                 this.isLoading.getContacts = false;
