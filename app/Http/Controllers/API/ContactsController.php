@@ -32,9 +32,9 @@ class ContactsController extends Controller
     {
         $user = Auth::user();
 
-        if(!$this->_authenticate()) {
-            echo "Not authenticated ...";
-        }
+        // if(!$this->_authenticate()) {
+        //     echo "Not authenticated ...";
+        // }
 
         if(isset($id))
         {

@@ -7,6 +7,7 @@ use App\Models\Contact;
 use Illuminate\Http\Request;
 use Auth;
 use Validate;
+use JWTAuth;
 
 class DashboardController extends Controller
 {
@@ -27,14 +28,16 @@ class DashboardController extends Controller
      */
     public function index()
     {
+        $user = Auth::user();
+        $token = JWTAuth::fromUser($user);
         return view('dashboard.home');
     }
-    
+
     public function contacts()
     {
         return view('dashboard.contacts');
     }
-    
+
     public function history()
     {
         return view('dashboard.history');
