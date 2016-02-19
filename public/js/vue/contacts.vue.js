@@ -71,7 +71,6 @@ var contactRow = Vue.extend({
         }
     }
 });
-
 Vue.component('contact-row', contactRow); //Register the component
 
 

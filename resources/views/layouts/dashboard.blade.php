@@ -56,6 +56,7 @@
     </div>
 
     @yield('vue-templates')
+    
     <!-- Page specific scripts -->
     @yield('scripts')
 </body>

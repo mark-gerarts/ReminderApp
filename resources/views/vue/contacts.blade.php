@@ -2,9 +2,6 @@
     <div class="container">
         <div class="row row-grid">
             <div class="col-md-7">
-                <pre>
-                    @{{ $data | json }}
-                </pre>
                 <h2>Contacts</h2>
                 <table class="contacts">
                     <thead>
@@ -20,13 +17,13 @@
                                <i class="fa fa-spinner fa-pulse"></i> Loading
                             </td>
                         </tr>
-                        <tr v-show="hasError.getContacts">
+                        <tr v-show="errors.getContacts">
                             <td colspan="3">
                                <i class="fa fa-exclamation-triangle error"></i> Something went wrong. <a class="try-again" @click="getContacts()">Try again.</a>
                             </td>
                         </tr>
-                        <!--<tr v-for="contact in contacts | orderBy 'name'" is="contact-row" :contact.sync="contact"></tr>
-                        // --><tr v-if="contacts.length == 0 && !isLoading.getContacts">
+                        <tr v-for="contact in sharedState.contacts | orderBy 'name'" is="contact-row" :contact.sync="contact"></tr>
+                        <tr v-if="sharedState.contacts.length == 0 && !isLoading.getContacts">
                             <td colspan="3">No contacts yet!</td>
                         </tr>
                     </tbody>
@@ -50,40 +47,14 @@
                         <span v-show="!isLoading.insertContact">Add contact</span>
                         <span v-show="isLoading.insertContact"><i class="fa fa-spinner fa-pulse"></i></span>
                     </button>
-                    <span v-show="hasError.insertContact">
+                    <span v-show="errors.insertContact">
                         <i class="fa fa-exclamation-triangle error"></i> Something went wrong. Try again.
                     </span>
                 </form>
+                <pre>
+                    @{{ $data | json }}
+                </pre>
             </div>
         </div>
     </div>
-
-    <script type="x/template" id="contact-template">
-        <tr>
-            <td v-show="!editing">@{{ contact.name }}</td>
-            <td v-else>
-                <input value="@{{ contact.name }}" v-model="contact.name">
-                <div v-if="validationErrors.name">@{{ validationErrors.name[0] }}</div>
-            </td>
-            <td v-show="!editing">@{{ contact.number }}</td>
-            <td v-else>
-                <input value="@{{ contact.number }}" v-model="contact.number">
-                <div v-if="validationErrors.number">@{{ validationErrors.number[0] }}</div>
-            </td>
-            <td class="actions">
-                <span v-show="!editing">
-                    <i class="fa fa-pencil edit" @click="editing = true"></i>
-                    <i class="fa fa-times delete" @click="deleteContact" v-show="!isLoading.delete && !hasError.delete"></i>
-                    <i class="fa fa-spinner fa-pulse delete" v-show="isLoading.delete"></i>
-                    <i class="fa fa-exclamation-triangle error" v-show="hasError.delete" title="An error has occurred"></i>
-                </span>
-                <span v-show="editing">
-                    <i class="fa fa-floppy-o save" @click="updateContact" ></i>
-                    <i class="fa fa-spinner fa-pulse" v-show="isLoading.update"></i>
-                    <i class="fa fa-exclamation-triangle error" v-show="hasError.update" title="An error has occurred"></i>
-                    <span @click="editing = false" class="cancel">Cancel</span>
-                </span>
-            </td>
-        </tr>
-    </script>
 </template>

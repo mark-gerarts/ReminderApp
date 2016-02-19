@@ -1,11 +1,14 @@
-//Vue.http.options.root = myRootUrl;//'http://localhost:8080/www/webontwikkelaar/eindwerk/ReminderApp/public/'; //Set root
-//Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#csrf_token').value; //csrf token is extracted from the page & put in the header
+var store = {
+    state: {
+        contacts: [],
+        message:'hello'
+    },
+    setContacts: function(contacts) {
+        this.state.contacts = contacts;
+    }
+};
 
-
-var App = Vue.extend({
-
-});
-
+var App = Vue.extend({});
 var router = new VueRouter();
 
 router.map({
@@ -18,3 +21,6 @@ router.map({
 });
 
 router.start(App, "#app")
+
+Vue.http.options.root = myRootUrl; //Set root
+Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#csrf_token').value; //csrf token is extracted from the page & put in the header
