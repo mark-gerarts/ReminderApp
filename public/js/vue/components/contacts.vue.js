@@ -8,7 +8,6 @@ var Contacts = Vue.extend({
     },
 
     ready: function() {
-        //store.setContacts([{name: 'test', number: '098765'}])
         this.getContacts();
     },
 

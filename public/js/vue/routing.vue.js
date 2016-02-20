@@ -5,6 +5,21 @@ var store = {
     },
     setContacts: function(contacts) {
         this.state.contacts = contacts;
+    },
+    removeContact: function(contactToDelete) {
+        var indexToDelete = -1;
+        this.state.contacts.some(function(contact, index) {
+            if(contact.id == contactToDelete.id) {
+                indexToDelete = index;
+                return true;
+            }
+        })
+        if(indexToDelete > 0) {
+            this.state.contacts.splice(indexToDelete, 1);
+        }
+    },
+    addContact: function(contact) {
+        this.state.contacts.push(contact);
     }
 };
 
@@ -17,6 +32,9 @@ router.map({
     },
     '/contacts': {
         component: Contacts
+    },
+    '*': {
+        component: Home
     }
 });
 

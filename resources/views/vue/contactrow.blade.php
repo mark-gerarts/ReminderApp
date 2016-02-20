@@ -14,7 +14,7 @@
         <td class="actions">
             <span v-show="!editing">
                 <i class="fa fa-pencil edit" @click="editing = true"></i>
-                <i class="fa fa-times delete" @click="deleteContact" v-show="!isLoading.delete && !errors.delete"></i>
+                <i class="fa fa-times delete" @click="deleteContact(contact)" v-show="!isLoading.delete && !errors.delete"></i>
                 <i class="fa fa-spinner fa-pulse delete" v-show="isLoading.delete"></i>
                 <i class="fa fa-exclamation-triangle error" v-show="errors.delete" title="An error has occurred"></i>
             </span>

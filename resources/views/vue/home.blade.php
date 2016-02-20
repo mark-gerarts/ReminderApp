@@ -16,7 +16,7 @@
                     >
                     <div class="suggestionbox-wrapper" v-show="query.length > 1 && showSuggestions">
                         <div class="suggestionbox">
-                            <p  v-for="contact in contacts | filterBy query in 'name' 'number' | orderBy 'name' | limitBy 6"
+                            <p  v-for="contact in sharedState.contacts | filterBy query in 'name' 'number' | orderBy 'name' | limitBy 6"
                                 @mousedown="selectContact(contact)"
                             >
                                 @{{contact.name}} (@{{contact.number}})
@@ -55,7 +55,7 @@
                 <tbody>
                     <tr v-for="reminder in upcomingReminders | orderBy 'send_datetime'">
                         <td v-if="reminder.contact_id">
-                            <span v-for="contact in contacts | exactFilterBy reminder.contact_id in 'id'">
+                            <span v-for="contact in sharedState.contacts | exactFilterBy reminder.contact_id in 'id'">
                                 @{{ contact.name }}
                             </span>
                         </td>

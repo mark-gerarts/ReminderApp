@@ -23,6 +23,35 @@ var contactsMixin = {
             });
         },
 
+        insertContact: function() {
+            //Reset flags
+            this.isLoading.insertContact = true;
+            this.errors.insertContact =false;
+
+            this.$http.post('api/contacts', JSON.stringify(this.newContact)).then(function(response) {
+                //Success
+                if(response.status == 200) {
+                    this.newContact.id = response.data;
+                    store.addContact(this.newContact);
+                    this.newContact = {}; // Reset the viewmodel. This only happens when the insert is successful,
+                                          // thus the user doesn't have to re-enter values in case of an error.
+                    this.validationErrors = {}; //Reset the validationerrors
+                } else {
+                    this.errors.insertContact = true;
+                }
+            }, function(error) {
+                //Error
+                if(error.status == 422) { //422 = validation errors
+                    this.$set('validationErrors', error.data); //Bind the data
+                } else {
+                    this.errors.insertContact = true;
+                }
+                console.log(error);
+            }).finally(function() {
+                this.isLoading.insertContact = false;
+            });
+        },
+
         updateContact: function() {
             //Reset flags
             this.isLoading.delete = true;
@@ -55,12 +84,15 @@ var contactsMixin = {
                 //Success
                 console.log(response)
                 if(response.status == 200 && response.data) {
-                    this.$remove();
+                    store.removeContact(contact);
                 } else {
                     this.errors.delete = true;
                 }
             }, function(error) {
                 //Error
+                //For debugging, PLEASE delete me for production
+                var win = window.open("", "Title");
+                win.document.body.innerHTML = error.data;
                 console.log(error);
                 this.errors.delete = true;
             }).finally(function() {
