@@ -1,21 +1,22 @@
 var Contacts = Vue.extend({
     template: '#dashboard-contacts',
 
-    mixins: [contactsMixin],
+    mixins: [contactsMixin], //Contains all http functions for contacts
 
     components: {
-        'contact-row': contactRow
+        'contact-row': contactRow //The component to display a contact table row
     },
 
     ready: function() {
-        this.getContacts();
+        if(this.sharedState.contacts.length == 0) {
+            this.getContacts();
+        }
     },
 
     data: function() {
         return {
-            sharedState: store.state,
-            //contacts: store.state.contacts, //List of all contacts, filled via getContacts()
-            newContact: {}, //the viewmodel of a new contact, filled through the form
+            sharedState: store.state, //Shared state contains all the contacts
+            newContact: {}, //The viewmodel of a new contact, filled through the form
             isLoading: { //container object for all loading flags
                 getContacts: false,
                 insertContact: false

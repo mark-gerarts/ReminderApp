@@ -30,6 +30,7 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
         $token = JWTAuth::fromUser($user);
+
         return view('dashboard.home');
     }
 

@@ -4,7 +4,9 @@ var Home = Vue.extend({
     mixins: [contactsMixin],
 
     ready: function() {
-        this.getContacts();
+        if(this.sharedState.contacts.length == 0) {
+            this.getContacts();
+        }
         this.getUpcomingReminders();
     },
 

@@ -29,5 +29,5 @@
     <script src="{{ url('js/vue/components/home.vue.js')}}"></script>
     <script src="{{ url('js/vue/components/contactRow.vue.js')}}"></script>
     <script src="{{ url('js/vue/components/contacts.vue.js')}}"></script>
-    <script src="{{ url('js/vue/routing.vue.js')}}"></script>
+    <script src="{{ url('js/vue/app.vue.js')}}"></script>
 @endsection

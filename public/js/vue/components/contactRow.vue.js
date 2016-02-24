@@ -5,22 +5,40 @@ var contactRow = Vue.extend({
     mixins: [contactsMixin],
 
     props: {
-        contact: {} //Binds the contact in v-for
+        contact: {}
     },
 
-    data: function() { //Initialise data models 
+    data: function() { //Initialise data models
         return {
             editing: false,
             isLoading: {
-                delete: false,
-                update: false //ToDo: add loading indicator in html
+                deleteContact: false,
+                updateContact: false
             },
             errors: {
-                delete: false,
-                update: false
+                deleteContact: false,
+                updateContact: false
             },
-            validationErrors: {}
+            validationErrors: {},
+            updatedContact: {
+                name: '',
+                number: ''
+            }
         }
     },
+
+    methods: {
+        startEditing: function() {
+            this.editing = true;
+            this.updatedContact.name = this.contact.name;
+            this.updatedContact.number = this.contact.number;
+            this.updatedContact.id = this.contact.id;
+        },
+        cancelEditing: function() {
+            this.editing = false;
+        },
+        handleUpdate: function() {
+            this.updateContact(this.updatedContact);
+        }
+    }
 });
-//Vue.component('contact-row', contactRow); //Register the component

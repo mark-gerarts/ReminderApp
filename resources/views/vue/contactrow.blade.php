@@ -1,28 +1,39 @@
 <!--<script type="x/template" id="contact-template">-->
 <template id="contact-template">
     <tr>
-        <td v-show="!editing">@{{ contact.name }}</td>
+        {{-- The name field --}}
+        <td v-show="!(editing || isLoading.updateContact)">@{{ contact.name }}</td>
         <td v-else>
-            <input value="@{{ contact.name }}" v-model="contact.name">
+            {{-- While editing, show an input with the updatedContact vm --}}
+            <input value="@{{ contact.name }}" v-model="updatedContact.name">
+            {{-- show validation errors --}}
             <div v-if="validationErrors.name">@{{ validationErrors.name[0] }}</div>
         </td>
-        <td v-show="!editing">@{{ contact.number }}</td>
+
+        {{-- The number field -> similar to name --}}
+        <td v-show="!(editing || isLoading.updateContact)">@{{ contact.number }}</td>
         <td v-else>
-            <input value="@{{ contact.number }}" v-model="contact.number">
+            <input value="@{{ contact.number }}" v-model="updatedContact.number">
             <div v-if="validationErrors.number">@{{ validationErrors.number[0] }}</div>
         </td>
+
+        {{-- Action buttons --}}
         <td class="actions">
-            <span v-show="!editing">
-                <i class="fa fa-pencil edit" @click="editing = true"></i>
-                <i class="fa fa-times delete" @click="deleteContact(contact)" v-show="!isLoading.delete && !errors.delete"></i>
-                <i class="fa fa-spinner fa-pulse delete" v-show="isLoading.delete"></i>
-                <i class="fa fa-exclamation-triangle error" v-show="errors.delete" title="An error has occurred"></i>
+
+            {{-- Default: delete and update --}}
+            <span v-show="!(editing || isLoading.updateContact)">
+                <i class="fa fa-pencil edit" @click="startEditing"></i>
+                <i class="fa fa-times delete" @click="deleteContact(contact)" v-show="!isLoading.deleteContact && !errors.deleteContact"></i>
+                <i class="fa fa-spinner fa-pulse delete" v-show="isLoading.deleteContact"></i>
+                <i class="fa fa-exclamation-triangle error" v-show="errors.deleteContact" title="An error has occurred"></i>
             </span>
-            <span v-show="editing">
-                <i class="fa fa-floppy-o save" @click="updateContact" ></i>
-                <i class="fa fa-spinner fa-pulse" v-show="isLoading.update"></i>
-                <i class="fa fa-exclamation-triangle error" v-show="errors.update" title="An error has occurred"></i>
-                <span @click="editing = false" class="cancel">Cancel</span>
+
+            {{-- Editing: save and cancel --}}
+            <span v-show="editing || isLoading.updateContact">
+                <i class="fa fa-floppy-o save" @click="handleUpdate" v-show="!isLoading.updateContact"></i>
+                <i v-else class="fa fa-spinner fa-pulse" ></i>
+                <i class="fa fa-exclamation-triangle error" v-show="errors.updateContact" title="An error has occurred"></i>
+                <span @click="cancelEditing" class="cancel">Cancel</span>
             </span>
         </td>
     </tr>
