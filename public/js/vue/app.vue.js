@@ -27,7 +27,10 @@ var store = { //Object to share data across several components
     updateContact: function(contact) {
         var index = this.getIndexOf(contact);
         if(index > -1) {
-            this.state.contacts.splice(index, 1, contact);
+            var newContact = this.state.contacts[index];
+            newContact.name = contact.name;
+            newContact.number = contact.number;
+            newContact.id = contact.id;
         }
     }
 };

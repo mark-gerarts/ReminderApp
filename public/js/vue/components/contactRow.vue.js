@@ -2,11 +2,9 @@
 var contactRow = Vue.extend({
     template: '#contact-template', //Consists of a table row, template stored in contacts.blade.php
 
-    mixins: [contactsMixin],
+    mixins: [contactsMixin, validatorMixin],
 
-    props: {
-        contact: {}
-    },
+    props: ['contact'],
 
     data: function() { //Initialise data models
         return {
@@ -38,7 +36,11 @@ var contactRow = Vue.extend({
             this.editing = false;
         },
         handleUpdate: function() {
-            this.updateContact(this.updatedContact);
+            this.$set('validationErrors', this.validateContact(this.updatedContact));
+            if(Object.keys(this.validationErrors).length == 0) {
+                this.updateContact(this.updatedContact);
+                this.cancelEditing();
+            }
         }
     }
 });

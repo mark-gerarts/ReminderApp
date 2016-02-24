@@ -26,6 +26,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-router/0.7.10/vue-router.js"></script>
 
     <script src="{{ url('js/vue/mixins/contactsMixin.js') }}"></script>
+    <script src="{{ url('js/vue/mixins/validatorMixin.js') }}"></script>
     <script src="{{ url('js/vue/components/home.vue.js')}}"></script>
     <script src="{{ url('js/vue/components/contactRow.vue.js')}}"></script>
     <script src="{{ url('js/vue/components/contacts.vue.js')}}"></script>

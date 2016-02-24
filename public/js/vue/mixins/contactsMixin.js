@@ -72,7 +72,7 @@ var contactsMixin = {
                     this.errors.updateContact = true;
                 }
             }).finally(function() {
-                this.isLoading.updateContact = true;
+                this.isLoading.updateContact = false;
             });
         },
 
