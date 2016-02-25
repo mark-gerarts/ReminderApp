@@ -1,21 +1,32 @@
+/*
+ *
+ *   Mixin to share contact http functions across components.
+ *
+ */
+
 var contactsMixin = {
     methods: {
-        //Debugging function
+        //Debugging function - should be deleted!!!
         _openErrorWindow: function(msg) {
             var win = window.open("", "Title");
             win.document.body.innerHTML = msg;
         },
 
         getContacts: function() {
+            // Set flags
+            this.isLoading.getContacts = true;
+            this.errors.insertContact = false;
+
             this.$http.get('api/contacts').then(function(response) {
-                //Success
+                // Success
                 if(response.status == 200) {
+                    // Contacts are saved to the shared store.
                     store.setContacts(response.data);
                 } else {
                     this.errors.getContacts = true;
                 }
             }, function(error) {
-                //Error
+                // Error
                 this._openErrorWindow(error.data);
                 this.errors.getContacts = true;
             }).finally(function() {
@@ -24,60 +35,52 @@ var contactsMixin = {
         },
 
         insertContact: function() {
-            //Reset flags
+            // Set flags
             this.isLoading.insertContact = true;
             this.errors.insertContact =false;
 
             this.$http.post('api/contacts', JSON.stringify(this.newContact)).then(function(response) {
                 //Success
                 if(response.status == 200) {
-                    this.newContact.id = response.data;
+                    this.newContact.id = response.data; // Add the new id to the user
                     store.addContact(this.newContact);
                     this.newContact = {}; // Reset the viewmodel. This only happens when the insert is successful,
                                           // thus the user doesn't have to re-enter values in case of an error.
-                    this.validationErrors = {}; //Reset the validationerrors
                 } else {
                     this.errors.insertContact = true;
                 }
             }, function(error) {
                 //Error
-
-                if(error.status == 422) { //422 = validation errors
-                    this.$set('validationErrors', error.data); //Bind the data
-                } else {
-                    this._openErrorWindow(error.data);
-                    this.errors.insertContact = true;
-                }
+                this._openErrorWindow(error.data);
+                this.errors.insertContact = true;
             }).finally(function() {
                 this.isLoading.insertContact = false;
             });
         },
 
         updateContact: function(contact) {
-            //Reset flags
+            // set flags
             this.isLoading.updateContact = true;
             this.errors.updateContact = false;
 
             this.$http.put('api/contacts', JSON.stringify(contact)).then(function(response) {
+                // Success
                 if(response.status == 200) {
                     store.updateContact(contact);
                 } else {
                     this.errors.updateContact = true;
                 }
             }, function(error) {
-                if(error.status == 422) {
-                    this.$set('validationErrors', error.data);
-                } else {
-                    this._openErrorWindow(error.data);
-                    this.errors.updateContact = true;
-                }
+                // Error
+                this._openErrorWindow(error.data);
+                this.errors.updateContact = true;
             }).finally(function() {
                 this.isLoading.updateContact = false;
             });
         },
 
         deleteContact: function(contact) {
-            //Reset flags
+            // Set flags
             this.isLoading.deleteContact = true;
             this.errors.deleteContact = false;
 
@@ -90,6 +93,7 @@ var contactsMixin = {
                     this.errors.deleteContact = true;
                 }
             }, function(error) {
+                // Error
                 this._openErrorWindow(error.data);
                 this.errors.deleteContact = true;
             }).finally(function() {

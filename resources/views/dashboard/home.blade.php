@@ -18,6 +18,7 @@
 @section('scripts')
     <script>
         var myRootUrl = "{{ env('MY_ROOT_URL') }}";
+        var csrf_token = "{{ csrf_token() }}";
     </script>
 
     {{-- Don't forget to change these to .min.js --}}
