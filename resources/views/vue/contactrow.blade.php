@@ -21,9 +21,15 @@
         <td class="actions">
 
             {{-- Default: delete and update --}}
-            <span v-show="!(editing || isLoading.updateContact)">
+            <span v-show="!(editing || isLoading.updateContact)" class="icons">
                 <i class="fa fa-pencil edit" @click="startEditing"></i>
-                <i class="fa fa-times delete" @click="deleteContact(contact)" v-show="!isLoading.deleteContact && !errors.deleteContact"></i>
+                <i class="fa fa-times delete" @click="showConfirmationBox = true" v-show="!isLoading.deleteContact && !errors.deleteContact"></i>
+                <p class="error-message-bubble" v-if="showConfirmationBox">
+                    Are you sure you want to delete this contact?
+                    <br />
+                    <span class="error-bubble-button" @click="deleteContact(contact)">Yes!</span>
+                    <span class="error-bubble-button" @click="showConfirmationBox = false">No, cancel.</span>
+                </p>
                 <i class="fa fa-spinner fa-pulse delete" v-show="isLoading.deleteContact"></i>
                 <i class="fa fa-exclamation-triangle error" v-show="errors.deleteContact" title="An error has occurred"></i>
             </span>

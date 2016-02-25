@@ -27,7 +27,8 @@ var contactRow = Vue.extend({
                 name: '',
                 number: ''
             },
-            isSubmittedOnce: false
+            isSubmittedOnce: false,
+            showConfirmationBox: false
         }
     },
 
