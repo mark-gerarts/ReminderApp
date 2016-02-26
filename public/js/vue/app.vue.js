@@ -10,7 +10,7 @@
 // Shared state to share data across several components.
 // Essentially a plain JS object with getters and setters.
 // More info: http://vuejs.org/guide/application.html#State_Management.
-var store = {
+var contactsStore = {
     // The shared state.
     state: {
         contacts: []
@@ -63,6 +63,19 @@ var store = {
     }
 };
 
+// Shared state to share data across several components.
+// Though this is used to keep the reminders in memory.
+var remindersStore = {
+    state: {
+        upcomingReminders: []
+    },
+    setUpcomingReminders: function(upcomingReminders) {
+        this.state.upcomingReminders= upcomingReminders;
+    },
+    addReminder: function(reminder) {
+        this.state.upcomingReminders.push(reminder);
+    }
+}
 // Initialise the VueRouter.
 // VueRoute requires a base component (App).
 var App = Vue.extend({});

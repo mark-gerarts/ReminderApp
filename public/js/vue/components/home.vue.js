@@ -1,7 +1,7 @@
 var Home = Vue.extend({
     template: '#dashboard-home',
 
-    mixins: [contactsMixin],
+    mixins: [contactsMixin, remindersMixin, validatorMixin],
 
     ready: function() {
         if(this.sharedState.contacts.length == 0) {
@@ -12,8 +12,8 @@ var Home = Vue.extend({
 
     data: function() {
         return {
-            sharedState: store.state,
-            upcomingReminders: [],
+            sharedState: contactsStore.state,
+            remindersState: remindersStore.state,
             query: '',
             showSuggestions: false,
             selectedContact: {},
@@ -24,7 +24,10 @@ var Home = Vue.extend({
                 message: '',
                 repeat_id: 1 //list of repeats is not retrieved from the db because it is -very- unlikely to ever change
             },
-            isLoading: {}
+            errors: {},
+            isLoading: {},
+            validationErrors: {},
+            isSubmittedOnce: false
         };
     },
 
@@ -40,52 +43,30 @@ var Home = Vue.extend({
             console.log('highlighted!');
         },
 
-        getUpcomingReminders() {
-            this.$http.get('api/reminders/upcoming').then(function(response) {
-                //Success
-                if(response.status == 200) {
-                    this.$set('upcomingReminders', response.data); //Binds the response object to the data object
-                } else {
-                    //error
-                }
-            }, function(error) {
-                //Error
-                console.log(error);
-            }).finally(function() {
-                console.log('getUpcomingReminders finished')
-            });
+        validate: function() {
+            if(!this.isSubmittedOnce) {
+                this.$set('validationErrors', this.validateReminder(this.newReminder));
+            }
         },
 
-        submitReminder: function() {
+        trim: function() {
+            for(var prop in this.newReminder) {
+                if(this.newReminder[prop]) {
+                    this.newReminder[prop] = this.newReminder[prop].toString().trim();
+                }
+            }
+        },
+
+        handleReminderSubmit() {
             if(!this.newReminder.contact_id) {
                 this.newReminder.recipient = this.query;
             }
+            this.trim();
+            this.validate();
 
-            this.$http.post('api/reminders', JSON.stringify(this.newReminder)).then(function(response) {
-                //Success
-                console.log(response);
-                if(response.status == 200) {
-                    this.newReminder.id = response.data;
-                    this.upcomingReminders.push(this.newReminder);
-                    this.newReminder = {
-                        repeat_id: 1,
-                    };                      // Reset the viewmodel. This only happens when the insert is successful,
-                                            // thus the user doesn't have to re-enter values in case of an error.
-                    //this.validationErrors = {}; //Reset the validationerrors
-                } else {
-                    //this.hasError.insertContact = true;
-                }
-            }, function(error) {
-                //Error
-                console.log(error);
-                if(error.status == 422) { //422 = validation errors
-                    //this.$set('validationErrors', error.data); //Bind the data
-                } else {
-                    //this.hasError.insertContact = true;
-                }
-            }).finally(function() {
-                //this.isLoading.insertContact = false;
-            });
+            if(Object.keys(this.validationErrors).length == 0) {
+                this.insertContact(this.newContact);
+            }
         }
     }
 

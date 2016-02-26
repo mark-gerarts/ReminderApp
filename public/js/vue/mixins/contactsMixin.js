@@ -21,7 +21,7 @@ var contactsMixin = {
                 // Success
                 if(response.status == 200) {
                     // Contacts are saved to the shared store.
-                    store.setContacts(response.data);
+                    contactsStore.setContacts(response.data);
                 } else {
                     this.errors.getContacts = true;
                 }
@@ -43,7 +43,7 @@ var contactsMixin = {
                 //Success
                 if(response.status == 200) {
                     this.newContact.id = response.data; // Add the new id to the user
-                    store.addContact(this.newContact);
+                    contactsStore.addContact(this.newContact);
                     this.newContact = {}; // Reset the viewmodel. This only happens when the insert is successful,
                                           // thus the user doesn't have to re-enter values in case of an error.
                 } else {
@@ -66,7 +66,7 @@ var contactsMixin = {
             this.$http.put('api/contacts', JSON.stringify(contact)).then(function(response) {
                 // Success
                 if(response.status == 200) {
-                    store.updateContact(contact);
+                    contactsStore.updateContact(contact);
                 } else {
                     this.errors.updateContact = true;
                 }
@@ -88,7 +88,7 @@ var contactsMixin = {
                 //Success
                 console.log(response)
                 if(response.status == 200 && response.data) {
-                    store.removeContact(contact);
+                    contactsStore.removeContact(contact);
                 } else {
                     this.errors.deleteContact = true;
                 }

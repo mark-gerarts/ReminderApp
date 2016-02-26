@@ -24,7 +24,7 @@ var Contacts = Vue.extend({
 
     data: function() {
         return {
-            sharedState: store.state, // Shared state contains all the contacts.
+            sharedState: contactsStore.state, // Shared state contains all the contacts.
             newContact: { //The viewmodel of a new contact, filled through the form.
                 name: '',
                 number: ''
