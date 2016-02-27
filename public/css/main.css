@@ -8,7 +8,7 @@
 
    Font dark: #525252
    Font light: #7f8c8d
- * 
+ *
  */
 html {
     height: 100%;
@@ -30,7 +30,7 @@ a{
     color: inherit;
 }
 .btn {
-    
+
 }
 /** general **/
 .container {
@@ -62,7 +62,7 @@ a{
 
 /** nav **/
 nav {
-    
+
 }
 
 nav ul {
@@ -130,7 +130,7 @@ main p {
 }
 
 /** main - quick reminder form **/
-.quick-reminder-form label, .quick-reminder-form input, .quick-reminder-form textarea {
+.quick-reminder-form label, .quick-reminder-form input, .quick-reminder-form textarea, .error-message {
     clear: both;
     float: left;
 }
@@ -270,7 +270,7 @@ main p {
     border-radius: 100px;
     display: inline-block;
     color: #FFF;
-    
+
 }
 .btn-signup-big {
     display: inline-block;
@@ -298,7 +298,7 @@ footer {
     text-align: center;
     padding: 5px;
     position: absolute;
-    bottom: 0;    
+    bottom: 0;
 }
 /*Font dark: #525252
    Font light: #7f8c8d*/

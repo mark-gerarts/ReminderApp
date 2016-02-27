@@ -44,7 +44,10 @@ var Home = Vue.extend({
         },
 
         validate: function() {
-            if(!this.isSubmittedOnce) {
+            if(!this.newReminder.contact_id) {
+                this.newReminder.recipient = this.query;
+            }
+            if(this.isSubmittedOnce) {
                 this.$set('validationErrors', this.validateReminder(this.newReminder));
             }
         },
@@ -58,9 +61,7 @@ var Home = Vue.extend({
         },
 
         handleReminderSubmit() {
-            if(!this.newReminder.contact_id) {
-                this.newReminder.recipient = this.query;
-            }
+            this.isSubmittedOnce = true;
             this.trim();
             this.validate();
 

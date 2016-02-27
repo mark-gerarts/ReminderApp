@@ -33,20 +33,27 @@
             </div>
         </div>
         <div class="col-md-4 col-md-offset-2">
-            <section class="section-right" id="app">
+            <section class="section-right" id="vue-form">
                 <h2>Quick Reminder</h2>
                 <p>Schedule a quick reminder without the need of creating an account.</p>
-                <pre>@{{ $data.newReminder | json}}</pre>
                 <form class="quick-reminder-form" @submit.prevent="submitReminder">
-                    <input type="hidden" id="csrf_token" value="{{ csrf_token()}}">
                     <label><span class="number">1</span>Phone Number</label>
-                    <input type="text" placeholder="International format" v-model="newReminder.recipient">
+                    <span class="error-message" v-if="validationErrors.send_datetime">
+                        <strong>@{{ validationErrors.recipient }}</strong>
+                    </span>
+                    <input type="text" placeholder="International format" v-model="newReminder.recipient" @input="validate">
 
                     <label><span class="number">2</span>Date &amp; time</label>
-                    <input type="datetime" placeholder="DD/MM/YY hh:mm" v-model="newReminder.send_datetime">
+                    <span class="error-message" v-if="validationErrors.send_datetime">
+                        <strong>@{{ validationErrors.send_datetime }}</strong>
+                    </span>
+                    <input type="datetime" placeholder="DD/MM/YY hh:mm" v-model="newReminder.send_datetime" @input="validate">
 
                     <label><span class="number">3</span>Message</label>
-                    <textarea placeholder="Your message!" v-model="newReminder.message"></textarea>
+                    <span class="error-message" v-if="validationErrors.send_datetime">
+                        <strong>@{{ validationErrors.message }}</strong>
+                    </span>
+                    <textarea placeholder="Your message!" v-model="newReminder.message" @input="validate"></textarea>
                     <input type="submit" class="btn btn-submit" value="Submit">
                 </form>
             </section>
@@ -87,9 +94,11 @@
 
 @section('scripts')
     <script>
+        var csrf_token = "{{ csrf_token() }}";
         var myRootUrl = "{{ env('MY_ROOT_URL') }}";
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.14/vue.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/0.6.1/vue-resource.js"></script>
-    <script src="{{ url('js/home.vue.js')}}"></script>
+    <script src="{{ url('js/vue/mixins/validatorMixin.js') }}"></script>
+    <script src="{{ url('js/vue/homepage.vue.js')}}"></script>
 @endsection

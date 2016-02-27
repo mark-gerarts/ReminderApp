@@ -14,6 +14,7 @@
                             @focus="showSuggestions = true"
                             @blur="showSuggestions = false"
                             @keyup.down.prevent="highlightContact"
+                            @input="validate"
                             autocomplete="off"
                     >
                     {{-- Suggestion box to autocomplete contacts --}}
@@ -32,13 +33,13 @@
                 <span class="error-message" v-if="validationErrors.send_datetime">
                     <strong>@{{ validationErrors.send_datetime }}</strong>
                 </span>
-                <input type="text" placeholder="DD/MM/YY hh:mm" v-model="newReminder.send_datetime">
+                <input type="text" placeholder="DD/MM/YY hh:mm" v-model="newReminder.send_datetime" @input="validate">
 
                 <label><span class="number">3</span>Message</label>
                 <span class="error-message" v-if="validationErrors.message">
                     <strong>@{{ validationErrors.message }}</strong>
                 </span>
-                <textarea placeholder="Your message!" v-model="newReminder.message"></textarea>
+                <textarea placeholder="Your message!" v-model="newReminder.message" @input="validate"></textarea>
 
                 <label><span class="number">4</span>Repeat</label>
                 <span class="error-message" v-if="validationErrors.repeat_id">

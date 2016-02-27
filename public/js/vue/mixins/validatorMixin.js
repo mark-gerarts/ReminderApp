@@ -99,7 +99,19 @@ var validatorMixin = {
             if(!(reminder.contact_id || reminder.recipient)) {
                 output.no_recipient = "This field is required.";
             }
-            console.log(output)
+            return output;
+        },
+
+        // Checks for  quick reminder properties.
+        // Returns an object with validation errors for each property.
+        validateQuickReminder: function(reminder) {
+            var output = {};
+            var messageError = this._validate(reminder.message, "required|max:255");
+            var send_datetimeError = this._validate(reminder.send_datetime, "required|max:255");
+            var recipientError = this._validate(reminder.recipient, "required|max:255");
+            if(messageError) output.message = messageError;
+            if(send_datetimeError) output.send_datetime = send_datetimeError;
+            if(recipientError) output.recipient = recipientError;
             return output;
         }
     }
