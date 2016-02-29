@@ -13,7 +13,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        // Commands\Inspire::class,
+        Commands\Inspire::class,
     ];
 
     /**
@@ -26,5 +26,13 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
+        $schedule->call(function() {
+            $this->_testCron();
+        })->everyMinute()->sendOutputTo('/home/mark/Downloads/outputlaravel.txt');
+    }
+
+    private function _testCron()
+    {
+        Log::info('TEST');
     }
 }

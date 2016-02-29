@@ -156,8 +156,12 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
-        //jwt-auth
-        'Tymon\JWTAuth\Providers\JWTAuthServiceProvider'
+        // jwt-auth
+        'Tymon\JWTAuth\Providers\JWTAuthServiceProvider',
+
+        // Twilio service
+        'Aloha\Twilio\Support\Laravel\ServiceProvider'
+
 
     ],
 
@@ -204,7 +208,8 @@ return [
         'URL'       => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View'      => Illuminate\Support\Facades\View::class,
-        'JWTAuth' => 'Tymon\JWTAuth\Facades\JWTAuth'
+        'JWTAuth' => 'Tymon\JWTAuth\Facades\JWTAuth',
+        'Twilio' => 'Aloha\Twilio\Support\Laravel\Facade'
 
     ],
 

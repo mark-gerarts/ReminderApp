@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests;
 use Illuminate\Http\Request;
+use Mail;
+use Twilio;
 
 class HomeController extends Controller
 {
@@ -26,12 +28,15 @@ class HomeController extends Controller
     {
         return view('home.index');
     }
-    
+
     public function pricing()
     {
+        // This works
+        //Twilio::message('+32494896349', 'Hello, world');
+
         return view('home.pricing');
     }
-    
+
     public function faq()
     {
         return view('home.faq');
