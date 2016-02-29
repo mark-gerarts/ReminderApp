@@ -29,9 +29,9 @@ class DashboardController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $token = JWTAuth::fromUser($user);
+        $data['token'] = JWTAuth::fromUser($user);
 
-        return view('dashboard.home');
+        return view('dashboard.home', $data);
     }
 
     public function contacts()

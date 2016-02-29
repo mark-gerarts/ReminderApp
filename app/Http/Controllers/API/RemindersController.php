@@ -7,21 +7,11 @@ use App\Models\User_reminder;
 use App\Models\Quick_reminder;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Auth;
+use JWTAuth;
 use Validate;
 
 class RemindersController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     /**
      * Show the application dashboard.
      *
@@ -30,7 +20,11 @@ class RemindersController extends Controller
 
     public function getUpcomingReminders()
     {
-        $user = Auth::user();
+        $user = JWTAuth::parseToken()->authenticate();
+
+        if(!$user) {
+            return response()->json('Not logged in', 401);
+        }
 
         $upcomingReminders = User_reminder::where([
                 ['user_id', $user->id],
@@ -42,7 +36,11 @@ class RemindersController extends Controller
 
     public function insertReminder(Request $request)
     {
-        $user = Auth::user();
+        $user = JWTAuth::parseToken()->authenticate();
+
+        if(!$user) {
+            return response()->json('Not logged in', 401);
+        }
 
         if($user)
         {
@@ -56,7 +54,7 @@ class RemindersController extends Controller
             // Also, what if the user is logged in for too long and auto-
             // matically logs out from the server, but still tries to send
             // a new reminder request?
-            // Perhaps it's better to do this in a seperate route. 
+            // Perhaps it's better to do this in a seperate route.
             return $this->_createQuickReminder($request);
         }
     }

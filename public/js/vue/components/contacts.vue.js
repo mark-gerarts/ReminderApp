@@ -59,6 +59,6 @@ var Contacts = Vue.extend({
             if(Object.keys(this.validationErrors).length == 0) {
                 this.insertContact(this.newContact);
             }
-        }
+        },
     }
 });

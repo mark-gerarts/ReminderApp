@@ -37,14 +37,10 @@ Route::group(['middleware' => 'web'], function () {
 
     //Dashboard
     Route::get('/dashboard', 'DashboardController@index');
-    Route::get('/dashboard/contacts', 'DashboardController@contacts');
-    Route::post('/dashboard/contacts', 'DashboardController@contacts');
-    Route::get('/dashboard/history', 'DashboardController@history');
 });
 
-Route::group(['namespace' => 'API', 'prefix' => 'api', 'middleware' => 'web'], function()
-{
-    //API
+
+Route::group(['namespace' => 'API', 'prefix' => 'api'], function() {
     //Contacts
     Route::get('/contacts/{id?}', 'ContactsController@get');
     Route::post('/contacts', 'ContactsController@insert');

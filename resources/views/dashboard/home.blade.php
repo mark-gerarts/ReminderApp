@@ -19,6 +19,7 @@
     <script>
         var myRootUrl = "{{ env('MY_ROOT_URL') }}";
         var csrf_token = "{{ csrf_token() }}";
+        var jwt_token = "{{ $token }}";
     </script>
 
     {{-- Don't forget to change these to .min.js --}}

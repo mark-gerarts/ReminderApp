@@ -97,11 +97,11 @@ router.map({
 });
 
 window.onload = function() {
-    // Start the app.
-    router.start(App, "#app");
-
     // Some configurations.
     Vue.http.options.root = myRootUrl; //Set root
     Vue.http.headers.common['X-CSRF-TOKEN'] = csrf_token; //csrf token from global var is put in the header
+    Vue.http.headers.common['Authorization'] = 'Bearer: ' + jwt_token;
 
+    // Start the app.
+    router.start(App, "#app");
 }
