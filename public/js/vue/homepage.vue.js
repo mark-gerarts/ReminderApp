@@ -8,7 +8,7 @@
  Vue.http.headers.common['X-CSRF-TOKEN'] = csrf_token; //csrf token from global var is put in the header
 
 var vm = new Vue({
-    el: '#vue-form',
+    el: '#vue-app',
 
     mixins: [validatorMixin, remindersMixin],
 
@@ -22,6 +22,30 @@ var vm = new Vue({
         errors: {},
         isLoading: false,
         isSubmittedOnce: false
+    },
+
+    computed: {
+        phoneRecipient: function() {
+            if(this.newQuickReminder.recipient.length == 0) {
+                return 'Recipient';
+            } else {
+                return this.newQuickReminder.recipient;
+            }
+        },
+        phoneMessage: function() {
+            if(this.newQuickReminder.message.length == 0) {
+                return 'Your message here!';
+            } else {
+                return this.newQuickReminder.message;
+            }
+        },
+        phoneDate: function() {
+            if(this.newQuickReminder.send_datetime.length == 0) {
+                return '2016-09-15 12:57';
+            } else {
+                return this.newQuickReminder.send_datetime;
+            }
+        },
     },
 
     methods: {

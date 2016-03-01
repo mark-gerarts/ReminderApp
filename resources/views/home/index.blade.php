@@ -5,37 +5,31 @@
 @endsection
 
 @section('content')
-<main class="container">
-    <div class="row row-grid">
-        <div class="col-xs-12">
-            <h1>Set up text message reminders.</h1>
+<div class="container-fluid first-heading">
+    <div class="container">
+        <div class="row row-grid">
+            <div class="col-xs-8">
+                <h1>Set up text message reminders.</h1>
+                <p>
+                    Create a reminder and receive a text message at the specified date &amp; time. You can set up a reminder in no-time using our quick reminder form.
+                </p>
+                <a class="heading-button">Remind me! &gt;&gt;</a>
+            </div>
+        </div>
+        <!-- http://superawesomevectors.deviantart.com/ -->
+        <img src="{{ url('img/smartphone_hand_flipped.png')}}" alt="smartphone image" class="phone-img" />
+    </div>
+</div>
+<main class="container" id="vue-app">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3 quick-reminder-title">
+            <h2 class="title">Schedule a quick reminder</h2>
+            <p>Don't want to sign up? No problem!<br /> Use this form te create a quick reminder - no need to create an account.</p>
         </div>
     </div>
     <div class="row row-grid">
-        <div class="col-md-6 section-left">
-            <h2>Easy to use</h2>
-            <p>Create a reminder and receive a text message at the specified date &amp; time.</p>
-            <p>Don't want to create an account? No problem. You can use the quick reminder form without signing up.</p>
-
-            <h2 class="title-margin">Signing up is <span class="highlight-text">free</span></h2>
-            <p>//ToDo: Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis mollitia natus quas, repudiandae necessitatibus perspiciatis dignissimos libero minus neque dolore quo modi, voluptates, praesentium recusandae accusantium dolorum obcaecati quis excepturi.</p>
-            <ul>
-                <li><i class="fa fa-check"></i> Save money</li>
-                <li><i class="fa fa-check"></i> Create a contact list</li>
-                <li><i class="fa fa-check"></i> Schedule repeated reminders</li>
-                <li><i class="fa fa-check"></i> Get reminders in your mailbox</li>
-            </ul>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi, consectetur nisi!</p>
-            <div class="row">
-                <div class="col-xs-8 col-xs-offset-4 col-md-offset-0">
-                    <a href="{{ url('register') }}" class="btn sign-up">Sign up</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4 col-md-offset-2">
-            <section class="section-right" id="vue-form">
-                <h2>Quick Reminder</h2>
-                <p>Schedule a quick reminder without the need of creating an account.</p>
+        <div class="col-md-4 overflow">
+            <section class="section-right">
                 <form class="quick-reminder-form" @submit.prevent="handleSubmit">
                     <label><span class="number">1</span>Phone Number</label>
                     <span class="error-message" v-if="validationErrors.recipient">
@@ -57,6 +51,25 @@
                     <input type="submit" class="btn btn-submit" value="Submit">
                 </form>
             </section>
+        </div>
+        <div class="col-md-6 col-md-offset-2">
+            <div class="cellphone">
+                <div class="cellphone-header">
+                    <span class="left">Messages</span>
+                    <h2>@{{ phoneRecipient }}</h2>
+                    <span class="right">Contact</span>
+                </div>
+                <div class="messages-wrapper">
+                  <div class="message to">
+                      @{{ phoneMessage }}
+                      <br /><span class="message-time">Recieved: @{{ phoneDate }}</span>
+                  </div>
+                  <div class="message from">
+                      Oh right! Thanks for reminding me!
+                      <br /><span class="message-time">Sending...</span>
+                  </div>
+                </div>
+            </div>
         </div>
     </div>
 </main>
