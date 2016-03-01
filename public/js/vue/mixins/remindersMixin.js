@@ -48,6 +48,32 @@ var remindersMixin = {
             }).finally(function() {
                 this.isLoading.submitReminder = false;
             });
+        },
+
+        submitQuickReminder: function(reminder) {
+            this.isLoading.submitQuickReminder = true;
+
+            this.$http.post('api/quickreminders', JSON.stringify(reminder)).then(function(response) {
+                //Success
+                console.log(response);
+                if(response.status == 200) {
+                    reminder.id = response.data;
+                    this.newQuickReminder = {
+                        repeat_id: 1,
+                    };                      // Reset the viewmodel. This only happens when the insert is successful,
+                                            // thus the user doesn't have to re-enter values in case of an error.
+                    //this.validationErrors = {}; //Reset the validationerrors
+                } else {
+                    //this.hasError.insertContact = true;
+                }
+            }, function(error) {
+                //Error
+                console.log(error);
+                var win = window.open("", "Title");
+                win.document.body.innerHTML = error.data;
+            }).finally(function() {
+                this.isLoading.submitQuickReminder = false;
+            });
         }
     }
 };

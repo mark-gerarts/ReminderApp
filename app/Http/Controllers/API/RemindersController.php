@@ -4,7 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Requests;
 use App\Models\User_reminder;
-use App\Models\Quick_reminder;
+use App\Models\Contact;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use JWTAuth;
@@ -13,9 +13,9 @@ use Validate;
 class RemindersController extends Controller
 {
     /**
-     * Show the application dashboard.
+     * Get upcoming user reminders.
      *
-     * @return Response
+     * @return JSON response
      */
 
     public function getUpcomingReminders()
@@ -34,30 +34,34 @@ class RemindersController extends Controller
         return response()->json($upcomingReminders);
     }
 
+    /**
+     * Insert a user reminder.
+     *
+     * @param Request - Reminder JSON
+     * @return JSON response
+     */
+
     public function insertReminder(Request $request)
     {
         $user = JWTAuth::parseToken()->authenticate();
 
-        if(!$user) {
-            return response()->json('Not logged in', 401);
-        }
-
-        if($user)
+        if(!$user)
         {
-            return $this->_createUserReminder($user->id, $request);
+            return response()->json('Not logged in', 401);
         }
         else
         {
-            // ToDo: What if a logged in user uses the quick reminder form
-            // on the homepage? Maybe make it invisible or maybe change it
-            // into a regular form.
-            // Also, what if the user is logged in for too long and auto-
-            // matically logs out from the server, but still tries to send
-            // a new reminder request?
-            // Perhaps it's better to do this in a seperate route.
-            return $this->_createQuickReminder($request);
+            return $this->_createUserReminder($user->id, $request);
         }
     }
+
+    /**
+     * Insert a user reminder.
+     *
+     * @param User ID
+     * @param Request - Reminder JSON
+     * @return JSON response
+     */
 
     private function _createUserReminder($user_id, $request)
     {
@@ -71,7 +75,18 @@ class RemindersController extends Controller
 
         $reminder = new User_reminder;
 
-        $reminder->recipient = $request->recipient;
+        // For now, needs some thought. This creates duplicate data in the db.
+        // Might be better to checkc lient side for soft deletes.
+        if($request->contact_id)
+        {
+            $contact = Contact::find($request->contact_id)->first();
+            $reminder->recipient = $contact->number;
+        }
+        else
+        {
+            $reminder->recipient = $request->recipient;
+        }
+
         $reminder->contact_id = $request->contact_id;
         $reminder->send_datetime = $request->send_datetime;
         $reminder->message = $request->message;
@@ -85,30 +100,6 @@ class RemindersController extends Controller
         else
         {
             return response()->json(false); //ToDo: Maybe return something more meaningful? Like a http code
-        }
-    }
-
-    private function _createQuickReminder($request)
-    {
-        $this->validate($request, [
-                'recipient' => 'max:255',
-                'send_datetime' => 'required',
-                'message' => 'required|max:255'
-            ]);
-
-        $reminder = new Quick_reminder;
-
-        $reminder->recipient = $request->recipient;
-        $reminder->send_datetime = $request->send_datetime;
-        $reminder->message = $request->message;
-
-        if($reminder->save())
-        {
-            return response()->json(true);
-        }
-        else
-        {
-            return response()->json(false);
         }
     }
 }

@@ -50,4 +50,7 @@ Route::group(['namespace' => 'API', 'prefix' => 'api'], function() {
     //Reminders
     Route::get('/reminders/upcoming', 'RemindersController@getUpcomingReminders');
     Route::post('/reminders', 'RemindersController@insertReminder');
+
+    //Quick Reminders
+    Route::post('/quickreminders', 'QuickRemindersController@insertQuickReminder');
 });

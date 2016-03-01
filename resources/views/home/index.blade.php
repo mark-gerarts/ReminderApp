@@ -36,24 +36,24 @@
             <section class="section-right" id="vue-form">
                 <h2>Quick Reminder</h2>
                 <p>Schedule a quick reminder without the need of creating an account.</p>
-                <form class="quick-reminder-form" @submit.prevent="submitReminder">
+                <form class="quick-reminder-form" @submit.prevent="handleSubmit">
                     <label><span class="number">1</span>Phone Number</label>
-                    <span class="error-message" v-if="validationErrors.send_datetime">
+                    <span class="error-message" v-if="validationErrors.recipient">
                         <strong>@{{ validationErrors.recipient }}</strong>
                     </span>
-                    <input type="text" placeholder="International format" v-model="newReminder.recipient" @input="validate">
+                    <input type="text" placeholder="International format" v-model="newQuickReminder.recipient" @input="validate">
 
                     <label><span class="number">2</span>Date &amp; time</label>
                     <span class="error-message" v-if="validationErrors.send_datetime">
                         <strong>@{{ validationErrors.send_datetime }}</strong>
                     </span>
-                    <input type="datetime" placeholder="DD/MM/YY hh:mm" v-model="newReminder.send_datetime" @input="validate">
+                    <input type="datetime" placeholder="DD/MM/YY hh:mm" v-model="newQuickReminder.send_datetime" @input="validate">
 
                     <label><span class="number">3</span>Message</label>
-                    <span class="error-message" v-if="validationErrors.send_datetime">
+                    <span class="error-message" v-if="validationErrors.message">
                         <strong>@{{ validationErrors.message }}</strong>
                     </span>
-                    <textarea placeholder="Your message!" v-model="newReminder.message" @input="validate"></textarea>
+                    <textarea placeholder="Your message!" v-model="newQuickReminder.message" @input="validate"></textarea>
                     <input type="submit" class="btn btn-submit" value="Submit">
                 </form>
             </section>
@@ -100,5 +100,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.14/vue.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/0.6.1/vue-resource.js"></script>
     <script src="{{ url('js/vue/mixins/validatorMixin.js') }}"></script>
+    <script src="{{ url('js/vue/mixins/remindersMixin.js') }}"></script>
     <script src="{{ url('js/vue/homepage.vue.js')}}"></script>
 @endsection

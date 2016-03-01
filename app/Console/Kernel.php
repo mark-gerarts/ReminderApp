@@ -13,7 +13,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        Commands\Inspire::class,
+        Commands\CheckReminders::class
     ];
 
     /**
@@ -24,15 +24,6 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
-        $schedule->call(function() {
-            $this->_testCron();
-        })->everyMinute()->sendOutputTo('/home/mark/Downloads/outputlaravel.txt');
-    }
-
-    private function _testCron()
-    {
-        Log::info('TEST');
+        $schedule->command('reminders:check')->everyMinute();
     }
 }

@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User_reminder extends Model
 {
-    
-    public $timestamps = false;  
+    use SoftDeletes;
+
+    protected $dates = ['deleted_at'];
+    public $timestamps = false;
 }

@@ -24,12 +24,12 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
-    
+
     public function reminders()
     {
         return $this->hasMany('Reminder');
     }
-    
+
     public function contacts()
     {
         return $this->hasMany('App\Models\Contact'); //Use not working here ..?

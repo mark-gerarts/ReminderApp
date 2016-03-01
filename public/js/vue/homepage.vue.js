@@ -10,10 +10,10 @@
 var vm = new Vue({
     el: '#vue-form',
 
-    mixins: [validatorMixin],
+    mixins: [validatorMixin, remindersMixin],
 
     data: {
-        newReminder: {
+        newQuickReminder: {
             recipient: '',
             send_datetime: '',
             message: ''
@@ -27,24 +27,23 @@ var vm = new Vue({
     methods: {
         validate: function() {
             if(this.isSubmittedOnce) {
-                this.$set('validationErrors', this.validateQuickReminder(this.newReminder));
+                this.$set('validationErrors', this.validateQuickReminder(this.newQuickReminder));
             }
         },
         trim: function() {
-            for(var prop in this.newReminder) {
-                if(this.newReminder[prop]) {
-                    this.newReminder[prop] = this.newReminder[prop].toString().trim();
+            for(var prop in this.newQuickReminder) {
+                if(this.newQuickReminder[prop]) {
+                    this.newQuickReminder[prop] = this.newQuickReminder[prop].toString().trim();
                 }
             }
         },
-        submitReminder: function() {
+        handleSubmit: function() {
             this.isSubmittedOnce = true;
             this.trim();
             this.validate();
 
             if(Object.keys(this.validationErrors).length == 0) {
-                //this.insertContact(this.newContact);
-                console.log('submitting')
+                this.submitQuickReminder(this.newQuickReminder);
             }
         }
     }

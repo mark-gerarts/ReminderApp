@@ -66,7 +66,7 @@ var Home = Vue.extend({
             this.validate();
 
             if(Object.keys(this.validationErrors).length == 0) {
-                this.insertContact(this.newContact);
+                this.submitReminder(this.newReminder);
             }
         }
     }
