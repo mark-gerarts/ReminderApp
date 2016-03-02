@@ -14,7 +14,7 @@
     </div>
     <div class="row">
         <div class="col-md-4 col-md-offset-4">
-            <form method="post" action="{{ url('login') }}" class="login-form">
+            <form method="post" action="{{ url('login') }}" class="flat-form">
                 {!! csrf_field() !!}
                 <label for="email">E-mail Address</label>
                 @if ($errors->has('email'))
@@ -23,8 +23,8 @@
                     </span>
                 @endif
                 <input type="email" name="email" value="{{ old('email') }}">
-                
-                
+
+
                 <label for="password">Password</label>
                 @if ($errors->has('email'))
                     <span class="error-message">
@@ -32,21 +32,21 @@
                     </span>
                 @endif
                 <input type="password" name="password">
-                
-                
+
+
                 <label class="checkbox">
                     <input type="checkbox" name="remember"> Remember Me
                 </label>
 
                 <button type="submit" class="btn btn-submit">
-                    <i class="fa fa-btn fa-sign-in"></i> Login
+                    Log in
                 </button>
                 <p class="addendum">
-                    <a href="{{ url('/password/reset')}}">Forgot your password?</a>    
+                    <a href="{{ url('/password/reset')}}">Forgot your password?</a>
                 </p>
                 <p class="addendum">
                     Not a user yet? <a href="{{ url('/register') }}" class="register-link"><strong>Register here.</strong></a>
-                </p>   
+                </p>
             </form>
         </div>
     </div>
@@ -115,4 +115,3 @@
         </div>
     </div>
 </div-->
-

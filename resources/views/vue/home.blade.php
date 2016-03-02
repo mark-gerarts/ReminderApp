@@ -3,7 +3,7 @@
        <div class="col-md-4">
            <h2>Schedule a Reminder</h2>
            {{-- New reminder form --}}
-            <form class="reminder-form" @submit.prevent="handleReminderSubmit">
+            <form class="flat-form" @submit.prevent="handleReminderSubmit">
                 <label><span class="number">1</span>Phone Number</label>
                 <span class="error-message" v-if="validationErrors.no_recipient">
                     <strong>@{{ validationErrors.no_recipient }}</strong>

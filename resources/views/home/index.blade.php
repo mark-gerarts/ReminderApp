@@ -8,12 +8,12 @@
 <div class="container-fluid first-heading">
     <div class="container">
         <div class="row row-grid">
-            <div class="col-xs-8">
+            <div class="col-md-8">
                 <h1>Set up text message reminders.</h1>
                 <p>
                     Create a reminder and receive a text message at the specified date &amp; time. You can set up a reminder in no-time using our quick reminder form.
                 </p>
-                <a class="heading-button">Remind me! &gt;&gt;</a>
+                <a href="#vue-app" class="heading-button">Remind me! &gt;&gt;</a>
             </div>
         </div>
         <!-- http://superawesomevectors.deviantart.com/ -->
@@ -30,7 +30,7 @@
     <div class="row row-grid">
         <div class="col-md-4 overflow">
             <section class="section-right">
-                <form class="quick-reminder-form" @submit.prevent="handleSubmit">
+                <form class="flat-form" @submit.prevent="handleSubmit">
                     <label><span class="number">1</span>Phone Number</label>
                     <span class="error-message" v-if="validationErrors.recipient">
                         <strong>@{{ validationErrors.recipient }}</strong>
@@ -53,6 +53,7 @@
             </section>
         </div>
         <div class="col-md-6 col-md-offset-2">
+            <!-- Adapted from http://codepen.io/2ne/pen/osvpj -->
             <div class="cellphone">
                 <div class="cellphone-header">
                     <span class="left">Messages</span>
@@ -62,7 +63,7 @@
                 <div class="messages-wrapper">
                   <div class="message to">
                       @{{ phoneMessage }}
-                      <br /><span class="message-time">Recieved: @{{ phoneDate }}</span>
+                      <br /><span class="message-time">Received: @{{ phoneDate }}</span>
                   </div>
                   <div class="message from">
                       Oh right! Thanks for reminding me!
@@ -79,24 +80,29 @@
             <h2 class="features-title">Sign up to...</h2>
             <div class="row row-grid">
                 <div class="col-md-4 col-md-offset-0 col-sm-8 col-sm-offset-2">
-                    <span class="icon-bubble"><i class="fa fa-eur fa-lg"></i></span>
+                    <img src="{{ url('img/calendar.png')}}" />
+                    <h2>Set up repeated reminders</h2>
+                    <p>Schedule a reminder to be sent daily, weekly, monthly or even yearly.</p>
+                </div>
+                <div class="col-md-4 col-md-offset-0 col-sm-8 col-sm-offset-2">
+                    <img src="{{ url('img/money.png')}}" />
                     <h2>Save money</h2>
                     <p>Signing up gives you the ability to top up your account. This results in cheaper reminders!</p>
                 </div>
                 <div class="col-md-4 col-md-offset-0 col-sm-8 col-sm-offset-2">
-                    <span class="icon-bubble"><i class="fa fa-calendar fa-lg"></i></span>
-                    <h2>Set up repeated reminders</h2>
-                    <p>Schedule a reminder to be send daily, weekly, monthly or even yearly.</p>
-                </div>
-                <div class="col-md-4 col-md-offset-0 col-sm-8 col-sm-offset-2">
-                    <span class="icon-bubble"><i class="fa fa-users fa-lg"></i></span>
+                    <img src="{{ url('img/clipboard.png')}}" />
                     <h2>Save contacts</h2>
                     <p>No more need to find everyone's number. Save frequently used numbers in your contact book.</p>
                 </div>
             </div>
             <div class="row row-grid">
                 <div class="col-md-12">
-                    <a class="btn btn-signup-big" href="{{ url('/register') }}">Sign up</a>
+                    @if (Auth::guest())
+                        <a class="btn btn-signup-big" href="{{ url('/register') }}">Sign up</a>
+                    @else
+                        <a class="btn btn-signup-big" href="{{ url('/dashboard') }}">Dashboard</a>
+                    @endif
+
                 </div>
             </div>
         </section>

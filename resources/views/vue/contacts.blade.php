@@ -37,7 +37,7 @@
         <div class="col-md-4 col-md-offset-1">
             <h2>New contact</h2>
             {{-- New Contact form --}}
-            <form action="{{ url('dashboard/contacts') }}" method="post" @submit.prevent="handleInsert" class="contact-form">
+            <form action="{{ url('dashboard/contacts') }}" method="post" @submit.prevent="handleInsert" class="flat-form">
                 <label>Name</label>
                 <span class="error-message" v-if="validationErrors.name">
                     <strong>@{{ validationErrors.name }}</strong>

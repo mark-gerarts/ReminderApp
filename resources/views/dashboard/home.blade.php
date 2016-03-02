@@ -1,8 +1,6 @@
 @extends('layouts.dashboard')
 
 @section('style')
-    {{-- ToDo: put these in one file --}}
-    <link rel="stylesheet" href="{{ url('css/contacts.css')}}" />
 @endsection
 
 @section('content')
@@ -13,6 +11,7 @@
     @include('vue.home')
     @include('vue.contacts')
     @include('vue.contactrow')
+    @include('vue.account')
 @endsection
 
 @section('scripts')
@@ -33,5 +32,6 @@
     <script src="{{ url('js/vue/components/home.vue.js')}}"></script>
     <script src="{{ url('js/vue/components/contactRow.vue.js')}}"></script>
     <script src="{{ url('js/vue/components/contacts.vue.js')}}"></script>
+    <script src="{{ url('js/vue/components/account.vue.js')}}"></script>
     <script src="{{ url('js/vue/app.vue.js')}}"></script>
 @endsection

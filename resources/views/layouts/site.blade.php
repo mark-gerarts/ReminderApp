@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>ReminderApp</title>
+    <title>RemindMe</title>
 
     <!-- Links loaded on all pages -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
@@ -24,7 +24,7 @@
                 <nav class="container">
                     <ul class="nav-left">
                         <li class="no-padding-left">
-                            <a href="{{ url('/') }}"><span class="logo"><span class="logo-brand">Brand</span><span class="logo-name">Name</span></span></a>
+                            <a href="{{ url('/') }}"><span class="logo"><span class="logo-brand">Remind</span><span class="logo-name">Me</span></span></a>
                         </li>
                     </ul>
                     <ul class="nav-right">

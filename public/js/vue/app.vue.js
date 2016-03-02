@@ -89,6 +89,9 @@ router.map({
     '/contacts': {
         component: Contacts
     },
+    '/account': {
+        component: Account
+    },
     // '*' == default fallback route.
     // Points to 'Home' for now, might add a 404 later.
     '*': {

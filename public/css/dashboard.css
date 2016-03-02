@@ -1,21 +1,8 @@
-/*
- *
-   shade 0 = #4EBBB7 = rgb( 78,187,183) = rgba( 78,187,183,1) = rgb0(0.306,0.733,0.718)
-   shade 1 = #ADEDEA = rgb(173,237,234) = rgba(173,237,234,1) = rgb0(0.678,0.929,0.918)
-   shade 2 = #78D6D3 = rgb(120,214,211) = rgba(120,214,211,1) = rgb0(0.471,0.839,0.827)
-   shade 3 = #2F9E99 = rgb( 47,158,153) = rgba( 47,158,153,1) = rgb0(0.184,0.62,0.6)
-   shade 4 = #168E89 = rgb( 22,142,137) = rgba( 22,142,137,1) = rgb0(0.086,0.557,0.537)
-
-   Font dark: #525252
-   Font light: #7f8c8d
- *
- */
-
 /** general **/
 body {
     margin: 0;
     padding: 0;
-    color: #7f8c8d;
+    color: #34495e;
     font-family: 'Source Sans Pro', sans-serif;
 }
 a {
@@ -27,7 +14,7 @@ a {
 }
 /** navbar **/
 .navbar {
-    background: #4EBBB7;
+    background: rgb(46, 170, 145);
     color: #FFF;
 }
 nav div, .user {
@@ -41,9 +28,6 @@ nav div, .user {
     float: right;
     font-weight: normal;
     padding-right: 0;
-}
-.user a {
-    color: #168E89;
 }
 .arrow {
     display: none;
@@ -63,22 +47,19 @@ h2 {
 }
 
 /** form **/
-.reminder-form {
-    overflow: auto;
-}
-.reminder-form label, .reminder-form input, .reminder-form textarea, .reminder-form select {
+.flat-form label, .flat-form input, .flat-form textarea, .flat-form select, .error-message {
     clear: both;
     float: left;
 }
-.reminder-form textarea {
+.flat-form textarea {
     resize: vertical;
 }
-.reminder-form label {
+.flat-form label {
     margin: 12px 0;
     font-size: 20px;
 }
-.reminder-form .number {
-    background: #4EBBB7;/* alt #1abc9c */
+.flat-form .number {
+    background: #2EAA91;/* alt #1abc9c */
     color: #FFFFFF;
     height: 30px;
     width: 30px;
@@ -89,10 +70,12 @@ h2 {
     text-align: center;
     border-radius: 15px 15px 15px 0px;
 }
-.reminder-form input[type="text"],
-.reminder-form input[type="datetime"],
-.reminder-form textarea,
-.reminder-form select
+.flat-form input[type="text"],
+.flat-form input[type="email"],
+.flat-form input[type="password"],
+.flat-form input[type="datetime"],
+.flat-form textarea,
+.flat-form select
 {
     -webkit-transition: all 0.30s ease-in-out;
     -moz-transition: all 0.30s ease-in-out;
@@ -106,18 +89,24 @@ h2 {
     background: #fff;
     border: 1px solid #ccc;
     padding: 3%;
-    color: #555;
     font: 95% Arial, Helvetica, sans-serif;
     margin-bottom: 20px;
+    color: #34495e;
 }
-.reminder-form input[type="text"]:focus,
-.reminder-form input[type="datetime"]:focus,
-.reminder-form textarea:focus,
-.reminder-form select:focus
+.flat-form input[type="text"]:focus,
+.flat-form input[type="datetime"]:focus,
+.flat-form input[type="email"]:focus,
+.flat-form input[type="password"]:focus,
+.flat-form textarea:focus
 {
-    box-shadow: 0 0 5px #4EBBB7;
+    box-shadow: 0 0 5px #2EAA91;
     padding: 3%;
-    border: 1px solid #4EBBB7;
+    border: 1px solid #2EAA91;
+}
+.btn {
+    border: 1px solid #2EAA91;
+    padding: 5px 10px;
+    border-radius: 5px;
 }
 .btn-submit
 {
@@ -126,19 +115,20 @@ h2 {
     padding: 19px 39px 18px 39px;
     color: #FFF;
     margin: 0 auto;
-    background: #4EBBB7;
+    background: #2EAA91;
     font-size: 18px;
     text-align: center;
     font-style: normal;
     width: 100%;
-    border: 1px solid #4EBBB7;
+    border: 1px solid #2EAA91;
     border-width: 1px 1px 3px;
     margin-bottom: 10px;
+    border-radius: 0;
 }
 .btn-submit:hover
 {
-    background: #2F9E99;
-    border: 1px solid #2F9E99;
+    background: #16A085;
+    border: 1px solid #16A085;
     border-width: 1px 1px 3px;
 }
 
@@ -175,23 +165,28 @@ h2 {
 }
 
 /** reminder table **/
-table.upcoming-table {
+table {
+    border: 2px solid #ecf0f1;
+}
+thead {
+    background: #ecf0f1;
+}
+table {
     width: 100%;
     border-collapse: collapse;
 }
-table.upcoming-table th {
+table th {
     text-align: left;
     padding: 5px 10px;
-    border-bottom: 1px solid #7f8c8d;
 }
-table.upcoming-table td {
+table td {
     padding: 15px 10px;
 }
-table.upcoming-table tbody tr:nth-child(even) {
+table tbody tr:nth-child(even) {
     background: #F9F9F9;
 }
-table.upcoming-table tbody tr:hover {
-    background: #EEE;
+table tbody tr:hover {
+    background: #ecf0f1;
 }
 
 .icons {
@@ -241,4 +236,36 @@ table.upcoming-table tbody tr:hover {
 }
 .error-bubble-button:last-child:last-child {
     padding-left: 20px;
+}
+
+h2 {
+    border-bottom: none;
+}
+.try-again {
+    text-decoration: underline;
+    color: #525252;
+}
+.try-again:hover {
+    cursor: pointer;
+}
+
+.actions {
+    text-align: right;
+}
+
+.edit, .save {
+    margin-right: 15px;
+}
+.delete {
+    color: #FFC2C2;
+}
+.edit, .save, .delete, .cancel:hover {
+    cursor: pointer;
+}
+.error {
+    color: red;
+}
+.log-out {
+    font-weight: bold;
+    color: white;
 }

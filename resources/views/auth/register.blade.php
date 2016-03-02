@@ -14,7 +14,7 @@
     </div>
     <div class="row">
         <div class="col-md-4 col-md-offset-4">
-            <form method="post" action="{{ url('register') }}" class="register-form">
+            <form method="post" action="{{ url('register') }}" class="flat-form">
                 {!! csrf_field() !!}
                 <label for="name"><span class="number">1</span>Name</label>
                 @if ($errors->has('name'))
@@ -23,8 +23,8 @@
                     </span>
                 @endif
                 <input type="text" name="name" value="{{ old('name') }}">
-                
-                
+
+
                 <label for="email"><span class="number">2</span>E-mail Address</label>
                 @if ($errors->has('email'))
                     <span class="error-message">
@@ -32,8 +32,8 @@
                     </span>
                 @endif
                 <input type="email" name="email" value="{{ old('email') }}">
-                
-                
+
+
                 <label for="password"><span class="number">3</span>Password</label>
                 @if ($errors->has('password'))
                     <span class="error-message">
@@ -41,8 +41,8 @@
                     </span>
                 @endif
                 <input type="password" name="password">
-                
-                
+
+
                 <label for="password_confirmation"><span class="number">4</span>Confirm Password</label>
                 @if ($errors->has('password_confirmation'))
                     <span class="error-message">
@@ -50,12 +50,12 @@
                     </span>
                 @endif
                 <input type="password" name="password_confirmation">
-                
+
 
                 <button type="submit" class="btn btn-submit">Register</button>
                 <p class="addendum">
                     Already have an account? <a href="{{ url('/login') }}" class="register-link"><strong>Sign in here.</strong></a>
-                </p>   
+                </p>
             </form>
         </div>
     </div>

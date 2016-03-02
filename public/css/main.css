@@ -1,15 +1,3 @@
-/*
- *
-   shade 0 = #4EBBB7 = rgb( 78,187,183) = rgba( 78,187,183,1) = rgb0(0.306,0.733,0.718)
-   shade 1 = #ADEDEA = rgb(173,237,234) = rgba(173,237,234,1) = rgb0(0.678,0.929,0.918)
-   shade 2 = #78D6D3 = rgb(120,214,211) = rgba(120,214,211,1) = rgb0(0.471,0.839,0.827)
-   shade 3 = #2F9E99 = rgb( 47,158,153) = rgba( 47,158,153,1) = rgb0(0.184,0.62,0.6)
-   shade 4 = #168E89 = rgb( 22,142,137) = rgba( 22,142,137,1) = rgb0(0.086,0.557,0.537)
-
-   Font dark: #525252
-   Font light: #7f8c8d
- *
- */
 html {
     height: 100%;
 }
@@ -30,9 +18,6 @@ a{
     color: inherit;
 }
 
-.btn {
-
-}
 /** general **/
 .overflow {
     overflow: auto;
@@ -106,10 +91,14 @@ nav a {
 .first-heading .row div{
     z-index: 10;
 }
-h1 {
+.first-heading h1 {
+    text-align: left;
     margin-top: 50px;
     font-size: 36px;
     font-weight: normal;
+}
+h1 {
+    text-align: center;
 }
 .phone-img {
     position: absolute;
@@ -151,7 +140,7 @@ main p {
     margin-top: 40px;
 }
 .btn {
-    border: 1px solid #7f8c8d;
+    border: 1px solid #2EAA91;
     padding: 5px 10px;
     border-radius: 5px;
 }
@@ -179,18 +168,18 @@ main p {
 }
 
 /** main - quick reminder form **/
-.quick-reminder-form label, .quick-reminder-form input, .quick-reminder-form textarea, .error-message {
+.flat-form label, .flat-form input, .flat-form textarea, .error-message {
     clear: both;
     float: left;
 }
-.quick-reminder-form textarea {
+.flat-form textarea {
     resize: vertical;
 }
-.quick-reminder-form label {
+.flat-form label {
     margin: 12px 0;
     font-size: 20px;
 }
-.quick-reminder-form .number {
+.flat-form .number {
     background: #2EAA91;/* alt #1abc9c */
     color: #FFFFFF;
     height: 30px;
@@ -202,9 +191,11 @@ main p {
     text-align: center;
     border-radius: 15px 15px 15px 0px;
 }
-.quick-reminder-form input[type="text"],
-.quick-reminder-form input[type="datetime"],
-.quick-reminder-form textarea
+.flat-form input[type="text"],
+.flat-form input[type="email"],
+.flat-form input[type="password"],
+.flat-form input[type="datetime"],
+.flat-form textarea
 {
     -webkit-transition: all 0.30s ease-in-out;
     -moz-transition: all 0.30s ease-in-out;
@@ -218,13 +209,15 @@ main p {
     background: #fff;
     border: 1px solid #ccc;
     padding: 3%;
-    color: #555;
     font: 95% Arial, Helvetica, sans-serif;
     margin-bottom: 20px;
+    color: #34495e;
 }
-.quick-reminder-form input[type="text"]:focus,
-.quick-reminder-form input[type="datetime"]:focus,
-.quick-reminder-form textarea:focus
+.flat-form input[type="text"]:focus,
+.flat-form input[type="datetime"]:focus,
+.flat-form input[type="email"]:focus,
+.flat-form input[type="password"]:focus,
+.flat-form textarea:focus
 {
     box-shadow: 0 0 5px #2EAA91;
     padding: 3%;
@@ -302,7 +295,7 @@ main p {
 
 /** features **/
 .features {
-    background: #F9F9F9;
+    background: #ecf0f1;
     padding: 20px;
     color: #525252;
     margin-top: 75px;
@@ -325,8 +318,8 @@ main p {
 .btn-signup-big {
     display: inline-block;
     margin: 50px 0 70px 0;
-    border:2px solid #4EBBB7;
-    color: #4EBBB7;
+    border:2px solid #16a085;
+    color: #16a085;
     padding: 5px 25px;
     font-size: 32px;
     border-radius: 25px;
@@ -334,7 +327,7 @@ main p {
 }
 .btn-signup-big:hover {
     cursor: pointer;
-    background: #4EBBB7;
+    background: #16a085;
     color: #FFF;
 }
 .wrapper {
@@ -342,8 +335,8 @@ main p {
     position: relative;
 }
 footer {
-    background: #525252;
-    color: white;
+    background: #2c3e50;
+    color: #FFF;
     width: 100%;
     text-align: center;
     padding: 5px;

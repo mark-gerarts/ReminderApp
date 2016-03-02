@@ -20,23 +20,6 @@
 
 
 <body id="app">
-    <!-- //Stuff from before Vue Routes -for future reference if needed
-    <div class="container-fluid navbar">
-        <div class="container">
-            <nav>
-                <div class="no-padding-left">
-                    <a href="{{ url('/dashboard') }}">Dashboard</a>
-                    <i class="fa fa-caret-up fa-fw arrow"></i>
-                </div>
-                <div><a href="{{ url('/dashboard/contacts') }}">Contacts</a></div>
-                <div><a href="{{ url('/dashboard/history') }}">History</a></div>
-                <div><a href="{{ url('/dashboard') }}">Account</a></div>
-            </nav>
-            <div class="user">Logged in as {{ Auth::user()->name }}. <a href="{{ url('/logout') }}">Log out <i class="fa fa-sign-out"></i></a></div>
-        </div>
-    </div>
-    <div class="container">
-    </div> //-->
     <div class="container-fluid navbar">
         <div class="container">
             <nav>
@@ -44,11 +27,10 @@
                     <a v-link="{ path: '/'}">Dashboard</a>
                     <i class="fa fa-caret-up fa-fw arrow"></i>
                 </div>
-                <div><a v-link="{ path: '/contacts'}">Contacts</a></div>
-                <div><a href="{{ url('/dashboard/history') }}">History</a></div>
-                <div><a href="{{ url('/dashboard') }}">Account</a></div>
+                <div><a v-link="{ path: '/contacts' }">Contacts</a></div>
+                <div><a v-link="{ path: '/account' }">Account</a></div>
             </nav>
-            <div class="user">Logged in as {{ Auth::user()->name }}. <a href="{{ url('/logout') }}">Log out <i class="fa fa-sign-out"></i></a></div>
+            <div class="user">Logged in as {{ Auth::user()->name }}. <a href="{{ url('/logout') }}" class="log-out">Log out</a></div>
         </div>
     </div>
     <div class="container">
@@ -56,7 +38,7 @@
     </div>
 
     @yield('vue-templates')
-    
+
     <!-- Page specific scripts -->
     @yield('scripts')
 </body>
