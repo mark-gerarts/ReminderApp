@@ -359,6 +359,9 @@ footer {
    overflow-X: hidden;
    position: relative;
 }
+.cellphone:hover {
+    cursor: default;
+}
 .left {
  position: absolute;
  top: 0;
