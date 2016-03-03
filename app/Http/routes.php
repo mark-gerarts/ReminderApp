@@ -35,6 +35,10 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('/home/pricing', 'HomeController@pricing');
     Route::get('/home/faq', 'HomeController@faq');
 
+    //payment
+    Route::post('/checkout', 'PaymentController@createQuickReminderOrder');
+    Route::get('/thankyou/{id?}', 'PaymentController@quickReminderOrderRedirect');
+
     //Dashboard
     Route::get('/dashboard', 'DashboardController@index');
 });

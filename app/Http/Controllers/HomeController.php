@@ -31,9 +31,6 @@ class HomeController extends Controller
 
     public function pricing()
     {
-        // This works
-        //Twilio::message('+32494896349', 'Hello, world');
-
         return view('home.pricing');
     }
 

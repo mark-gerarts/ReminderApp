@@ -30,7 +30,7 @@
     <div class="row row-grid">
         <div class="col-md-4 overflow">
             <section class="section-right">
-                <form class="flat-form" @submit.prevent="handleSubmit">
+                <form class="flat-form" @submit.prevent="handleSubmit" v-if="!reviewing">
                     <label><span class="number">1</span>Phone Number</label>
                     <span class="error-message" v-if="validationErrors.recipient">
                         <strong>@{{ validationErrors.recipient }}</strong>
@@ -49,6 +49,22 @@
                     </span>
                     <textarea placeholder="Your message!" v-model="newQuickReminder.message" @input="validate"></textarea>
                     <input type="submit" class="btn btn-submit" value="Submit">
+                </form>
+                <form action="{{ url('checkout') }}" method="post" v-else>
+                    <h3>Make sure everything is filled out correctly.</h3>
+                    <p><strong>Number: </strong>@{{ newQuickReminder.recipient }}</p>
+                    <p><strong>Date &amp; time: </strong>@{{ newQuickReminder.send_datetime }}</p>
+                    <p><strong>Message: </strong>@{{ newQuickReminder.message }}</p>
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+                    <input type="hidden" name="recipient" value="@{{ newQuickReminder.recipient}}" />
+                    <input type="hidden" name="send_datetime" value="@{{ newQuickReminder.send_datetime}}" />
+                    <input type="hidden" name="message" value="@{{ newQuickReminder.message}}" />
+                    <div class="row">
+                        <div class="col-md-12">
+                            <input type="submit" class="btn btn-submit btn-review-ok" value="Continue"/>
+                        </div>
+                    </div>
+                    <a class="btn-review-cancel" @click.prevent="reviewing = false">I want to change something!</a>
                 </form>
             </section>
         </div>

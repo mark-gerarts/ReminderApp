@@ -246,6 +246,17 @@ main p {
     border: 1px solid #16A085;
     border-width: 1px 1px 3px;
 }
+.btn-review-ok {
+    margin-top: 25px;
+}
+.btn-review-cancel {
+    display: inline-block;
+    margin-top: 15px;
+    text-decoration: underline;
+}
+.btn-review-cancel:hover {
+    cursor: pointer;
+}
 
 /** Arrow **/
 .arrow-down {
@@ -280,17 +291,6 @@ main p {
     line-height: 150px;
     height: 150px;
     text-align: center;
-}
-
-/** DEBUG **/
-.blue {
-    background: rgba(0, 0, 255, 0.1);
-}
-.green {
-    background: rgba(0, 255, 0, 0.1);
-}
-.red {
-    background: rgba(255, 0, 0, 0.1);
 }
 
 /** features **/
@@ -343,8 +343,6 @@ footer {
     position: absolute;
     bottom: 0;
 }
-/*Font dark: #525252
-   Font light: #7f8c8d*/
 
 
 /*** Cell phone ***/
@@ -458,4 +456,22 @@ footer {
    border-color: #E5E4E9;
    left: -50px;
    transform: rotateY(180deg);
+}
+.payment-message {
+    text-align: center;
+}
+.other-options {
+    list-style: none;
+}
+.other-options li {
+    margin: 15px;
+}
+.other-options a {
+    text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+    .cellphone {
+        display: none;
+    }
 }

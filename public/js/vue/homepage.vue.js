@@ -21,7 +21,8 @@ var vm = new Vue({
         validationErrors: {},
         errors: {},
         isLoading: false,
-        isSubmittedOnce: false
+        isSubmittedOnce: false,
+        reviewing: false
     },
 
     computed: {
@@ -67,7 +68,8 @@ var vm = new Vue({
             this.validate();
 
             if(Object.keys(this.validationErrors).length == 0) {
-                this.submitQuickReminder(this.newQuickReminder);
+                this.reviewing = true;
+                //this.submitQuickReminder(this.newQuickReminder);
             }
         }
     }
