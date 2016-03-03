@@ -1,9 +1,19 @@
 /** general **/
+html {
+    height: 100%;
+}
 body {
     margin: 0;
     padding: 0;
-    color: #34495e;
     font-family: 'Source Sans Pro', sans-serif;
+    color: #34495e;
+    position: relative;
+    height: 100%;
+}
+.wrapper {
+    min-height: 100%;
+    position: relative;
+    padding-bottom: 50px;
 }
 a {
     color: inherit;
@@ -268,4 +278,120 @@ h2 {
 .log-out {
     font-weight: bold;
     color: white;
+}
+footer {
+    background: #2c3e50;
+    color: #FFF;
+    width: 100%;
+    text-align: center;
+    padding: 5px;
+    position: absolute;
+    bottom: 0;
+}
+
+/******$ PRICING ******/
+.pricing {
+    text-align: center;
+    width: 90%;
+    border-radius: 5px;
+    margin: 0 auto;
+}
+.pricing-header {
+    font-size: 46px;
+    padding: 25px 0;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-top: 2px solid #ecf0f1;
+    border-right: 2px solid #ecf0f1;
+    border-left: 2px solid #ecf0f1;
+}
+.pricing-currency {
+    font-size: 18px;
+    vertical-align: top;
+    margin-top: 10px;
+    display: inline-block;
+    color: #95a5a6;
+}
+.pricing ul{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.pricing li {
+    padding: 10px 0;
+    border-right: 2px solid #ecf0f1;
+    border-left: 2px solid #ecf0f1;
+}
+.pricing li:nth-child(2n+1) {
+    background: rgba(23, 61, 80, 0.06);
+}
+.pricing li:last-of-type {
+    height: 40px;
+}
+.pricing-button input {
+    width: 100%;
+    border: none;
+    padding: 15px 0;
+    background: #2c3e50;
+    color: #FFF;
+    text-transform: uppercase;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+.pricing-button input:hover {
+    background: #34495e;
+}
+.promo {
+    color: #16a085;
+}
+.promo input {
+    color: white;
+    background: #16a085;
+}
+.promo input:hover {
+    background: #1abc9c;
+}
+
+.remaining-credits {
+    width: 100%;
+    margin-top: 25px;
+    padding: 5px;
+    background: #ecf0f1;
+    border-radius: 75px;
+    height: 110px;
+    position: relative;
+    line-height: 100px;
+}
+.remaining-credits img {
+    height: 100px;
+    margin-left: 0;
+    float: left;
+    position: absolute;
+}
+.remaining-credits p {
+    margin: 0;
+    text-align: center;
+    font-size: 20px;
+    margin-left: 50px;
+
+}
+.remaining-amount {
+    font-weight: bold;
+    font-size: 24px;
+}
+.upcoming-table thead tr:first-child th, .contacts thead tr:first-child th {
+    text-align: center;
+    font-size: 24px;
+}
+.upcoming-table{
+    margin-top: 50px;
+}
+.contacts {
+    margin-top: 25px;
+}
+.overflow {
+    overflow: auto;
+}
+.remaining-credits a {
+    text-decoration: underline;
 }

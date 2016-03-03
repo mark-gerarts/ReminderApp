@@ -1,3 +1,9 @@
 var Account = Vue.extend({
-    template: '#dashboard-account'
+    template: '#dashboard-account',
+
+    data: function() {
+        return {
+            buyingCredit: false
+        };
+    }
 })

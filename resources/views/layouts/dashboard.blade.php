@@ -20,23 +20,27 @@
 
 
 <body id="app">
-    <div class="container-fluid navbar">
-        <div class="container">
-            <nav>
-                <div class="no-padding-left">
-                    <a v-link="{ path: '/'}">Dashboard</a>
-                    <i class="fa fa-caret-up fa-fw arrow"></i>
-                </div>
-                <div><a v-link="{ path: '/contacts' }">Contacts</a></div>
-                <div><a v-link="{ path: '/account' }">Account</a></div>
-            </nav>
-            <div class="user">Logged in as {{ Auth::user()->name }}. <a href="{{ url('/logout') }}" class="log-out">Log out</a></div>
+    <div class="wrapper">
+        <div class="container-fluid navbar">
+            <div class="container">
+                <nav>
+                    <div class="no-padding-left">
+                        <a v-link="{ path: '/'}">Dashboard</a>
+                        <i class="fa fa-caret-up fa-fw arrow"></i>
+                    </div>
+                    <div><a v-link="{ path: '/contacts' }">Contacts</a></div>
+                    <div><a v-link="{ path: '/account' }">Account</a></div>
+                </nav>
+                <div class="user">Logged in as {{ Auth::user()->name }}. <a href="{{ url('/logout') }}" class="log-out">Log out</a></div>
+            </div>
         </div>
+        <div class="container">
+            @yield('content')
+        </div>
+        <footer>
+            &copy; 2015 RemindMe - <a href="{{ url('/')}}">Homepage</a>
+        </footer>
     </div>
-    <div class="container">
-        @yield('content')
-    </div>
-
     @yield('vue-templates')
 
     <!-- Page specific scripts -->

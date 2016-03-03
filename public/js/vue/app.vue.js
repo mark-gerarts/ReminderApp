@@ -75,7 +75,8 @@ var remindersStore = {
     addReminder: function(reminder) {
         this.state.upcomingReminders.push(reminder);
     }
-}
+};
+
 // Initialise the VueRouter.
 // VueRoute requires a base component (App).
 var App = Vue.extend({});

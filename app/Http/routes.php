@@ -37,7 +37,9 @@ Route::group(['middleware' => 'web'], function () {
 
     //payment
     Route::post('/checkout', 'PaymentController@createQuickReminderOrder');
+    Route::post('/usercheckout', 'PaymentController@createUserOrder');
     Route::get('/thankyou/{id?}', 'PaymentController@quickReminderOrderRedirect');
+    Route::get('/dashboard/thankyou/{id?}', 'PaymentController@userOrderRedirect');
 
     //Dashboard
     Route::get('/dashboard', 'DashboardController@index');
@@ -57,4 +59,7 @@ Route::group(['namespace' => 'API', 'prefix' => 'api'], function() {
 
     //Quick Reminders
     Route::post('/quickreminders', 'QuickRemindersController@insertQuickReminder');
+
+    //User
+    Route::get('/user', 'UserController@getUserDetails');
 });

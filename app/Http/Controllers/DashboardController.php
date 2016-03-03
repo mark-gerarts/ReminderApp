@@ -31,6 +31,14 @@ class DashboardController extends Controller
         $user = Auth::user();
         $data['token'] = JWTAuth::fromUser($user);
 
+        $uservm = [
+            "name" => $user->name,
+            "email" => $user->email,
+            "created_at" => $user->created_at,
+            "reminder_credits" => $user->reminder_credits
+        ];
+        $data['uservm'] = json_encode($uservm);
+
         return view('dashboard.home', $data);
     }
 

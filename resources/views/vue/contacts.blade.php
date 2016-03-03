@@ -1,9 +1,11 @@
 <template id="dashboard-contacts">
     <div class="row row-grid">
         <div class="col-md-7">
-            <h2>Contacts</h2>
             <table class="contacts">
                 <thead>
+                    <tr>
+                        <th colspan="3">Contacts</th>
+                    </tr>
                     <tr>
                         <th>Name</th>
                         <th>Number</th>

@@ -47,7 +47,7 @@ class CheckReminders extends Command
         $now = date('Y-m-d h:m:s');
 
         $user_reminders = User_reminder::where('send_datetime', '<', $now)->get();
-        $quick_reminders = Quick_reminder::where('send_datetime', '<', $now)->get();
+        $quick_reminders = Quick_reminder::where('send_datetime', '<', $now)->where('is_payed', 1)->get();
 
         foreach($user_reminders as $user_reminder)
         {

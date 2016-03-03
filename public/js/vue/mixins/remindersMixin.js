@@ -21,7 +21,7 @@ var remindersMixin = {
                 //Error
                 console.log(error);
             }).finally(function() {
-                this.isLoading.getUpcomingReminders = true;
+                this.isLoading.getUpcomingReminders = false;
             });
         },
 

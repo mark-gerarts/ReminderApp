@@ -1,9 +1,9 @@
 <template id="dashboard-home">
-   <div class="row">
+   <div class="row row-grid">
        <div class="col-md-4">
            <h2>Schedule a Reminder</h2>
            {{-- New reminder form --}}
-            <form class="flat-form" @submit.prevent="handleReminderSubmit">
+            <form class="flat-form overflow" @submit.prevent="handleReminderSubmit">
                 <label><span class="number">1</span>Phone Number</label>
                 <span class="error-message" v-if="validationErrors.no_recipient">
                     <strong>@{{ validationErrors.no_recipient }}</strong>
@@ -57,16 +57,28 @@
             </form>
        </div>
         <div class="col-md-7 col-md-offset-1">
-            <h2>Upcoming reminders</h2>
+            <div class="remaining-credits">
+                <img src="{{ url('img/chat.png')}}" alt="chat icon" />
+                <p v-if="user.reminder_credits > 0">
+                    You have <span class="remaining-amount">@{{ user.reminder_credits }}</span> remaining reminder<span v-if="user.reminder_credits > 1">s</span>.
+                </p>
+                <p v-else>
+                    You're out of reminders. <a v-link="{ path: '/account' }">Buy more.</a>
+                </p>
+            </div>
             <table class="upcoming-table">
                 <thead>
+                    <tr>
+                        <th colspan="4">Upcoming Reminders</th>
+                    </tr>
                     <tr>
                         <th>To</th>
                         <th>Date &amp; time</th>
                         <th>Message</th>
+                        <th>Repeat</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody v-if="remindersState.upcomingReminders.length != 0">
                     <tr v-for="reminder in remindersState.upcomingReminders | orderBy 'send_datetime'">
                         <td v-if="reminder.contact_id">
                             <span v-for="contact in sharedState.contacts | exactFilterBy reminder.contact_id in 'id'">
@@ -76,6 +88,16 @@
                         <td v-else>@{{ reminder.recipient }}</td>
                         <td>@{{ reminder.send_datetime.substr(0, reminder.send_datetime.length-3) }}</td>
                         <td>@{{ reminder.message }}</td>
+                        <td>
+                            @{{ repeats[reminder.repeat_id-1] }}
+                            <span v-if="repeat_id > 1"></span>
+                        </td>
+                    </tr>
+                </tbody>
+                <tbody v-else>
+                    <tr>
+                        <td colspan="4" v-if="isLoading.getUpcomingReminders"><i class="fa fa-spinner fa-pulse"></i> Loading...</td>
+                        <td colspan="4" v-else>No reminders yet!</td>
                     </tr>
                 </tbody>
             </table>

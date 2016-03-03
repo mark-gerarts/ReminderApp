@@ -12,6 +12,7 @@ var Home = Vue.extend({
 
     data: function() {
         return {
+            user: uservm,
             sharedState: contactsStore.state,
             remindersState: remindersStore.state,
             query: '',
@@ -25,9 +26,18 @@ var Home = Vue.extend({
                 repeat_id: 1 //list of repeats is not retrieved from the db because it is -very- unlikely to ever change
             },
             errors: {},
-            isLoading: {},
+            isLoading: {
+                getUpcomingReminders: false
+            },
             validationErrors: {},
-            isSubmittedOnce: false
+            isSubmittedOnce: false,
+            repeats: [
+                "Never",
+                "Daily",
+                "Weekly",
+                "Monthly",
+                "Yearly"
+            ]
         };
     },
 
