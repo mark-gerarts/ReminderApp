@@ -7,14 +7,14 @@
             {{-- While editing, show an input with the updatedContact vm --}}
             <input value="@{{ contact.name }}" v-model="updatedContact.name" @input="validate">
             {{-- show validation errors --}}
-            <div v-if="validationErrors.name">@{{ validationErrors.name }}</div>
+            <div v-show="validationErrors.name || validationErrors.number" class="validation-error">@{{ validationErrors.name }}</div>
         </td>
 
         {{-- The number field -> similar to name --}}
         <td v-show="!(editing || isLoading.updateContact)">@{{ contact.number }}</td>
         <td v-else>
             <input value="@{{ contact.number }}" v-model="updatedContact.number" @input="validate">
-            <div v-if="validationErrors.number">@{{ validationErrors.number }}</div>
+            <div v-show="validationErrors.name || validationErrors.number" class="validation-error">@{{ validationErrors.number }}</div>
         </td>
 
         {{-- Action buttons --}}

@@ -177,13 +177,11 @@ h2 {
 /** reminder table **/
 table {
     border: 2px solid #ecf0f1;
+    width: 100%;
+    border-collapse: collapse;
 }
 thead {
     background: #ecf0f1;
-}
-table {
-    width: 100%;
-    border-collapse: collapse;
 }
 table th {
     text-align: left;
@@ -394,4 +392,32 @@ footer {
 }
 .remaining-credits a {
     text-decoration: underline;
+}
+.cancel-reminder{
+    float: right;
+    color: #FFC2C2;
+    opacity: 0;
+}
+.cancel-reminder:hover {
+    cursor: default;
+}
+.upcoming-table tbody tr:hover .cancel-reminder {
+    opacity: 1;
+}
+.upcoming-table td {
+    position: relative;
+}
+.reminder-bubble {
+    right: -47px;
+    top: 32px
+}
+.visible-imp {
+    opacity: 1!important;
+}
+.validation-error {
+    height: 35px;
+    margin-top: 10px;
+}
+#buymore {
+    text-align: center;
 }

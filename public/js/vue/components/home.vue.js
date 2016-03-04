@@ -10,6 +10,10 @@ var Home = Vue.extend({
         this.getUpcomingReminders();
     },
 
+    components: {
+        'reminder-row': reminderRow
+    },
+
     data: function() {
         return {
             user: uservm,

@@ -38,7 +38,28 @@ var remindersMixin = {
                         repeat_id: 1,
                     };                      // Reset the viewmodel. This only happens when the insert is successful,
                                             // thus the user doesn't have to re-enter values in case of an error.
-                    //this.validationErrors = {}; //Reset the validationerrors
+                    uservm.reminder_credits--;
+                } else {
+                    //this.hasError.insertContact = true;
+                }
+            }, function(error) {
+                //Error
+                console.log(error);
+            }).finally(function() {
+                this.isLoading.submitReminder = false;
+            });
+        },
+
+        cancelReminder: function(reminder) {
+            this.showConfirmationBox = false;
+            this.isLoading.cancelReminder = true;
+
+            this.$http.get('api/reminders/cancel/' + reminder.id).then(function(response) {
+                //Success
+                console.log(response);
+                if(response.status == 200) {
+                    remindersStore.removeReminder(reminder);
+                    uservm.reminder_credits++;
                 } else {
                     //this.hasError.insertContact = true;
                 }

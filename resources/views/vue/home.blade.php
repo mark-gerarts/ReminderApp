@@ -79,20 +79,7 @@
                     </tr>
                 </thead>
                 <tbody v-if="remindersState.upcomingReminders.length != 0">
-                    <tr v-for="reminder in remindersState.upcomingReminders | orderBy 'send_datetime'">
-                        <td v-if="reminder.contact_id">
-                            <span v-for="contact in sharedState.contacts | exactFilterBy reminder.contact_id in 'id'">
-                                @{{ contact.name }}
-                            </span>
-                        </td>
-                        <td v-else>@{{ reminder.recipient }}</td>
-                        <td>@{{ reminder.send_datetime.substr(0, reminder.send_datetime.length-3) }}</td>
-                        <td>@{{ reminder.message }}</td>
-                        <td>
-                            @{{ repeats[reminder.repeat_id-1] }}
-                            <span v-if="repeat_id > 1"></span>
-                        </td>
-                    </tr>
+                    <tr v-for="reminder in remindersState.upcomingReminders | orderBy 'send_datetime'" is="reminder-row" :repeats="repeats" :reminder.sync="reminder"></tr>
                 </tbody>
                 <tbody v-else>
                     <tr>

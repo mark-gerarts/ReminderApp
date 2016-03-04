@@ -51,7 +51,34 @@ class RemindersController extends Controller
         }
         else
         {
+            $user->reminder_credits--;
+            $user->save();
             return $this->_createUserReminder($user->id, $request);
+        }
+    }
+
+    public function cancelReminder($id = NULL)
+    {
+        $user = JWTAuth::parseToken()->authenticate();
+
+        if(!$user)
+        {
+            return response()->json('Not logged in', 401);
+        }
+        else if($id == NULL)
+        {
+            return response()->json(false);
+        }
+        else
+        {
+            $reminder = User_reminder::find($id);
+            if($reminder)
+            {
+                $reminder->forceDelete();
+                $user->reminder_credits++;
+                $user->save();
+            }
+            return response()->json(true);
         }
     }
 
@@ -76,7 +103,7 @@ class RemindersController extends Controller
         $reminder = new User_reminder;
 
         // For now, needs some thought. This creates duplicate data in the db.
-        // Might be better to checkc lient side for soft deletes.
+        // Might be better to check client side for soft deletes.
         if($request->contact_id)
         {
             $contact = Contact::find($request->contact_id)->first();

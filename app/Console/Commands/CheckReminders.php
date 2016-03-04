@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 use App\Models\User_reminder;
 use App\Models\Quick_reminder;
 use App\Models\Contact;
+use App\Models\User;
 use Log;
 use Twilio;
 
@@ -47,10 +48,16 @@ class CheckReminders extends Command
         $now = date('Y-m-d h:m:s');
 
         $user_reminders = User_reminder::where('send_datetime', '<', $now)->get();
-        $quick_reminders = Quick_reminder::where('send_datetime', '<', $now)->where('is_payed', 1)->get();
+        $quick_reminders = Quick_reminder::where([
+                ['send_datetime', '<', $now],
+                ['is_payed', 1]
+            ])->get();
 
         foreach($user_reminders as $user_reminder)
         {
+            if($user_reminder->repeat_id != 1) {
+                $this->_handleRepeatedReminder($user_reminder);
+            }
             $this->_sendReminder($user_reminder);
         }
 
@@ -79,6 +86,48 @@ class CheckReminders extends Command
         // Don't forget to check if the number is valid before sending it to the Twilio API
         // Preferably upon making a reminder instead of upon sendig.
         // Twilio::message($recipient, $reminder->message);
+    }
+
+    private function _handleRepeatedReminder($reminder)
+    {
+        $user = User::find($reminder->user_id);
+        if($user->reminder_credits == 0)
+        {
+            return;
+        }
+        else
+        {
+            $user->reminder_credits--;
+            $user->save();
+        }
+
+        $newReminder = new User_reminder;
+        $newReminder->recipient = $reminder->recipient;
+        $newReminder->contact_id = $reminder->contact_id;
+        $newReminder->user_id = $reminder->user_id;
+        $newReminder->message = $reminder->message;
+        $newReminder->repeat_id = $reminder->repeat_id;
+
+        $newDate = new \DateTime($reminder->send_datetime);
+
+        switch($reminder->repeat_id)
+        {
+            case 2:
+                $newDate->add(new \DateInterval("P1D"));
+                break;
+            case 3:
+                $newDate->add(new \DateInterval("P7D"));
+                break;
+            case 4:
+                $newDate->add(new \DateInterval("P1M"));
+                break;
+            case 5:
+                $newDate->add(new \DateInterval("P1Y"));
+                break;
+        }
+
+        $newReminder->send_datetime = $newDate;
+        $newReminder->save();
     }
 
     /**
