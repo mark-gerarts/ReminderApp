@@ -36,9 +36,9 @@ class PaymentController extends Controller
         $this->validate($request, ['payment_type' => 'numeric|required']);
 
         $payment_types = [
-            1 => ["amount" => 5, "reminder_credits" => 10],
-            2 => ["amount" => 18, "reminder_credits" => 40],
-            3 => ["amount" => 40, "reminder_credits" => 100],
+            1 => ["amount" => 5, "reminder_credits" => 20],
+            2 => ["amount" => 10, "reminder_credits" => 50],
+            3 => ["amount" => 15, "reminder_credits" => 150],
         ];
 
         $order = new User_order;
@@ -49,7 +49,7 @@ class PaymentController extends Controller
 
         $payment = $this->_mollie->payments->create(array(
             "amount"      => $order->amount,
-            "description" => "Your RemindMe payment for " . $order->amount ." reminder credits.",
+            "description" => $order->reminder_credits ." reminders.",
             "redirectUrl" => url('/dashboard/thankyou/'.$order->id)
         ));
 
@@ -100,7 +100,7 @@ class PaymentController extends Controller
         $reminder->save();
 
         $payment = $this->_mollie->payments->create(array(
-            "amount"      => 0.55,
+            "amount"      => 0.50,
             "description" => "Your quick reminder.",
             "redirectUrl" => url('/thankyou/'.$reminder->id)
         ));
@@ -145,8 +145,6 @@ class PaymentController extends Controller
             {
                 return view('home.index');
             }
-
-
         }
     }
 }

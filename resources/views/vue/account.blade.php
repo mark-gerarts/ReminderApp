@@ -14,8 +14,8 @@
                     <span class="pricing-currency">&euro;</span>5
                 </div>
                 <ul>
-                    <li>10 Reminders</li>
-                    <li>&euro; 0,50/reminder</li>
+                    <li>20 Reminders</li>
+                    <li>&euro; 0,25/reminder</li>
                     <li>Smallest amount</li>
                     <li></li>
                 </ul>
@@ -27,13 +27,13 @@
             </form>
         </div>
         <div class="col-md-4">
-            <form class="pricing">
+            <form class="pricing" method="post" action="{{url('/usercheckout')}}">
                 <div class="pricing-header promo">
-                    <span class="pricing-currency promo">&euro;</span>18
+                    <span class="pricing-currency promo">&euro;</span>10
                 </div>
                 <ul>
-                    <li>40 Reminders</li>
-                    <li>&euro; 0,45/reminder</li>
+                    <li>50 Reminders</li>
+                    <li>&euro; 0,20/reminder</li>
                     <li class="promo">Most popular</li>
                     <li></li>
                 </ul>
@@ -45,13 +45,13 @@
             </form>
         </div>
         <div class="col-md-4">
-            <form class="pricing">
+            <form class="pricing" method="post" action="{{url('/usercheckout')}}">
                 <div class="pricing-header">
-                    <span class="pricing-currency">&euro;</span>40
+                    <span class="pricing-currency">&euro;</span>15
                 </div>
                 <ul>
-                    <li>100 Reminders</li>
-                    <li>&euro; 0,40/reminder</li>
+                    <li>150 Reminders</li>
+                    <li>&euro; 0,15/reminder</li>
                     <li>Best price</li>
                     <li></li>
                 </ul>

@@ -7,7 +7,7 @@
 @section('content')
 <main class="container pricing">
     <h1>Pricing</h1>
-    <p>Submitting quick reminder costs <span class="quick-price">&euro; 0.55</span> per reminder.</p>
+    <p>Submitting quick reminder costs <span class="quick-price">&euro; 0.50</span> per reminder.</p>
     <p>Creating an account is free, and gives you the option to buy packages.</p>
     <div class="row">
         <div class="col-md-12">
@@ -24,20 +24,20 @@
                     <tr>
                         <td>#1</td>
                         <td><span class="price">&euro;</span> 5</td>
-                        <td>10 reminders</td>
-                        <td>&euro; 0,50/reminder</td>
+                        <td>20 reminders</td>
+                        <td>&euro; 0,25/reminder</td>
                     </tr>
                     <tr>
                         <td>#2</td>
-                        <td><span class="price">&euro;</span> 18</td>
-                        <td>40 reminders</td>
-                        <td>&euro; 0,45/reminder</td>
+                        <td><span class="price">&euro;</span> 10</td>
+                        <td>50 reminders</td>
+                        <td>&euro; 0,20/reminder</td>
                     </tr>
                     <tr>
                         <td>#3</td>
-                        <td><span class="price">&euro;</span> 40</td>
+                        <td><span class="price">&euro;</span> 15</td>
                         <td>100 reminders</td>
-                        <td>&euro; 0,40/reminder</td>
+                        <td>&euro; 0,15/reminder</td>
                     </tr>
                 </tbody>
             </table>
