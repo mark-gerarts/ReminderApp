@@ -41,7 +41,7 @@
                     <span class="error-message" v-if="validationErrors.send_datetime">
                         <strong>@{{ validationErrors.send_datetime }}</strong>
                     </span>
-                    <input type="datetime" placeholder="DD/MM/YY hh:mm" v-model="newQuickReminder.send_datetime" @input="validate">
+                    <input type="datetime" placeholder="YYYY-MM-DD hh:mm" v-model="newQuickReminder.send_datetime" @input="validate">
 
                     <label><span class="number">3</span>Message</label>
                     <span class="error-message" v-if="validationErrors.message">
@@ -52,9 +52,9 @@
                 </form>
                 <form action="{{ url('checkout') }}" method="post" v-else>
                     <h3>Make sure everything is filled out correctly.</h3>
-                    <p><strong>Number: </strong>@{{ newQuickReminder.recipient }}</p>
-                    <p><strong>Date &amp; time: </strong>@{{ newQuickReminder.send_datetime }}</p>
-                    <p><strong>Message: </strong>@{{ newQuickReminder.message }}</p>
+                    <p><strong>Number </strong><br />@{{ newQuickReminder.recipient }}</p>
+                    <p><strong>Date &amp; time </strong><br />@{{ newQuickReminder.send_datetime }}</p>
+                    <p><strong>Message </strong><br />@{{ newQuickReminder.message }}</p>
                     <input type="hidden" name="_token" value="{{ csrf_token() }}" />
                     <input type="hidden" name="recipient" value="@{{ newQuickReminder.recipient}}" />
                     <input type="hidden" name="send_datetime" value="@{{ newQuickReminder.send_datetime}}" />

@@ -4,11 +4,13 @@ var Home = Vue.extend({
     mixins: [contactsMixin, remindersMixin, validatorMixin],
 
     ready: function() {
-        if(this.sharedState.contacts.length == 0) {
+        if(!contactsStore.isLoaded) {
             this.getContacts();
+            contactsStore.setLoadStatus(true);
         }
-        if(this.remindersState.upcomingReminders.length == 0) {
+        if(!remindersStore.isLoaded) {
             this.getUpcomingReminders();
+            remindersStore.setLoadStatus(true);
         }
     },
 

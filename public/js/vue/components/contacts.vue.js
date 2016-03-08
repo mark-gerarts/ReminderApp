@@ -16,9 +16,9 @@ var Contacts = Vue.extend({
 
     ready: function() {
         // Only perform a new server request if the page is loaded for the first time.
-        if(this.sharedState.contacts.length == 0) {
-            // getContacts() fills the shared state with all contacts.
+        if(!contactsStore.isLoaded) {
             this.getContacts();
+            contactsStore.setLoadStatus(true);
         }
     },
 

@@ -16,6 +16,12 @@ var contactsStore = {
         contacts: []
     },
 
+    isLoaded: false,
+
+    setLoadStatus: function(status) {
+        this.isLoaded = status;
+    },
+
     // List of methods to manipulate the state.
 
     // Gets the index of the given contact.
@@ -69,6 +75,13 @@ var remindersStore = {
     state: {
         upcomingReminders: []
     },
+
+    isLoaded: false,
+
+    setLoadStatus: function(status) {
+        this.isLoaded = status;
+    },
+
     getIndexOf: function(reminder) {
         var outputIndex = -1;
         // Array.prototype.some(..) because some is breakable.
