@@ -24,6 +24,7 @@ var Home = Vue.extend({
             query: '',
             showSuggestions: false,
             selectedContact: {},
+            selectedIndex: -1,
             newReminder: {
                 recipient: null,
                 contact_id: null,
@@ -47,6 +48,22 @@ var Home = Vue.extend({
         };
     },
 
+    computed: {
+        filteredContacts: function() {
+            if(this.query.length < 2) {
+                return [];
+            }
+
+            var self = this;
+            function contains(a, b) {
+                return a.toLowerCase().indexOf(b.toLowerCase()) != -1;
+            }
+            return this.sharedState.contacts.filter(function(contact) {
+                return contains(contact.name, self.query) || contains(contact.number, self.query);
+            });
+        }
+    },
+
     methods: {
         selectContact: function(contact) {
             //ToDo: add check for either contact_id or a random number + check if correct etc
@@ -55,8 +72,24 @@ var Home = Vue.extend({
             this.query = contact.name + ' (' + contact.number + ')';
         },
 
-        highlightContact: function() {
-            console.log('highlighted!');
+        highlightContact: function(direction) {
+            var length = this.filteredContacts.length;
+            switch(direction) {
+                case 'down':
+                    this.selectedIndex++;
+                    break;
+                case 'up':
+                    this.selectedIndex--;
+                    break;
+            }
+            if(this.selectedIndex > length - 1) {
+                this.selectedIndex = 0;
+            }
+            if(this.selectedIndex < 0) {
+                this.selectedIndex = length - 1;
+            }
+
+            this.selectedContact = this.filteredContacts[this.selectedIndex];
         },
 
         validate: function() {
@@ -85,12 +118,13 @@ var Home = Vue.extend({
                 this.submitReminder(this.newReminder);
             }
         }
+    },
+
+    filters: {
+        exactFilterBy: function(array, needle, inKeyword, key) {
+            return array.filter(function(item) {
+                return item[key] == needle;
+            });
+        }
     }
-
-});
-
-Vue.filter('exactFilterBy', function(array, needle, inKeyword, key) {
-    return array.filter(function(item) {
-        return item[key] == needle;
-    })
 });

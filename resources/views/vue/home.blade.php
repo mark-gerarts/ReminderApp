@@ -2,6 +2,7 @@
    <div class="row row-grid">
        <div class="col-md-4">
            <h2>Schedule a Reminder</h2>
+           <pre>@{{ $data.selectedContact | json }}</pre>
            {{-- New reminder form --}}
             <form class="flat-form overflow" @submit.prevent="handleReminderSubmit">
                 <label><span class="number">1</span>Phone Number</label>
@@ -13,14 +14,17 @@
                             v-model="query"
                             @focus="showSuggestions = true"
                             @blur="showSuggestions = false"
-                            @keyup.down.prevent="highlightContact"
+                            @keyup.down.prevent="highlightContact('down')"
+                            @keyup.up.prevent="highlightContact('up')"
+                            @keyup.enter.prevent="selectContact(selectedContact)"
                             @input="validate"
                             autocomplete="off"
                     >
                     {{-- Suggestion box to autocomplete contacts --}}
                     <div class="suggestionbox-wrapper" v-show="query.length > 1 && showSuggestions">
                         <div class="suggestionbox">
-                            <p  v-for="contact in sharedState.contacts | filterBy query in 'name' 'number' | orderBy 'name' | limitBy 6"
+                            <p  v-for="contact in filteredContacts | limitBy 6"
+                                :class="{ 'active': contact.id == selectedContact.id }"
                                 @mousedown="selectContact(contact)"
                             >
                                 @{{contact.name}} (@{{contact.number}})
@@ -33,7 +37,7 @@
                 <span class="error-message" v-if="validationErrors.send_datetime">
                     <strong>@{{ validationErrors.send_datetime }}</strong>
                 </span>
-                <input type="text" placeholder="DD/MM/YY hh:mm" v-model="newReminder.send_datetime" @input="validate">
+                <input type="text" placeholder="YYYY-MM-DD hh:mm" v-model="newReminder.send_datetime" @input="validate">
 
                 <label><span class="number">3</span>Message</label>
                 <span class="error-message" v-if="validationErrors.message">
