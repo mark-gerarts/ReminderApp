@@ -148,4 +148,16 @@ class CheckReminders extends Command
             return $contact->number;
         }
     }
+
+    public function lookupNumber($number)
+    {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, "https://lookups.twilio.com/v1/PhoneNumbers/" . $number);
+        curl_setopt($ch, CURLOPT_USERPWD, env('TWILIO_SID') . ':' . env('TWILIO_TOKEN'));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $output = curl_exec($ch);
+        curl_close($ch);
+
+        return json_decode($output);
+    }
 }

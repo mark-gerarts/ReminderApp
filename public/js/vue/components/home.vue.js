@@ -7,7 +7,9 @@ var Home = Vue.extend({
         if(this.sharedState.contacts.length == 0) {
             this.getContacts();
         }
-        this.getUpcomingReminders();
+        if(this.remindersState.upcomingReminders.length == 0) {
+            this.getUpcomingReminders();
+        }
     },
 
     components: {
