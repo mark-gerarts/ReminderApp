@@ -23,6 +23,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind('App\Repositories\User\IUserRepository', 'App\Repositories\User\UserRepository');
+        $this->app->bind('App\Repositories\Contact\IContactRepository', 'App\Repositories\Contact\ContactRepository');
+        $this->app->bind('App\Repositories\Quick_reminder\IQuick_reminderRepository', 'App\Repositories\Quick_reminder\Quick_reminderRepository');
+        $this->app->bind('App\Repositories\User_order\IUser_orderRepository', 'App\Repositories\User_order\User_orderRepository');
     }
 }

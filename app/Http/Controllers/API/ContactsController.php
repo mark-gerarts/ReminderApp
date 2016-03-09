@@ -3,39 +3,44 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Requests;
-use App\Models\Contact;
 use App\Http\Controllers\Controller;
+use App\Repositories\Contact\IContactRepository;
+use App\Repositories\User\IUserRepository;
 use Illuminate\Http\Request;
 use JWTAuth;
 use Validate;
 
 class ContactsController extends Controller
 {
-    /**
-     * Show the application dashboard.
-     *
-     * @return Response
-     */
+    private $_contactRepository;
+    private $_userRepository;
+
+    public function __construct(IContactRepository $contact, IUserRepository $user)
+    {
+        $this->_contactRepository = $contact;
+        $this->_userRepository = $user;
+    }
 
     // Has $id = NULL for now - can be removed (and in routes.php) if I end up
     // Not using it.
     public function get(Request $request, $id = NULL)
     {
-        $user = JWTAuth::parseToken()->authenticate();
-
-        if(!$user) {
-            return response()->json('Not logged in', 401);
+        $user = $this->_authenticate();
+        if(!$user)
+        {
+            return $this->_invalidLoginResponse();
         }
 
-        return response()->json($user->contacts);
+        $userContacts = $this->_contactRepository->getContactsByUserId($user->id);
+        return response()->json($userContacts);
     }
 
     public function insert(Request $request)
     {
-        $user = JWTAuth::parseToken()->authenticate();
-
-        if(!$user) {
-            return response()->json('Not logged in');
+        $user = $this->_authenticate();
+        if(!$user)
+        {
+            return $this->_invalidLoginResponse();
         }
 
         $this->validate($request, [
@@ -43,42 +48,36 @@ class ContactsController extends Controller
                 'number' => 'required|max:20|min:6'
             ]);
 
-        $contact = new Contact;
+        $contact = [
+            "name" => $request->name,
+            "number" => $request->number,
+            "user_id" => $user->id
+        ];
 
-        $contact->name = $request->name;
-        $contact->number = $request->number;
-        $contact->user_id = $user->id;
-
-        if($contact->save())
-        {
-            return response()->json($contact->id);
-        }
-        else
-        {
-            return response()->json(false);
-        }
+        $identity = $this->_contactRepository->insertContact($contact);
+        return response()->json($identity);
     }
 
     public function delete(Request $request, $id)
     {
-        $user = JWTAuth::parseToken()->authenticate();
-
-        if(!$user) {
-            return response()->json('Not logged in');
+        $user = $this->_authenticate();
+        if(!$user)
+        {
+            return $this->_invalidLoginResponse();
         }
 
         //ToDo: check if contact is really one of authenticated user's contacts
 
-        $result = Contact::destroy($id);
+        $result = $this->_contactRepository->deleteContact($id);
         return response()->json($result);
     }
 
     public function update(Request $request)
     {
-        $user = JWTAuth::parseToken()->authenticate();
-
-        if(!$user) {
-            return response()->json('Not logged in');
+        $user = $this->_authenticate();
+        if(!$user)
+        {
+            return $this->_invalidLoginResponse();
         }
 
         $this->validate($request, [
@@ -86,13 +85,26 @@ class ContactsController extends Controller
                 'number' => 'required|max:20|min:6'
             ]);
 
-        //ToDo: check if contact is really one of authenticated user's contacts
-        $contact = Contact::find($request->id);
-        $contact->name = $request->name;
-        $contact->number = $request->number;
+        $contact = $this->_contactRepository->getContactById($request->id);
+        if($contact->user_id != $user->id)
+        {
+            return response()->json(false);
+        }
 
-        $result = $contact->save();
+        $newValues["name"] = $request->name;
+        $newValues["number"] = $request->number;
 
+        $result = $this->_contactRepository->updateContact($request->id, $newValues);
         return response()->json($result);
+    }
+
+    private function _authenticate()
+    {
+        return JWTAuth::parseToken()->authenticate();
+    }
+
+    private function _invalidLoginResponse()
+    {
+        return response()->json('Not logged in', 401);
     }
 }

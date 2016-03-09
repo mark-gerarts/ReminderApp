@@ -26,6 +26,7 @@ var Home = Vue.extend({
             query: '',
             showSuggestions: false,
             selectedContact: {},
+            highlightedContact: {},
             selectedIndex: -1,
             newReminder: {
                 recipient: null,
@@ -74,16 +75,19 @@ var Home = Vue.extend({
             this.query = contact.name + ' (' + contact.number + ')';
         },
 
-        highlightContact: function(direction) {
-            var length = this.filteredContacts.length;
-            switch(direction) {
+        highlightContact: function(input) {
+            switch(input) {
                 case 'down':
                     this.selectedIndex++;
                     break;
                 case 'up':
                     this.selectedIndex--;
                     break;
+                default:
+                    this.selectedIndex = input;
+                    break;
             }
+            var length = this.filteredContacts.length;
             if(this.selectedIndex > length - 1) {
                 this.selectedIndex = 0;
             }
@@ -91,7 +95,7 @@ var Home = Vue.extend({
                 this.selectedIndex = length - 1;
             }
 
-            this.selectedContact = this.filteredContacts[this.selectedIndex];
+            this.highlightedContact = this.filteredContacts[this.selectedIndex];
         },
 
         validate: function() {

@@ -74,7 +74,7 @@ return [
     |
     */
 
-    'user' => 'App\User',
+    'user' => 'App\Models\User',
 
     /*
     |--------------------------------------------------------------------------
@@ -134,7 +134,8 @@ return [
         |
         */
 
-        'user' => 'Tymon\JWTAuth\Providers\User\EloquentUserAdapter',
+        'user' => 'App\Repositories\User\UserRepository',
+        //'user' => 'Tymon\JWTAuth\Providers\User\EloquentUserAdapter',
 
         /*
         |--------------------------------------------------------------------------

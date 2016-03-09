@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Quick_reminder;
 use App\Models\User_order;
 use App\Models\User;
+use App\Repositories\User_order\IUser_orderRepository;
 use Mail;
 use Twilio;
 use Auth;
@@ -16,16 +17,16 @@ use Mollie_API_Client;
 class PaymentController extends Controller
 {
     private $_mollie;
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+
+    private $_userOrderRepository;
+
+    public function __construct(IUser_orderRepository $userOrderRepository)
     {
         $this->_mollie = new Mollie_API_Client;
         $key = env('MOLLIE_API_KEY');
         $this->_mollie->setApiKey($key);
+
+        $this->_userOrderRepository = $userOrderRepository;
     }
 
     public function createUserOrder(Request $request)
@@ -41,20 +42,21 @@ class PaymentController extends Controller
             3 => ["amount" => 15, "reminder_credits" => 150],
         ];
 
-        $order = new User_order;
-        $order->user_id = $user->id;
-        $order->amount = $payment_types[$request->payment_type]["amount"];
-        $order->reminder_credits = $payment_types[$request->payment_type]["reminder_credits"];
-        $order->save();
+        $values = [
+            "user_id" => $user->id,
+            "amount" => $payment_types[$request->payment_type]["amount"],
+            "reminder_credits" => $payment_types[$request->payment_type]["reminder_credits"]
+        ];
+
+        $identity = $this->_userOrderRepository->insertUserOrder($values);
 
         $payment = $this->_mollie->payments->create(array(
-            "amount"      => $order->amount,
-            "description" => $order->reminder_credits ." reminders.",
-            "redirectUrl" => url('/dashboard/thankyou/'.$order->id)
+            "amount"      => $values["amount"],
+            "description" => $values["reminder_credits"] . " reminders.",
+            "redirectUrl" => url('/dashboard/thankyou/'.$identity)
         ));
 
-        $order->payment_id = $payment->id;
-        $order->save();
+        $this->_userOrderRepository->updateUserOrder($identity, ["payment_id" => $payment->id]);
 
         header("Location: " . $payment->getPaymentUrl());
         exit;

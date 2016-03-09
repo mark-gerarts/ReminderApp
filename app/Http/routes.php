@@ -63,4 +63,7 @@ Route::group(['namespace' => 'API', 'prefix' => 'api'], function() {
 
     //User
     Route::get('/user', 'UserController@getUserDetails');
+
+    //test
+    Route::get('/test', 'ContactsController@test');
 });

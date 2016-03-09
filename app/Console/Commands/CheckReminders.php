@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Models\User_reminder;
-use App\Models\Quick_reminder;
+use App\Repositories\Quick_reminder\IQuick_reminderRepository;
 use App\Models\Contact;
 use App\Models\User;
 use Log;
@@ -26,14 +26,16 @@ class CheckReminders extends Command
      */
     protected $description = 'Checks if there are reminders that need to be sent & sends them';
 
+    private $_quickReminderRepository;
     /**
      * Create a new command instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(IQuick_reminderRepository $quickReminder)
     {
         parent::__construct();
+        $this->_quickReminderRepository = $quickReminder;
     }
 
     /**
@@ -48,10 +50,10 @@ class CheckReminders extends Command
         $now = date('Y-m-d h:m:s');
 
         $user_reminders = User_reminder::where('send_datetime', '<', $now)->get();
-        $quick_reminders = Quick_reminder::where([
+        $quick_reminders = $this->_quickReminderRepository->getQuickRemindersWhere([
                 ['send_datetime', '<', $now],
                 ['is_payed', 1]
-            ])->get();
+            ]);
 
         foreach($user_reminders as $user_reminder)
         {

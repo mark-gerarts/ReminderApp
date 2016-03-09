@@ -16,15 +16,16 @@
                             @blur="showSuggestions = false"
                             @keyup.down.prevent="highlightContact('down')"
                             @keyup.up.prevent="highlightContact('up')"
-                            @keyup.enter.prevent="selectContact(selectedContact)"
+                            @keyup.enter.prevent="selectContact(highlightedContact)"
                             @input="validate"
                             autocomplete="off"
                     >
                     {{-- Suggestion box to autocomplete contacts --}}
                     <div class="suggestionbox-wrapper" v-show="query.length > 1 && showSuggestions">
                         <div class="suggestionbox">
-                            <p  v-for="contact in filteredContacts | limitBy 6"
-                                :class="{ 'active': contact.id == selectedContact.id }"
+                            <p  v-for="(index, contact) in filteredContacts | limitBy 6"
+                                :class="{ 'active': contact.id == highlightedContact.id }"
+                                @mouseenter="highlightContact(index)"
                                 @mousedown="selectContact(contact)"
                             >
                                 @{{contact.name}} (@{{contact.number}})

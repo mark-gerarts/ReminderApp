@@ -3,13 +3,18 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Requests;
-use App\Models\Quick_reminder;
+use App\Repositories\Quick_reminder\IQuick_reminderRepository;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Validate;
 
 class QuickRemindersController extends Controller
 {
+    $this->_quickReminderRepository;
+    public function __construct(IQuick_reminderRepository $quickReminder)
+    {
+        $this->_quickReminderRepository = $quickReminder;
+    }
     /**
      * Insert a quick reminder.
      *
@@ -25,13 +30,15 @@ class QuickRemindersController extends Controller
                 'message' => 'required|max:255'
             ]);
 
-        $reminder = new Quick_reminder;
+        $reminder = [
+            "recipient" => $request->recipient,
+            "send_datetime" => $request->send_datetime,
+            "message" => $request->message
+        ];
 
-        $reminder->recipient = $request->recipient;
-        $reminder->send_datetime = $request->send_datetime;
-        $reminder->message = $request->message;
+        $result = $this->_quickReminderRepository->insertQuickReminder($reminder);
 
-        if($reminder->save())
+        if($result)
         {
             return response()->json(true);
         }
