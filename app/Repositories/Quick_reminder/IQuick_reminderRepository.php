@@ -11,4 +11,6 @@ interface IQuick_reminderRepository
     public function getQuickRemindersWhere($arguments);
 
     public function updateQuickReminder($id, $values);
+
+    public function deleteQuickReminder($id);
 }

@@ -39,4 +39,9 @@ class Quick_reminderRepository implements IQuick_reminderRepository
     {
         return $this->_quickReminder->where('id', $id)->update($values);
     }
+
+    public function deleteQuickReminder($id)
+    {
+        return $this->_quickReminder->destroy($id);
+    }
 }

@@ -16,11 +16,11 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        //$this->middleware('auth');
+        //
     }
 
     /**
-     * Show the application dashboard.
+     * Show the website homepage.
      *
      * @return Response
      */
@@ -29,11 +29,21 @@ class HomeController extends Controller
         return view('home.index');
     }
 
+    /**
+     * Show the pricing page.
+     *
+     * @return Response
+     */
     public function pricing()
     {
         return view('home.pricing');
     }
 
+    /**
+     * Show the FAQ page - soon to be contact page.
+     *
+     * @return Response
+     */
     public function faq()
     {
         return view('home.faq');

@@ -29,8 +29,11 @@ class DashboardController extends Controller
     public function index()
     {
         $user = Auth::user();
+
+        // Create a new JWT token from the authenticated user.
         $data['token'] = JWTAuth::fromUser($user);
 
+        // Pass select userdata to the view.
         $uservm = [
             "name" => $user->name,
             "email" => $user->email,
@@ -40,15 +43,5 @@ class DashboardController extends Controller
         $data['uservm'] = json_encode($uservm);
 
         return view('dashboard.home', $data);
-    }
-
-    public function contacts()
-    {
-        return view('dashboard.contacts');
-    }
-
-    public function history()
-    {
-        return view('dashboard.history');
     }
 }

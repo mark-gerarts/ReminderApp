@@ -3,8 +3,6 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Requests;
-use App\Models\User_reminder;
-use App\Models\Contact;
 use App\Repositories\User_reminder\IUser_reminderRepository;
 use App\Repositories\User\IUserRepository;
 use App\Http\Controllers\Controller;
@@ -14,10 +12,14 @@ use Validate;
 
 class RemindersController extends Controller
 {
+    // The used repositories.
     private $_userRepository;
-
     private $_userReminderRepository;
 
+    /**
+     * Inject the repositories.
+     *
+     */
     public function __construct(IUserRepository $userRepository, IUser_reminderRepository $userReminderRepository)
     {
         $this->_userRepository = $userRepository;
@@ -38,21 +40,21 @@ class RemindersController extends Controller
             return $this->_invalidLoginResponse();
         }
 
+        // Get the upcoming reminders belonging to the authenticated user.
         $upcomingReminders = $this->_userReminderRepository->getUserRemindersWhere([
                 ['user_id', $user->id],
-                ['send_datetime', '>', date("Y-m-d H:i:s")] //Only reminders with a datetime later than now
+                ['send_datetime', '>', date("Y-m-d H:i:s")] // Only reminders with a datetime later than now.
             ]);
 
+        // Return as JSON.
         return response()->json($upcomingReminders);
     }
 
     /**
      * Insert a user reminder.
      *
-     * @param Request - Reminder JSON
      * @return JSON response
      */
-
     public function insertReminder(Request $request)
     {
         $user = $this->_authenticate();
@@ -60,14 +62,22 @@ class RemindersController extends Controller
         {
             return $this->_invalidLoginResponse();
         }
-        else
-        {
-            $newCredits = $user->reminder_credits - 1;
-            $this->_userRepository->updateUser($user->id, ["reminder_credits" => $newCredits]);
-            return $this->_createUserReminder($user->id, $request);
-        }
+
+        // Remove a credit from the user.
+        $newCredits = $user->reminder_credits - 1;
+        $this->_userRepository->updateUser($user->id, ["reminder_credits" => $newCredits]);
+
+        // Create the new reminder & return the result.
+        // ToDo: what if the insert failed?;
+        return $this->_createUserReminder($user->id, $request);
     }
 
+    /**
+     * Cancel (delete) a remidner.
+     *
+     * @param Int $id
+     * @return json
+     */
     public function cancelReminder($id = NULL)
     {
         $user = $this->_authenticate();
@@ -79,27 +89,27 @@ class RemindersController extends Controller
         {
             return response()->json(false);
         }
-        else
+
+        // Get the reminder by id.
+        $reminder = $this->_userReminderRepository->getUserReminderById($id);
+        if($reminder)
         {
-            $reminder = $this->_userReminderRepository->getUserReminderById($id);
-            if($reminder)
-            {
-                $this->_userReminderRepository->forceDeleteUserReminder($reminder->id);
-                $newCredits = $user->reminder_credits + 1;
-                $this->_userRepository->updateUser($user->id, ["reminder_credits" => $newCredits]);
-            }
+            // Delete the reminder, and refund a credit for the user.
+            $this->_userReminderRepository->forceDeleteUserReminder($reminder->id);
+            $newCredits = $user->reminder_credits + 1;
+            $this->_userRepository->updateUser($user->id, ["reminder_credits" => $newCredits]);
             return response()->json(true);
         }
+        // If the reminder isn't found; return false.
+        return response()->json(false);
     }
 
     /**
      * Insert a user reminder.
      *
      * @param User ID
-     * @param Request - Reminder JSON
      * @return JSON response
      */
-
     private function _createUserReminder($user_id, $request)
     {
         $this->validate($request, [
@@ -110,6 +120,7 @@ class RemindersController extends Controller
                 'repeat_id' => 'required|numeric'
             ]);
 
+        // Set up the new reminder.
         $values = [
             "message" => $request->message,
             "repeat_id" => $request->repeat_id,
@@ -117,6 +128,7 @@ class RemindersController extends Controller
             "send_datetime" => $request->send_datetime
         ];
 
+        // Check if the reminder is associated with a contact or a random recipient.
         if(isset($request->contact_id))
         {
             $values["contact_id"] = $request->contact_id;
@@ -127,9 +139,11 @@ class RemindersController extends Controller
         }
         else
         {
+            // At least one of both is required, so return false when the request contains neither.
             return response()->json(false);
         }
 
+        // Insert the new reminder and get the result (ID or false).
         $identity = $this->_userReminderRepository->insertUserReminder($values);
 
         if($identity)
@@ -142,6 +156,10 @@ class RemindersController extends Controller
         }
     }
 
+    /**
+     * See ContactsController 
+     *
+     */
     private function _authenticate()
     {
         return JWTAuth::parseToken()->authenticate();

@@ -45,6 +45,6 @@ class User_reminderRepository implements IUser_reminderRepository
 
     public function forceDeleteUserReminder($id)
     {
-        return $this->_userReminder->forceDelete($id);
+        return $this->_userReminder->find($id)->forceDelete();
     }
 }

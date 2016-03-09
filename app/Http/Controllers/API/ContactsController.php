@@ -13,10 +13,15 @@ use Validate;
 
 class ContactsController extends Controller
 {
+    // The used repositories.
     private $_contactRepository;
     private $_userRepository;
     private $_userReminderRepository;
 
+    /**
+     * Inject the repositories.
+     *
+     */
     public function __construct(IContactRepository $contact, IUserRepository $user, IUser_reminderRepository $userReminder)
     {
         $this->_contactRepository = $contact;
@@ -24,8 +29,12 @@ class ContactsController extends Controller
         $this->_userReminderRepository = $userReminder;
     }
 
-    // Has $id = NULL for now - can be removed (and in routes.php) if I end up
-    // Not using it.
+    /**
+     * Get all contacts of a user, or one contact.
+     *
+     * @param Int $id
+     * @return json
+     */
     public function get(Request $request, $id = NULL)
     {
         $user = $this->_authenticate();
@@ -34,10 +43,16 @@ class ContactsController extends Controller
             return $this->_invalidLoginResponse();
         }
 
+        // Fetch all the contacts associated with the user & return as JSON.
         $userContacts = $this->_contactRepository->getContactsByUserId($user->id);
         return response()->json($userContacts);
     }
 
+    /**
+     * Insert a new user.
+     *
+     * @return json
+     */
     public function insert(Request $request)
     {
         $user = $this->_authenticate();
@@ -51,16 +66,26 @@ class ContactsController extends Controller
                 'number' => 'required|max:20|min:6'
             ]);
 
+        // Set up the values for the new contact.
         $contact = [
             "name" => $request->name,
             "number" => $request->number,
             "user_id" => $user->id
         ];
 
+        // Insert via the repository.
         $identity = $this->_contactRepository->insertContact($contact);
+
+        // The new ID is returned in the response.
         return response()->json($identity);
     }
 
+    /**
+     * Delete a contact.
+     *
+     * @param Int $id
+     * @return json
+     */
     public function delete(Request $request, $id)
     {
         $user = $this->_authenticate();
@@ -69,17 +94,18 @@ class ContactsController extends Controller
             return $this->_invalidLoginResponse();
         }
 
-        // Get contact.
+        // Get the contact.
         $contact = $this->_contactRepository->getContactById($id);
 
         // Check if the contact really belongs to the user.
         if($contact->user_id != $user->id)
         {
-            return resposne()->json(false);
+            return response()->json(false);
         }
 
         // Remove the contact id from all associated reminders, and
         // set the recipient to the contact's number.
+        // This is so the set reminders can still be sent.
         $reminders = $this->_userReminderRepository->getUserRemindersWhere([["contact_id", $id]]);
         foreach($reminders as $reminder)
         {
@@ -89,12 +115,16 @@ class ContactsController extends Controller
             ]);
         }
 
-        // Delete the contact
+        // Finally, delete the contact & return the result.
         $result = $this->_contactRepository->deleteContact($id);
-
         return response()->json($result);
     }
 
+    /**
+     * Update a contact.
+     *
+     * @return json
+     */
     public function update(Request $request)
     {
         $user = $this->_authenticate();
@@ -108,26 +138,40 @@ class ContactsController extends Controller
                 'number' => 'required|max:20|min:6'
             ]);
 
+        // Check if the contact really belongs to the user.
         $contact = $this->_contactRepository->getContactById($request->id);
         if($contact->user_id != $user->id)
         {
             return response()->json(false);
         }
 
+        // Set the new values.
         $newValues["name"] = $request->name;
         $newValues["number"] = $request->number;
 
+        // Perform the update.
         $result = $this->_contactRepository->updateContact($request->id, $newValues);
         return response()->json($result);
     }
 
+    /**
+     * Authenticate via JWT.
+     *
+     * @return mixed
+     */
     private function _authenticate()
     {
         return JWTAuth::parseToken()->authenticate();
     }
 
+    /**
+     * Returns a json 401 response.
+     *
+     * @return json
+     */
     private function _invalidLoginResponse()
     {
+        // 401 - not authenticated.
         return response()->json('Not logged in', 401);
     }
 }
