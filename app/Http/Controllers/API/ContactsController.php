@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Repositories\Contact\IContactRepository;
+use App\Repositories\User_reminder\IUser_reminderRepository;
 use App\Repositories\User\IUserRepository;
 use Illuminate\Http\Request;
 use JWTAuth;
@@ -14,11 +15,13 @@ class ContactsController extends Controller
 {
     private $_contactRepository;
     private $_userRepository;
+    private $_userReminderRepository;
 
-    public function __construct(IContactRepository $contact, IUserRepository $user)
+    public function __construct(IContactRepository $contact, IUserRepository $user, IUser_reminderRepository $userReminder)
     {
         $this->_contactRepository = $contact;
         $this->_userRepository = $user;
+        $this->_userReminderRepository = $userReminder;
     }
 
     // Has $id = NULL for now - can be removed (and in routes.php) if I end up
@@ -66,9 +69,29 @@ class ContactsController extends Controller
             return $this->_invalidLoginResponse();
         }
 
-        //ToDo: check if contact is really one of authenticated user's contacts
+        // Get contact.
+        $contact = $this->_contactRepository->getContactById($id);
 
+        // Check if the contact really belongs to the user.
+        if($contact->user_id != $user->id)
+        {
+            return resposne()->json(false);
+        }
+
+        // Remove the contact id from all associated reminders, and
+        // set the recipient to the contact's number.
+        $reminders = $this->_userReminderRepository->getUserRemindersWhere([["contact_id", $id]]);
+        foreach($reminders as $reminder)
+        {
+            $this->_userReminderRepository->updateUserReminder($reminder->id, [
+                "recipient" => $contact->number,
+                "contact_id" => NULL
+            ]);
+        }
+
+        // Delete the contact
         $result = $this->_contactRepository->deleteContact($id);
+
         return response()->json($result);
     }
 

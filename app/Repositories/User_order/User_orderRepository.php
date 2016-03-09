@@ -19,7 +19,7 @@ class User_orderRepository implements IUser_orderRepository
         $order->user_id = $newUserOrder["user_id"];
         $order->amount = $newUserOrder["amount"];
         $order->reminder_credits = $newUserOrder["reminder_credits"];
-        $order->payment_id = isset($newUserOrder["payment_id"]) ?: '';
+        $order->payment_id = (isset($newUserOrder["payment_id"])) ? $newUserOrder["payment_id"] : '';
         $order->save();
         return $order->id;
     }

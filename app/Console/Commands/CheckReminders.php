@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Models\User_reminder;
+use App\Repositories\User_reminder\IUser_reminderRepository;
 use App\Repositories\Quick_reminder\IQuick_reminderRepository;
 use App\Models\Contact;
 use App\Models\User;

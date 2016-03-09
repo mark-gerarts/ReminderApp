@@ -27,7 +27,7 @@
                 <p class="error-message-bubble" v-if="showConfirmationBox">
                     Are you sure you want to delete this contact?
                     <br />
-                    <span class="error-bubble-button" @click="deleteContact(contact)">Yes!</span>
+                    <span class="error-bubble-button" @click="handleDelete(contact)">Yes!</span>
                     <span class="error-bubble-button" @click="showConfirmationBox = false">No, cancel.</span>
                 </p>
                 <i class="fa fa-spinner fa-pulse delete" v-show="isLoading.deleteContact"></i>

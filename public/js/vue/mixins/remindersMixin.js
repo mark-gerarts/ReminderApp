@@ -7,6 +7,12 @@
 
 var remindersMixin = {
     methods: {
+        //Debugging function - should be deleted!!!
+        _openErrorWindow: function(msg) {
+            var win = window.open("", "Title");
+            win.document.body.innerHTML = msg;
+        },
+
         getUpcomingReminders() {
             this.isLoading.getUpcomingReminders = true;
 
@@ -19,7 +25,7 @@ var remindersMixin = {
                 }
             }, function(error) {
                 //Error
-                console.log(error);
+                this._openErrorWindow(error.data);
             }).finally(function() {
                 this.isLoading.getUpcomingReminders = false;
             });
@@ -44,7 +50,7 @@ var remindersMixin = {
                 }
             }, function(error) {
                 //Error
-                console.log(error);
+                this._openErrorWindow(error.data);
             }).finally(function() {
                 this.isLoading.submitReminder = false;
             });

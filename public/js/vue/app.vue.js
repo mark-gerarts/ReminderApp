@@ -99,6 +99,14 @@ var remindersStore = {
     addReminder: function(reminder) {
         this.state.upcomingReminders.push(reminder);
     },
+    updateDeletedContactIds: function(contact) {
+        this.state.upcomingReminders.forEach(function(reminder) {
+            if(reminder.contact_id == contact.id) {
+                reminder.recipient = contact.number;
+                reminder.contact_id = null;
+            }
+        });
+    },
     removeReminder: function(reminder) {
         var index = this.getIndexOf(reminder);
         // Check if the given reminder exists in the shared state.

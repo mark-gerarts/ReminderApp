@@ -27,5 +27,6 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind('App\Repositories\Contact\IContactRepository', 'App\Repositories\Contact\ContactRepository');
         $this->app->bind('App\Repositories\Quick_reminder\IQuick_reminderRepository', 'App\Repositories\Quick_reminder\Quick_reminderRepository');
         $this->app->bind('App\Repositories\User_order\IUser_orderRepository', 'App\Repositories\User_order\User_orderRepository');
+        $this->app->bind('App\Repositories\User_reminder\IUser_reminderRepository', 'App\Repositories\User_reminder\User_reminderRepository');
     }
 }

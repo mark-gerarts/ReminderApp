@@ -66,6 +66,10 @@ var contactRow = Vue.extend({
                 this.updateContact(this.updatedContact);
                 this.cancelEditing();
             }
+        },
+        handleDelete: function(contact) {
+            remindersStore.updateDeletedContactIds(contact);
+            this.deleteContact(contact);
         }
     }
 });

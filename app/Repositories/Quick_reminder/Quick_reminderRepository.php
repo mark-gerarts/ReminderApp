@@ -13,6 +13,11 @@ class Quick_reminderRepository implements IQuick_reminderRepository
         $this->_quickReminder = $quickReminder;
     }
 
+    public function getQuickReminderById($id)
+    {
+        return $this->_quickReminder->find($id);
+    }
+
     public function insertQuickReminder($newReminder)
     {
         $reminder = new $this->_quickReminder;
@@ -20,12 +25,18 @@ class Quick_reminderRepository implements IQuick_reminderRepository
         $reminder->recipient = $newReminder["recipient"];
         $reminder->send_datetime = $newReminder["send_datetime"];
         $reminder->message = $newReminder["message"];
+        $reminder->save();
 
-        return $reminder->save();
+        return $reminder->id;
     }
 
     public function getQuickRemindersWhere($arguments)
     {
         return $this->_quickReminder->where($arguments)->get();
+    }
+
+    public function updateQuickReminder($id, $values)
+    {
+        return $this->_quickReminder->where('id', $id)->update($values);
     }
 }

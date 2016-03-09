@@ -5,6 +5,8 @@ namespace App\Http\Controllers\API;
 use App\Http\Requests;
 use App\Models\User_reminder;
 use App\Models\Contact;
+use App\Repositories\User_reminder\IUser_reminderRepository;
+use App\Repositories\User\IUserRepository;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use JWTAuth;
@@ -12,6 +14,16 @@ use Validate;
 
 class RemindersController extends Controller
 {
+    private $_userRepository;
+
+    private $_userReminderRepository;
+
+    public function __construct(IUserRepository $userRepository, IUser_reminderRepository $userReminderRepository)
+    {
+        $this->_userRepository = $userRepository;
+        $this->_userReminderRepository = $userReminderRepository;
+    }
+
     /**
      * Get upcoming user reminders.
      *
@@ -20,16 +32,16 @@ class RemindersController extends Controller
 
     public function getUpcomingReminders()
     {
-        $user = JWTAuth::parseToken()->authenticate();
-
-        if(!$user) {
-            return response()->json('Not logged in', 401);
+        $user = $this->_authenticate();
+        if(!$user)
+        {
+            return $this->_invalidLoginResponse();
         }
 
-        $upcomingReminders = User_reminder::where([
+        $upcomingReminders = $this->_userReminderRepository->getUserRemindersWhere([
                 ['user_id', $user->id],
                 ['send_datetime', '>', date("Y-m-d H:i:s")] //Only reminders with a datetime later than now
-            ])->get();
+            ]);
 
         return response()->json($upcomingReminders);
     }
@@ -43,27 +55,25 @@ class RemindersController extends Controller
 
     public function insertReminder(Request $request)
     {
-        $user = JWTAuth::parseToken()->authenticate();
-
+        $user = $this->_authenticate();
         if(!$user)
         {
-            return response()->json('Not logged in', 401);
+            return $this->_invalidLoginResponse();
         }
         else
         {
-            $user->reminder_credits--;
-            $user->save();
+            $newCredits = $user->reminder_credits - 1;
+            $this->_userRepository->updateUser($user->id, ["reminder_credits" => $newCredits]);
             return $this->_createUserReminder($user->id, $request);
         }
     }
 
     public function cancelReminder($id = NULL)
     {
-        $user = JWTAuth::parseToken()->authenticate();
-
+        $user = $this->_authenticate();
         if(!$user)
         {
-            return response()->json('Not logged in', 401);
+            return $this->_invalidLoginResponse();
         }
         else if($id == NULL)
         {
@@ -71,12 +81,12 @@ class RemindersController extends Controller
         }
         else
         {
-            $reminder = User_reminder::find($id);
+            $reminder = $this->_userReminderRepository->getUserReminderById($id);
             if($reminder)
             {
-                $reminder->forceDelete();
-                $user->reminder_credits++;
-                $user->save();
+                $this->_userReminderRepository->forceDeleteUserReminder($reminder->id);
+                $newCredits = $user->reminder_credits + 1;
+                $this->_userRepository->updateUser($user->id, ["reminder_credits" => $newCredits]);
             }
             return response()->json(true);
         }
@@ -100,33 +110,45 @@ class RemindersController extends Controller
                 'repeat_id' => 'required|numeric'
             ]);
 
-        $reminder = new User_reminder;
+        $values = [
+            "message" => $request->message,
+            "repeat_id" => $request->repeat_id,
+            "user_id" => $user_id,
+            "send_datetime" => $request->send_datetime
+        ];
 
-        // For now, needs some thought. This creates duplicate data in the db.
-        // Might be better to check client side for soft deletes.
-        if($request->contact_id)
+        if(isset($request->contact_id))
         {
-            $contact = Contact::find($request->contact_id)->first();
-            $reminder->recipient = $contact->number;
+            $values["contact_id"] = $request->contact_id;
+        }
+        else if(isset($request->recipient))
+        {
+            $values["recipient"] = $request->recipient;
         }
         else
         {
-            $reminder->recipient = $request->recipient;
+            return response()->json(false);
         }
 
-        $reminder->contact_id = $request->contact_id;
-        $reminder->send_datetime = $request->send_datetime;
-        $reminder->message = $request->message;
-        $reminder->repeat_id = $request->repeat_id;
-        $reminder->user_id = $user_id;
+        $identity = $this->_userReminderRepository->insertUserReminder($values);
 
-        if($reminder->save())
+        if($identity)
         {
-            return response()->json($reminder->id);
+            return response()->json($identity);
         }
         else
         {
             return response()->json(false); //ToDo: Maybe return something more meaningful? Like a http code
         }
+    }
+
+    private function _authenticate()
+    {
+        return JWTAuth::parseToken()->authenticate();
+    }
+
+    private function _invalidLoginResponse()
+    {
+        return response()->json('Not logged in', 401);
     }
 }
