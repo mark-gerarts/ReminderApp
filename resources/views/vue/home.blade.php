@@ -4,7 +4,8 @@
            <h2>Schedule a Reminder</h2>
            <pre>@{{ $data.newReminder | json }}</pre>
            {{-- New reminder form --}}
-            <form class="flat-form overflow" @submit.prevent="handleReminderSubmit">
+           <!-- http://stackoverflow.com/questions/31070479/prevent-form-submitting-when-pressing-enter-from-a-text-input-using-vue-js //-->
+            <form class="flat-form overflow" @keydown.enter.prevent="" @submit.prevent="handleReminderSubmit">
                 <label><span class="number">1</span>Phone Number</label>
                 <span class="error-message" v-if="validationErrors.no_recipient">
                     <strong>@{{ validationErrors.no_recipient }}</strong>
@@ -19,12 +20,12 @@
                             @keyup.enter.prevent="selectContact(highlightedContact)"
                             @input="validate"
                             autocomplete="off"
-                            :disabled="inputDisabled"
+                            v-if="!isContactSelected"
                     >
                     {{-- Suggestion box to autocomplete contacts --}}
                     <div class="suggestionbox-wrapper" v-show="query.length > 1 && showSuggestions">
                         <div class="suggestionbox">
-                            <p  v-for="(index, contact) in filteredContacts | limitBy 6"
+                            <p  v-for="(index, contact) in filteredContacts"
                                 :class="{ 'active': contact.id == highlightedContact.id }"
                                 @mouseenter="highlightContact(index)"
                                 @mousedown="selectContact(contact)"
@@ -33,6 +34,12 @@
                             </p>
                         </div>
                     </div>
+                    <p class="contact-view" v-if="isContactSelected">
+                        @{{ selectedContact.name }} (@{{ selectedContact.number}})
+                        <span class="cancel-contact" @click="resetRecipient">
+                            <i class="fa fa-times-circle"></i>
+                        </span>
+                    </p>
                 </div>
 
                 <label><span class="number">2</span>Date &amp; time</label>
