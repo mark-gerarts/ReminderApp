@@ -5,6 +5,27 @@
     overflow: auto;
     float: left;
     clear: both;
+    margin-bottom: 20px;
+    color: #34495e;
+}
+.input-wrapper {
+    position: relative;
+}
+.input-button {
+    position: absolute;
+    right: 0;
+    padding: 0 15px;
+    border-left: 1px solid #ccc;
+    height: 100%;
+}
+.input-button i {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.input-button:hover {
+    color: #223355;
+    cursor: pointer;
 }
 .datetimepicker-group-wrapper input {
     width: 100%;
@@ -57,7 +78,10 @@
     position: absolute;
     transform: translateY(-50%)
 }
-
+.datetime-table thead tr:first-child th:first-child,
+.datetime-table thead tr:first-child th:last-child {
+    line-height: 40px;
+}
 .table-day:hover,
 .datetime-table tr:first-child th:first-child:hover,
 .datetime-table tr:first-child th:last-child:hover {
@@ -93,8 +117,10 @@
     width: 90%;
     margin: 5px auto 0 auto;
 }
+.datetime-icon i {
+    line-height: 40px;
+}
 .datetime-icon:hover {
-    background: #E3E3E3;
     cursor: pointer;
 }
 .timepicker {
@@ -102,6 +128,7 @@
     height: 100%;
 }
 .timepicker-column {
+    padding-top: 75px;
     float: left;
     width: 50%;
 }

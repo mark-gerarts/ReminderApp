@@ -12,6 +12,10 @@ var vm = new Vue({
 
     mixins: [validatorMixin, remindersMixin],
 
+    components: {
+        'datetimepicker': dateTimePicker
+    },
+
     data: {
         newQuickReminder: {
             recipient: '',

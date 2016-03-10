@@ -2,6 +2,7 @@
 
 @section('style')
     <link rel="stylesheet" href="{{ url('css/main.css') }}">
+    <link rel="stylesheet" href="{{ url('css/datetimepicker.css') }}">
 @endsection
 
 @section('content')
@@ -41,8 +42,10 @@
                     <span class="error-message" v-if="validationErrors.send_datetime">
                         <strong>@{{ validationErrors.send_datetime }}</strong>
                     </span>
+                    <datetimepicker :result.sync="newQuickReminder.send_datetime"></datetimepicker>
+                    {{--
                     <input type="datetime" placeholder="YYYY-MM-DD hh:mm" v-model="newQuickReminder.send_datetime" @input="validate">
-
+                    --}}
                     <label><span class="number">3</span>Message</label>
                     <span class="error-message" v-if="validationErrors.message">
                         <strong>@{{ validationErrors.message }}</strong>
@@ -126,6 +129,7 @@
 </div>
 @endsection
 
+@include('vue.datetimepicker')
 
 @section('scripts')
     <script>
@@ -136,5 +140,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/0.6.1/vue-resource.js"></script>
     <script src="{{ url('js/vue/mixins/validatorMixin.js') }}"></script>
     <script src="{{ url('js/vue/mixins/remindersMixin.js') }}"></script>
+    <script src="{{ url('js/vue/components/datetimepicker.vue.js') }}"></script>
     <script src="{{ url('js/vue/homepage.vue.js')}}"></script>
 @endsection

@@ -33,7 +33,7 @@ var dateTimePicker = Vue.extend({
                 minute: '',
             },
             showTime: false,
-            focused: false
+            visible: false
         }
     },
     computed: {
@@ -111,7 +111,8 @@ var dateTimePicker = Vue.extend({
             return number;
         },
 
-        increment(myVar, min, max, increment = 1) {
+        increment(myVar, min, max, increment) {
+            increment = typeof increment !== 'undefined' ? increment : 1;
             myVar = parseInt(myVar) + increment;
             if(myVar > max) {
                 myVar = min;
