@@ -2,15 +2,21 @@
     position: relative;
     width: 100%;
     min-width: 240px;
+    overflow: auto;
+    float: left;
+    clear: both;
 }
 .datetimepicker-group-wrapper input {
     width: 100%;
+    float: none;
+    margin-bottom: 0!important;
 }
 .datetimepicker-wrapper {
     position: relative;
+    overflow: visible;
 }
 .datetimepicker {
-    position: absolute;
+    position: relative;;
     width: 100%;
     border: 1px solid #E3E3E3;
 }

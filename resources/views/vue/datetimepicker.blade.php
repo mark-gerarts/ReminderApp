@@ -1,19 +1,3 @@
-@extends('layouts.dashboard')
-
-@section('style')
-    <link rel="stylesheet" href="{{ url('css/datetimetest.css') }}">
-@endsection
-
-@section('content')
-<div class="container" id="apps">
-    <div class="row">
-       <div class="col-md-3">
-           <h1>Testing area</h1>
-           <datetimepicker name="datetime"></datetimepicker>
-        </div>
-    </div>
-</div>
-
 <template id="datetimepicker-template"><!-- todo: move to <script> bc IE //-->
     <div class="datetimepicker-group-wrapper">
         <input type="text"
@@ -70,11 +54,3 @@
         </div>
     </div>
 </template>
-@endsection
-
-
-@section('scripts')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.14/vue.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/0.6.1/vue-resource.js"></script>
-    <script src="{{ url('js/vue/datetimetest.vue.js')}}"></script>
-@endsection

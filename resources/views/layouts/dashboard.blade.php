@@ -13,6 +13,7 @@
     <link href='https://fonts.googleapis.com/css?family=Lato:400,300' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="{{ url('lib/grid12.css') }}">
     <link rel="stylesheet" href="{{ url('css/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ url('css/datetimetest.css') }}">
     <!-- Page specific styles -->
     @yield('style')
 

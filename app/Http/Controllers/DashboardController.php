@@ -44,4 +44,9 @@ class DashboardController extends Controller
 
         return view('dashboard.home', $data);
     }
+
+    public function datetime()
+    {
+        return view('dashboard.history');
+    }
 }

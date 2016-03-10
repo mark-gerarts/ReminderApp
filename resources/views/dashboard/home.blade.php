@@ -13,6 +13,7 @@
     @include('vue.contactrow')
     @include('vue.account')
     @include('vue.reminderrow')
+    @include('vue.datetimepicker')
 @endsection
 
 @section('scripts')
@@ -32,6 +33,7 @@
     <script src="{{ url('js/vue/mixins/remindersMixin.js') }}"></script>
     <script src="{{ url('js/vue/mixins/validatorMixin.js') }}"></script>
     <script src="{{ url('js/vue/components/reminderRow.vue.js')}}"></script>
+    <script src="{{ url('js/vue/components/datetimepicker.vue.js')}}"></script>
     <script src="{{ url('js/vue/components/home.vue.js')}}"></script>
     <script src="{{ url('js/vue/components/contactRow.vue.js')}}"></script>
     <script src="{{ url('js/vue/components/contacts.vue.js')}}"></script>

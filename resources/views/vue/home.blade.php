@@ -2,7 +2,7 @@
    <div class="row row-grid">
        <div class="col-md-4">
            <h2>Schedule a Reminder</h2>
-           <pre>@{{ $data.selectedContact | json }}</pre>
+           <pre>@{{ $data.newReminder | json }}</pre>
            {{-- New reminder form --}}
             <form class="flat-form overflow" @submit.prevent="handleReminderSubmit">
                 <label><span class="number">1</span>Phone Number</label>
@@ -19,6 +19,7 @@
                             @keyup.enter.prevent="selectContact(highlightedContact)"
                             @input="validate"
                             autocomplete="off"
+                            :disabled="inputDisabled"
                     >
                     {{-- Suggestion box to autocomplete contacts --}}
                     <div class="suggestionbox-wrapper" v-show="query.length > 1 && showSuggestions">
@@ -38,8 +39,10 @@
                 <span class="error-message" v-if="validationErrors.send_datetime">
                     <strong>@{{ validationErrors.send_datetime }}</strong>
                 </span>
+                <datetimepicker :result.sync="newReminder.send_datetime"></datetimepicker>
+                {{--
                 <input type="text" placeholder="YYYY-MM-DD hh:mm" v-model="newReminder.send_datetime" @input="validate">
-
+                --}}
                 <label><span class="number">3</span>Message</label>
                 <span class="error-message" v-if="validationErrors.message">
                     <strong>@{{ validationErrors.message }}</strong>
@@ -71,7 +74,7 @@
                     You're out of reminders. <a v-link="{ path: '/account' }">Buy more.</a>
                 </p>
             </div>
-            <table class="upcoming-table">
+            <table class="upcoming-table table">
                 <thead>
                     <tr>
                         <th colspan="4">Upcoming Reminders</th>

@@ -177,25 +177,25 @@ h2 {
 }
 
 /** reminder table **/
-table {
+.table {
     border: 2px solid #ecf0f1;
     width: 100%;
     border-collapse: collapse;
 }
-thead {
+.table thead {
     background: #ecf0f1;
 }
-table th {
+.table th {
     text-align: left;
     padding: 5px 10px;
 }
-table td {
+.table td {
     padding: 15px 10px;
 }
-table tbody tr:nth-child(even) {
+.table tbody tr:nth-child(even) {
     background: #F9F9F9;
 }
-table tbody tr:hover {
+.table tbody tr:hover {
     background: #ecf0f1;
 }
 

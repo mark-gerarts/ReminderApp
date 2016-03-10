@@ -1,7 +1,7 @@
 <template id="dashboard-contacts">
     <div class="row row-grid">
         <div class="col-md-7">
-            <table class="contacts">
+            <table class="contacts table">
                 <thead>
                     <tr>
                         <th colspan="3">Contacts</th>

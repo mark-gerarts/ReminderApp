@@ -1,7 +1,7 @@
 var dateTimePicker = Vue.extend({
     template: '#datetimepicker-template',
 
-    props: ['name'],
+    props: ['name', 'result'],
 
     ready: function() {
         this.activeMonth = this.generateMonth(this.currentDate.getFullYear(), this.currentDate.getMonth());

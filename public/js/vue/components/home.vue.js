@@ -15,7 +15,8 @@ var Home = Vue.extend({
     },
 
     components: {
-        'reminder-row': reminderRow
+        'reminder-row': reminderRow,
+        'datetimepicker': dateTimePicker
     },
 
     data: function() {
@@ -27,6 +28,7 @@ var Home = Vue.extend({
             showSuggestions: false,
             selectedContact: {},
             highlightedContact: {},
+            inputDisabled: false,
             selectedIndex: -1,
             newReminder: {
                 recipient: null,
@@ -73,6 +75,7 @@ var Home = Vue.extend({
             this.selectedContact = contact;
             this.newReminder.contact_id = contact.id;
             this.query = contact.name + ' (' + contact.number + ')';
+            this.inputDisabled = true;
         },
 
         highlightContact: function(input) {

@@ -43,6 +43,7 @@ Route::group(['middleware' => 'web'], function () {
 
     //Dashboard
     Route::get('/dashboard', 'DashboardController@index');
+    Route::get('/datetime', 'DashboardController@datetime');
 });
 
 
