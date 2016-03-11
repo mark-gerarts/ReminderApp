@@ -436,3 +436,21 @@ footer {
 #buymore {
     text-align: center;
 }
+
+/** AUth **/
+.center {
+    text-align: center;
+}
+.addendum {
+    margin-top: 25px;
+}
+.addendum:last-of-type {
+    margin-bottom: 75px;
+}
+.register-link {
+    color: #2EAA91;
+}
+.error-message {
+    float: left;
+    clear: both;
+}
