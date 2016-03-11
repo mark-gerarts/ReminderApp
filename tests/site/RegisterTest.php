@@ -8,11 +8,6 @@ class RegisterTest extends TestCase
 {
     use DatabaseTransactions;
 
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
     public function testItDisplaysPage()
     {
         $this->visit('/register')

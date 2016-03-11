@@ -20,3 +20,11 @@ $factory->define(App\Models\User::class, function (Faker\Generator $faker) {
         'reminder_credits' => mt_rand(0, 100)
     ];
 });
+
+$factory->define(App\Models\Contact::class, function (Faker\Generator $faker) {
+    return [
+        'user_id' => mt_rand(1, 10),
+        'name' => $faker->name,
+        'number' => str_random(10)
+    ];
+});

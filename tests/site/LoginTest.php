@@ -8,11 +8,6 @@ class LoginTest extends TestCase
 {
     use DatabaseTransactions;
 
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
     public function testItDisplaysPage()
     {
         $this->visit('/login')
@@ -28,18 +23,52 @@ class LoginTest extends TestCase
 
     public function testFormSubmitGoodData()
     {
+        $this->_createUser();
+
+        // Test a good form submission
+        $this->visit('/login')
+            ->type("test@email.com", 'email')
+            ->type("hunter2", 'password')
+            ->press('Log in')
+            ->seePageIs('/dashboard');
+    }
+
+    public function testFormSubmitBadData()
+    {
+        $this->_createUser();
+
+        // Without password
+        $this->visit('/login')
+            ->type("test@email.com", 'email')
+            ->type("", 'password')
+            ->press('Log in')
+            ->see('required');
+
+        // Without email
+        $this->visit('/login')
+            ->type("", 'email')
+            ->type("hunter2", 'password')
+            ->press('Log in')
+            ->see('required');
+
+        // Wrong password
+        $this->visit('/login')
+            ->type("test@email.com", 'email')
+            ->type("hunter3", 'password')
+            ->press('Log in')
+            ->see('credentials do not match');
+    }
+
+    private function _createUser()
+    {
         // Create a user.
         $user = factory(App\Models\User::class)->make([
             "name" => "TestName",
             "email" => "test@email.com",
             "password" => bcrypt("hunter2")
         ]);
-        // Test a good form submission
-        $this->visit('/login')
-            ->type("test@email.com", 'email')
-            ->type("hunter2", 'password')
-            ->press('Log in')
-            ->see('credentials');
-            //->seePageIs($user->password);
-     }
+
+        // Put it in the database
+        $user->save();
+    }
 }
