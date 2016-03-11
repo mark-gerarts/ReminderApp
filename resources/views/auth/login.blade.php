@@ -22,7 +22,7 @@
                         <strong>{{ $errors->first('email') }}</strong>
                     </span>
                 @endif
-                <input type="email" name="email" value="{{ old('email') }}">
+                <input type="email" name="email" id="email" value="{{ old('email') }}">
 
 
                 <label for="password">Password</label>
@@ -31,11 +31,11 @@
                         <strong>{{ $errors->first('password') }}</strong>
                     </span>
                 @endif
-                <input type="password" name="password">
+                <input type="password" name="password" id="password">
 
 
                 <label class="checkbox">
-                    <input type="checkbox" name="remember"> Remember Me
+                    <input type="checkbox" name="remember" id="remember_me"> Remember Me
                 </label>
 
                 <button type="submit" class="btn btn-submit">

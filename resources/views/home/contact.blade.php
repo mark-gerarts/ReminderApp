@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-<h1>FAQ</h1>
+<h1>Contact us</h1>
 <p style="text-align: center;">//ToDo</p>
 @endsection
 

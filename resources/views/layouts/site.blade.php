@@ -28,8 +28,8 @@
                         </li>
                     </ul>
                     <ul class="nav-right">
-                        <li><a href="{{ url('home/faq') }}">Contact</a></li>
-                        <li><a href="{{ url('/home/pricing') }}">Pricing</a></li>
+                        <li><a href="{{ url('/contact') }}">Contact</a></li>
+                        <li><a href="{{ url('/pricing') }}">Pricing</a></li>
                         @if (Auth::guest())
                             <li class="no-padding-right"><a href="{{ url('/login') }}" class="highlight-text">Sign in</a></li>
                         @else

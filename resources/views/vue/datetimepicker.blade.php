@@ -4,6 +4,7 @@
             <input type="text"
                 name="@{{name}}"
                 v-model="result"
+                id="datetime"
             >
             <span class="input-button" @click="visible = !visible">
                 <i class="fa fa-calendar" v-show="!visible"></i>

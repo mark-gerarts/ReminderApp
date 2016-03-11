@@ -44,8 +44,8 @@ class HomeController extends Controller
      *
      * @return Response
      */
-    public function faq()
+    public function contact()
     {
-        return view('home.faq');
+        return view('home.contact');
     }
 }

@@ -3,7 +3,6 @@
        <div class="col-md-4">
            <h2>Schedule a Reminder</h2>
            {{-- New reminder form --}}
-           <!-- http://stackoverflow.com/questions/31070479/prevent-form-submitting-when-pressing-enter-from-a-text-input-using-vue-js //-->
             <form class="flat-form overflow" @keydown.enter.prevent="" @submit.prevent="handleReminderSubmit">
                 <label><span class="number">1</span>Phone Number</label>
                 <span class="error-message" v-if="validationErrors.no_recipient">

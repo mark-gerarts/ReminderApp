@@ -31,26 +31,33 @@
     <div class="row row-grid">
         <div class="col-md-4 overflow">
             <section class="section-right">
-                <form class="flat-form" @submit.prevent="handleSubmit" v-if="!reviewing">
-                    <label><span class="number">1</span>Phone Number</label>
+                <form class="flat-form" @submit.prevent="handleSubmit" v-show="!reviewing">
+                    <label for="phonenumber"><span class="number">1</span>Phone Number</label>
                     <span class="error-message" v-if="validationErrors.recipient">
                         <strong>@{{ validationErrors.recipient }}</strong>
                     </span>
-                    <input type="text" placeholder="International format" v-model="newQuickReminder.recipient" @input="validate">
+                    <input type="text"
+                        placeholder="International format"
+                        v-model="newQuickReminder.recipient"
+                        @input="validate"
+                        id="phonenumber"
+                    >
 
-                    <label><span class="number">2</span>Date &amp; time</label>
+                    <label for="datetime"><span class="number">2</span>Date &amp; time</label>
                     <span class="error-message" v-if="validationErrors.send_datetime">
                         <strong>@{{ validationErrors.send_datetime }}</strong>
                     </span>
                     <datetimepicker :result.sync="newQuickReminder.send_datetime"></datetimepicker>
-                    {{--
-                    <input type="datetime" placeholder="YYYY-MM-DD hh:mm" v-model="newQuickReminder.send_datetime" @input="validate">
-                    --}}
-                    <label><span class="number">3</span>Message</label>
+
+                    <label for="message"><span class="number">3</span>Message</label>
                     <span class="error-message" v-if="validationErrors.message">
                         <strong>@{{ validationErrors.message }}</strong>
                     </span>
-                    <textarea placeholder="Your message!" v-model="newQuickReminder.message" @input="validate"></textarea>
+                    <textarea placeholder="Your message!"
+                        v-model="newQuickReminder.message"
+                        @input="validate"
+                        id="message"
+                    ></textarea>
                     <input type="submit" class="btn btn-submit" value="Submit">
                 </form>
                 <form action="{{ url('checkout') }}" method="post" v-else>

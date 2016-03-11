@@ -22,7 +22,7 @@
                         <strong>{{ $errors->first('name') }}</strong>
                     </span>
                 @endif
-                <input type="text" name="name" value="{{ old('name') }}">
+                <input type="text" name="name" id="name" value="{{ old('name') }}">
 
 
                 <label for="email"><span class="number">2</span>E-mail Address</label>
@@ -31,7 +31,7 @@
                         <strong>{{ $errors->first('email') }}</strong>
                     </span>
                 @endif
-                <input type="email" name="email" value="{{ old('email') }}">
+                <input type="email" name="email" id="email" value="{{ old('email') }}">
 
 
                 <label for="password"><span class="number">3</span>Password</label>
@@ -40,7 +40,7 @@
                         <strong>{{ $errors->first('password') }}</strong>
                     </span>
                 @endif
-                <input type="password" name="password">
+                <input type="password" name="password" id="password">
 
 
                 <label for="password_confirmation"><span class="number">4</span>Confirm Password</label>
@@ -49,7 +49,7 @@
                         <strong>{{ $errors->first('password_confirmation') }}</strong>
                     </span>
                 @endif
-                <input type="password" name="password_confirmation">
+                <input type="password" name="password_confirmation" id="password_confirmation">
 
 
                 <button type="submit" class="btn btn-submit">Register</button>
