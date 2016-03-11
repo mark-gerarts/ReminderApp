@@ -183,6 +183,12 @@ h2 {
     right: 0;
     position: absolute;
 }
+.cancel-contact:hover {
+    cursor: pointer;
+}
+.btn-disabled:hover {
+    cursor: not-allowed;
+}
 /** reminder table **/
 .table {
     border: 2px solid #ecf0f1;

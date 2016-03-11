@@ -37,15 +37,33 @@ var dateTimePicker = Vue.extend({
         }
     },
     computed: {
-        result: function() {
-            return this.selectedValues.year + '-'
-                    + this.format(this.selectedValues.month) + '-'
-                    + this.format(this.selectedValues.date) + ' '
-                    + this.format(this.selectedValues.hour) + ':'
-                    + this.format(this.selectedValues.minute);
+        result: {
+            get: function() {
+                return this.selectedValues.year + '-'
+                        + this.format(this.selectedValues.month) + '-'
+                        + this.format(this.selectedValues.date) + ' '
+                        + this.format(this.selectedValues.hour) + ':'
+                        + this.format(this.selectedValues.minute);
+            }, set: function(newValue) {
+                this.parseFromString(newValue);
+            }
         }
     },
     methods: {
+        parseFromString: function(datetimestring) {
+            datetimestring = datetimestring || '';
+            var split = datetimestring.trim().split(' ');
+            var date = split[0] || '';
+            var time = split[1] || '';
+            var dateSplit = date.split('-') || '';
+            this.selectedValues.year = dateSplit[0] || this.currentDate.getFullYear();
+            this.selectedValues.month = dateSplit[1] || this.currentDate.getMonth() + 1;
+            this.selectedValues.date = dateSplit[2] || this.currentDate.getDate();
+            var timeSplit = time.split(':') || '';
+            this.selectedValues.hour = timeSplit[0] || this.currentDate.getHours();
+            this.selectedValues.minute = timeSplit[1] || this.currentDate.getMinutes();
+
+        },
         generateMonth: function(year, month) {
             var myDate = new Date(year, month);
             var startDay = myDate.getDay() - 1;

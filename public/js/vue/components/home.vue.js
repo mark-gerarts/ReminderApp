@@ -73,6 +73,7 @@ var Home = Vue.extend({
         selectContact: function(contact) {
             //ToDo: add check for either contact_id or a random number + check if correct etc
             this.selectedContact = contact;
+            this.newReminder.contact_id = contact.id;
             this.query = contact.name + ' (' + contact.number + ')';
             this.isContactSelected = true;
         },
@@ -80,6 +81,8 @@ var Home = Vue.extend({
             this.isContactSelected = false;
             this.selectedContact = {};
             this.highlightedContact =  {};
+            this.newReminder.contact_id = null;
+            this.query = '';
         },
 
         highlightContact: function(input) {
@@ -120,8 +123,10 @@ var Home = Vue.extend({
         },
 
         handleReminderSubmit() {
+            if(this.user.reminder_credits > 0) {
+                return;
+            }
             this.isSubmittedOnce = true;
-            this.newReminder.recipient = (this.isContactSelected) ? this.selectedContact.id : this.query;
             this.trim();
             this.validate();
 

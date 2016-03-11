@@ -2,7 +2,6 @@
    <div class="row row-grid">
        <div class="col-md-4">
            <h2>Schedule a Reminder</h2>
-           <pre>@{{ $data.newReminder | json }}</pre>
            {{-- New reminder form --}}
            <!-- http://stackoverflow.com/questions/31070479/prevent-form-submitting-when-pressing-enter-from-a-text-input-using-vue-js //-->
             <form class="flat-form overflow" @keydown.enter.prevent="" @submit.prevent="handleReminderSubmit">
@@ -23,7 +22,7 @@
                             v-if="!isContactSelected"
                     >
                     {{-- Suggestion box to autocomplete contacts --}}
-                    <div class="suggestionbox-wrapper" v-show="query.length > 1 && showSuggestions">
+                    <div class="suggestionbox-wrapper" v-show="query.length > 1 && showSuggestions" v-if="!isContactSelected">
                         <div class="suggestionbox">
                             <p  v-for="(index, contact) in filteredContacts"
                                 :class="{ 'active': contact.id == highlightedContact.id }"
@@ -36,7 +35,7 @@
                     </div>
                     <p class="contact-view" v-if="isContactSelected">
                         @{{ selectedContact.name }} (@{{ selectedContact.number}})
-                        <span class="cancel-contact" @click="resetRecipient">
+                        <span class="cancel-contact" @click="resetRecipient" title="Reset">
                             <i class="fa fa-times-circle"></i>
                         </span>
                     </p>
@@ -68,7 +67,8 @@
                     <option value="5">Yearly</option>
                 </select>
 
-                <input type="submit" class="btn btn-submit" value="Submit">
+                <input type="submit" class="btn btn-submit" value="Submit" v-if="user.reminder_credits > 0">
+                <input type="submit" class="btn btn-submit btn-disabled" value="No reminders!" disabled v-else>
             </form>
        </div>
         <div class="col-md-7 col-md-offset-1">

@@ -39,7 +39,9 @@ var remindersMixin = {
                 console.log(response);
                 if(response.status == 200) {
                     reminder.id = response.data;
-                    remindersStore.addReminder(reminder)
+                    remindersStore.addReminder(reminder);
+                    this.isContactSelected = false;
+                    this.query = '';
                     this.newReminder = {
                         repeat_id: 1,
                     };                      // Reset the viewmodel. This only happens when the insert is successful,
