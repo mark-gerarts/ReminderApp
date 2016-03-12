@@ -43,7 +43,6 @@ Route::group(['middleware' => 'web'], function () {
 
     //Dashboard
     Route::get('/dashboard', 'DashboardController@index');
-    Route::get('/datetime', 'DashboardController@datetime');
 });
 
 
@@ -67,6 +66,7 @@ Route::group(['namespace' => 'API', 'prefix' => 'api'], function() {
 
     //Auth
     Route::post('/login', 'AuthenticateController@authenticate');
+
 
     //test
     Route::get('/test', 'ContactsController@test');

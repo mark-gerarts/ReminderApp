@@ -123,12 +123,7 @@
             </div>
             <div class="row row-grid">
                 <div class="col-md-12">
-                    @if (Auth::guest())
-                        <a class="btn btn-signup-big" href="{{ url('/register') }}">Sign up</a>
-                    @else
-                        <a class="btn btn-signup-big" href="{{ url('/dashboard') }}">Dashboard</a>
-                    @endif
-
+                    <a class="btn btn-signup-big" href="{{ url('/dashboard#!/register') }}">Sign up</a>
                 </div>
             </div>
         </section>

@@ -18,12 +18,17 @@ class ContactsController extends Controller
     private $_userRepository;
     private $_userReminderRepository;
 
+    private $_user;
+
     /**
      * Inject the repositories.
      *
      */
     public function __construct(IContactRepository $contact, IUserRepository $user, IUser_reminderRepository $userReminder)
     {
+        $this->middleware('jwt.auth');
+        $this->_user = JWTAuth::parseToken()->toUser();
+
         $this->_contactRepository = $contact;
         $this->_userRepository = $user;
         $this->_userReminderRepository = $userReminder;
@@ -37,14 +42,8 @@ class ContactsController extends Controller
      */
     public function get(Request $request, $id = NULL)
     {
-        $user = $this->_authenticate();
-        if(!$user)
-        {
-            return $this->_invalidLoginResponse();
-        }
-
         // Fetch all the contacts associated with the user & return as JSON.
-        $userContacts = $this->_contactRepository->getContactsByUserId($user->id);
+        $userContacts = $this->_contactRepository->getContactsByUserId($this->_user->id);
         return response()->json($userContacts);
     }
 
@@ -55,12 +54,6 @@ class ContactsController extends Controller
      */
     public function insert(Request $request)
     {
-        $user = $this->_authenticate();
-        if(!$user)
-        {
-            return $this->_invalidLoginResponse();
-        }
-
         $this->validate($request, [
                 'name' => 'required|max:255',
                 'number' => 'required|max:20|min:6'
@@ -70,7 +63,7 @@ class ContactsController extends Controller
         $contact = [
             "name" => $request->name,
             "number" => $request->number,
-            "user_id" => $user->id
+            "user_id" => $this->_user->id
         ];
 
         // Insert via the repository.
@@ -88,17 +81,11 @@ class ContactsController extends Controller
      */
     public function delete(Request $request, $id)
     {
-        $user = $this->_authenticate();
-        if(!$user)
-        {
-            return $this->_invalidLoginResponse();
-        }
-
         // Get the contact.
         $contact = $this->_contactRepository->getContactById($id);
 
         // Check if the contact really belongs to the user.
-        if($contact->user_id != $user->id)
+        if($contact->user_id != $this->_user->id)
         {
             return response()->json(false);
         }
@@ -127,12 +114,6 @@ class ContactsController extends Controller
      */
     public function update(Request $request)
     {
-        $user = $this->_authenticate();
-        if(!$user)
-        {
-            return $this->_invalidLoginResponse();
-        }
-
         $this->validate($request, [
                 'name' => 'required|max:255',
                 'number' => 'required|max:20|min:6'
@@ -140,7 +121,7 @@ class ContactsController extends Controller
 
         // Check if the contact really belongs to the user.
         $contact = $this->_contactRepository->getContactById($request->id);
-        if($contact->user_id != $user->id)
+        if($contact->user_id != $this->_user->id)
         {
             return response()->json(false);
         }
@@ -152,26 +133,5 @@ class ContactsController extends Controller
         // Perform the update.
         $result = $this->_contactRepository->updateContact($request->id, $newValues);
         return response()->json($result);
-    }
-
-    /**
-     * Authenticate via JWT.
-     *
-     * @return mixed
-     */
-    private function _authenticate()
-    {
-        return JWTAuth::parseToken()->authenticate();
-    }
-
-    /**
-     * Returns a json 401 response.
-     *
-     * @return json
-     */
-    private function _invalidLoginResponse()
-    {
-        // 401 - not authenticated.
-        return response()->json('Not logged in', 401);
     }
 }

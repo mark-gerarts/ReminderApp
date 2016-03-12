@@ -21,7 +21,7 @@ var Home = Vue.extend({
 
     data: function() {
         return {
-            user: uservm,
+            user: authStore.state.user,
             sharedState: contactsStore.state,
             remindersState: remindersStore.state,
             query: '',

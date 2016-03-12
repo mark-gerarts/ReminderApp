@@ -30,11 +30,7 @@
                     <ul class="nav-right">
                         <li><a href="{{ url('/contact') }}">Contact</a></li>
                         <li><a href="{{ url('/pricing') }}">Pricing</a></li>
-                        @if (Auth::guest())
-                            <li class="no-padding-right"><a href="{{ url('/login') }}" class="highlight-text">Sign in</a></li>
-                        @else
-                            <li class="no-padding-right"><a href="{{ url('/dashboard') }}" class="highlight-text">Dashboard</a></li>
-                        @endif
+                        <li class="no-padding-right"><a href="{{ url('/dashboard#!/login') }}" class="highlight-text">Dashboard</a></li>
                     </ul>
                 </nav>
             </header>

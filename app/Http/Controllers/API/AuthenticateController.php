@@ -6,6 +6,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use JWTAuth;
+use JWTFactory;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
 class AuthenticateController extends Controller
@@ -14,18 +15,28 @@ class AuthenticateController extends Controller
     {
         // grab credentials from the request
         $credentials = $request->only('email', 'password');
+        $token = JWTAuth::attempt($credentials);
 
-        try {
+        try
+        {
             // attempt to verify the credentials and create a token for the user
-            if (! $token = JWTAuth::attempt($credentials)) {
+            if (! $token)
+            {
                 return response()->json(['error' => 'invalid_credentials'], 401);
             }
-        } catch (JWTException $e) {
+        }
+        catch (JWTException $e)
+        {
             // something went wrong whilst attempting to encode the token
             return response()->json(['error' => 'could_not_create_token'], 500);
         }
 
+        $response = [
+            "token" => $token,
+            "user" => JWTAuth::toUser($token)
+        ];
+        
         // all good so return the token
-        return response()->json(compact('token'));
+        return response()->json($response);
     }
 }

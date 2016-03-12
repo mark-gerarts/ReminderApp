@@ -8,22 +8,14 @@ var Login = Vue.extend({
             formData: {
                 email: '',
                 password: ''
-            }
+            },
+            submitting: false
         }
     },
 
     methods: {
-        _openErrorWindow: function(msg) {
-            var win = window.open("", "Title");
-            win.document.body.innerHTML = msg;
-        },
         signIn: function() {
-            this.authSignIn(this.formData, function(response) {
-                this.setToken(response.data)
-            }, function(error) {
-                this._openErrorWindow(error.data);
-                console.log(error)
-            });
+            this.authSignIn(this.formData);
         }
     }
 });

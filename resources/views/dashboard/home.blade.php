@@ -32,7 +32,7 @@
                     <div><a v-link="{ path: '/contacts' }">Contacts</a></div>
                     <div><a v-link="{ path: '/account' }">Account</a></div>
                 </nav>
-                <div class="user">Logged in as {{ Auth::user()->name }}. <a href="{{ url('/logout') }}" class="log-out">Log out</a></div>
+                <div class="user">Logged in as //ToDo. <a v-link="{ path: '/logout' }" class="log-out">Log out</a></div>
             </div>
         </div>
         <div class="container">
@@ -50,12 +50,11 @@
     @include('vue.reminderrow')
     @include('vue.datetimepicker')
     @include('vue.login')
+    @include('vue.register')
 
     <script>
         var myRootUrl = "{{ env('MY_ROOT_URL') }}";
         var csrf_token = "{{ csrf_token() }}";
-        var jwt_token = "{{ $token }}";
-        var uservm = {!! $uservm !!};
     </script>
 
     {{-- Don't forget to change these to .min.js --}}
@@ -69,7 +68,10 @@
     <script src="{{ url('js/vue/mixins/validatorMixin.js') }}"></script>
     <script src="{{ url('js/vue/stores/contactsStore.js')}}"></script>
     <script src="{{ url('js/vue/stores/remindersStore.js')}}"></script>
+    <script src="{{ url('js/vue/stores/authStore.js')}}"></script>
     <script src="{{ url('js/vue/components/login.vue.js')}}"></script>
+    <script src="{{ url('js/vue/components/logout.vue.js')}}"></script>
+    <script src="{{ url('js/vue/components/register.vue.js')}}"></script>
     <script src="{{ url('js/vue/components/reminderRow.vue.js')}}"></script>
     <script src="{{ url('js/vue/components/datetimepicker.vue.js')}}"></script>
     <script src="{{ url('js/vue/components/home.vue.js')}}"></script>

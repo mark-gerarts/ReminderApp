@@ -16,12 +16,17 @@ class RemindersController extends Controller
     private $_userRepository;
     private $_userReminderRepository;
 
+    private $_user;
+
     /**
      * Inject the repositories.
      *
      */
     public function __construct(IUserRepository $userRepository, IUser_reminderRepository $userReminderRepository)
     {
+        $this->middleware('jwt.auth');
+        $this->_user = JWTAuth::parseToken()->toUser();
+
         $this->_userRepository = $userRepository;
         $this->_userReminderRepository = $userReminderRepository;
     }
@@ -34,15 +39,9 @@ class RemindersController extends Controller
 
     public function getUpcomingReminders()
     {
-        $user = $this->_authenticate();
-        if(!$user)
-        {
-            return $this->_invalidLoginResponse();
-        }
-
         // Get the upcoming reminders belonging to the authenticated user.
         $upcomingReminders = $this->_userReminderRepository->getUserRemindersWhere([
-                ['user_id', $user->id],
+                ['user_id', $this->_user->id],
                 ['send_datetime', '>', date("Y-m-d H:i:s")] // Only reminders with a datetime later than now.
             ]);
 
@@ -57,19 +56,13 @@ class RemindersController extends Controller
      */
     public function insertReminder(Request $request)
     {
-        $user = $this->_authenticate();
-        if(!$user)
-        {
-            return $this->_invalidLoginResponse();
-        }
-
         // Remove a credit from the user.
-        $newCredits = $user->reminder_credits - 1;
-        $this->_userRepository->updateUser($user->id, ["reminder_credits" => $newCredits]);
+        $newCredits = $this->_user->reminder_credits - 1;
+        $this->_userRepository->updateUser($this->_user->id, ["reminder_credits" => $newCredits]);
 
         // Create the new reminder & return the result.
         // ToDo: what if the insert failed?;
-        return $this->_createUserReminder($user->id, $request);
+        return $this->_createUserReminder($this->_user->id, $request);
     }
 
     /**
@@ -80,12 +73,7 @@ class RemindersController extends Controller
      */
     public function cancelReminder($id = NULL)
     {
-        $user = $this->_authenticate();
-        if(!$user)
-        {
-            return $this->_invalidLoginResponse();
-        }
-        else if($id == NULL)
+        if($id == NULL)
         {
             return response()->json(false);
         }
@@ -96,8 +84,8 @@ class RemindersController extends Controller
         {
             // Delete the reminder, and refund a credit for the user.
             $this->_userReminderRepository->forceDeleteUserReminder($reminder->id);
-            $newCredits = $user->reminder_credits + 1;
-            $this->_userRepository->updateUser($user->id, ["reminder_credits" => $newCredits]);
+            $newCredits = $this->_user->reminder_credits + 1;
+            $this->_userRepository->updateUser($this->_user->id, ["reminder_credits" => $newCredits]);
             return response()->json(true);
         }
         // If the reminder isn't found; return false.
@@ -154,19 +142,5 @@ class RemindersController extends Controller
         {
             return response()->json(false); //ToDo: Maybe return something more meaningful? Like a http code
         }
-    }
-
-    /**
-     * See ContactsController 
-     *
-     */
-    private function _authenticate()
-    {
-        return JWTAuth::parseToken()->authenticate();
-    }
-
-    private function _invalidLoginResponse()
-    {
-        return response()->json('Not logged in', 401);
     }
 }
