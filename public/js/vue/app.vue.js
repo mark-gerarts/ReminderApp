@@ -12,9 +12,22 @@ var App = Vue.extend({
     mixins: [authMixin],
 
     ready: function() {
-        console.log('ready')
+        var data = this.getLocalStorage();
+        if(data) {
+            var now = new Date();
+            var creationDate = new Date(data.created_at);
+            if((now - creationDate) < 3600000) { //3600000
+                this.setToken(data.token);
+                authStore.setAuthenticationStatus(true);
+                authStore.setUser(data.user);
+                return;
+            } else {
+                router.go('/login');
+            }
+        }
     }
 });
+
 var router = new VueRouter();
 
 // Map all the routes by pointing to the associated component.
