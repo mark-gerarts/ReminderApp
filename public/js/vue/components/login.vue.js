@@ -22,16 +22,6 @@ var Login = Vue.extend({
                 this.$set('validationErrors', this.validateLogin(this.formData));
             }
         },
-        // Called on insert.
-        handleInsert: function() {
-            this.isSubmittedOnce = true;
-            this.validate();
-            // Only submits when there are no validation errors.
-            // The input is checked server side as well.
-            if(Object.keys(this.validationErrors).length == 0) {
-                this.insertContact(this.newContact);
-            }
-        },
         signIn: function() {
             this.errorMessage = '';
             this.isSubmittedOnce = true;

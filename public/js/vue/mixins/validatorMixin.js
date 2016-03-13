@@ -122,6 +122,16 @@ var validatorMixin = {
             if(emailError) output.email = emailError;
             if(passwordError) output.password = passwordError;
             return output;
+        },
+
+        validateSignup: function(formdata) {
+            // ToDooooooooooooo
+            var output = {};
+            var emailError = this._validate(formdata.email, "required");
+            var passwordError = this._validate(formdata.password, "required");
+            if(emailError) output.email = emailError;
+            if(passwordError) output.password = passwordError;
+            return output;
         }
     }
 };

@@ -8,9 +8,18 @@ use Illuminate\Http\Request;
 use JWTAuth;
 use JWTFactory;
 use Tymon\JWTAuth\Exceptions\JWTException;
+use Validate;
+use App\Repositories\User\IUserRepository;
 
 class AuthenticateController extends Controller
 {
+    private $_userRepository;
+
+    public function __construct(IUserRepository $user)
+    {
+        $this->_userRepository = $user;
+    }
+
     public function authenticate(Request $request)
     {
         // grab credentials from the request
@@ -42,6 +51,33 @@ class AuthenticateController extends Controller
         ];
 
         // all good so return the token
+        return response()->json($response);
+    }
+
+    public function register(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required|max:255',
+            'email' => 'required|email|max:255|unique:users',
+            'password' => 'required|confirmed|min:6',
+        ]);
+
+        $user = $this->_userRepository->createUser([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+        ]);
+
+        $token = JWTAuth::fromUser($user);
+
+        $response = [
+            "token" => $token,
+            "user" => [
+                "name" => $user->name,
+                "reminder_credits" => $user->reminder_credits
+            ]
+        ];
+
         return response()->json($response);
     }
 }

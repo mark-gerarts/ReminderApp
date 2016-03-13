@@ -28,4 +28,9 @@ class UserRepository implements IUserRepository, UserInterface
     {
         return $this->_user->where($key, $value)->first();
     }
+
+    public function createUser($values)
+    {
+        return $this->_user->create($values);
+    }
 }
