@@ -22,6 +22,7 @@
                 <div class="pricing-button">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}" />
                     <input type="hidden" name="payment_type" value="1" />
+                    <input type="hidden" name="_uid" value="@{{ state.user.id }}" />
                     <input type="submit" value="Buy"/>
                 </div>
             </form>
@@ -40,6 +41,7 @@
                 <div class="pricing-button promo">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}" />
                     <input type="hidden" name="payment_type" value="2" />
+                    <input type="hidden" name="_uid" value="@{{ state.user.id }}" />
                     <input type="submit" value="Buy"/>
                 </div>
             </form>
