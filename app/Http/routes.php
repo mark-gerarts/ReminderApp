@@ -47,26 +47,27 @@ Route::group(['middleware' => 'web'], function () {
 
 
 Route::group(['namespace' => 'API', 'prefix' => 'api'], function() {
-    //Contacts
-    Route::get('/contacts/{id?}', 'ContactsController@get');
-    Route::post('/contacts', 'ContactsController@insert');
-    Route::delete('/contacts/{id}', 'ContactsController@delete');
-    Route::put('/contacts', 'ContactsController@update');
+    Route::group(['middleware' => 'jwt.auth'], function() {
+        //Contacts
+        Route::get('/contacts/{id?}', 'ContactsController@get');
+        Route::post('/contacts', 'ContactsController@insert');
+        Route::delete('/contacts/{id}', 'ContactsController@delete');
+        Route::put('/contacts', 'ContactsController@update');
 
-    //Reminders
-    Route::get('/reminders/upcoming', 'RemindersController@getUpcomingReminders');
-    Route::get('/reminders/cancel/{id?}', 'RemindersController@cancelReminder');
-    Route::post('/reminders', 'RemindersController@insertReminder');
+        //Reminders
+        Route::get('/reminders/upcoming', 'RemindersController@getUpcomingReminders');
+        Route::get('/reminders/cancel/{id?}', 'RemindersController@cancelReminder');
+        Route::post('/reminders', 'RemindersController@insertReminder');
+
+        //User
+        Route::get('/user', 'UserController@getUserDetails');
+    });
 
     //Quick Reminders
     Route::post('/quickreminders', 'QuickRemindersController@insertQuickReminder');
-
-    //User
-    Route::get('/user', 'UserController@getUserDetails');
-
+    
     //Auth
     Route::post('/login', 'AuthenticateController@authenticate');
-
 
     //test
     Route::get('/test', 'ContactsController@test');

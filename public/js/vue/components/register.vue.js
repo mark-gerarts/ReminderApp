@@ -1,7 +1,14 @@
 var Register = Vue.extend({
     template: "#register-template",
 
-    ready: function() {
-        console.log('registering');
+    data: function() {
+        return {
+            formData: {
+                name: '',
+                email: '',
+                password: '',
+                password_confirmation: ''
+            }
+        }
     }
 })

@@ -113,6 +113,15 @@ var validatorMixin = {
             if(send_datetimeError) output.send_datetime = send_datetimeError;
             if(recipientError) output.recipient = recipientError;
             return output;
+        },
+
+        validateLogin: function(formdata) {
+            var output = {};
+            var emailError = this._validate(formdata.email, "required");
+            var passwordError = this._validate(formdata.password, "required");
+            if(emailError) output.email = emailError;
+            if(passwordError) output.password = passwordError;
+            return output;
         }
     }
 };

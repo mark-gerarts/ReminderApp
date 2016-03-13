@@ -21,9 +21,20 @@ var App = Vue.extend({
                 authStore.setAuthenticationStatus(true);
                 authStore.setUser(data.user);
                 return;
-            } else {
-                router.go('/login');
             }
+        }
+    },
+
+    data: function() {
+        return {
+            state: authStore.state
+        }
+    },
+
+    events: {
+        'not-logged-in': function() {
+            this.authLogOut();
+            router.go('/login');
         }
     }
 });

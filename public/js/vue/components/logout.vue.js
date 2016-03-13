@@ -1,5 +1,8 @@
 var Logout = Vue.extend({
+    mixins: [authMixin],
+
     ready: function() {
-        console.log("logged out");
+        this.authLogOut();
+        window.location.href= myRootUrl;
     }
 })

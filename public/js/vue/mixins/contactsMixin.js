@@ -27,6 +27,9 @@ var contactsMixin = {
                 }
             }, function(error) {
                 // Error
+                if(error.status == 401) {
+                    this.$dispatch('not-logged-in');
+                }
                 this._openErrorWindow(error.data);
                 this.errors.getContacts = true;
             }).finally(function() {
@@ -51,6 +54,10 @@ var contactsMixin = {
                 }
             }, function(error) {
                 //Error
+                console.log(error)
+                if(error.status == 401) {
+                    this.$dispatch('not-logged-in');
+                }
                 this._openErrorWindow(error.data);
                 this.errors.insertContact = true;
             }).finally(function() {
@@ -72,6 +79,9 @@ var contactsMixin = {
                 }
             }, function(error) {
                 // Error
+                if(error.status == 401) {
+                    this.$dispatch('not-logged-in');
+                }
                 this._openErrorWindow(error.data);
                 this.errors.updateContact = true;
             }).finally(function() {
@@ -94,6 +104,9 @@ var contactsMixin = {
                 }
             }, function(error) {
                 // Error
+                if(error.status == 401) {
+                    this.$dispatch('not-logged-in');
+                }
                 this._openErrorWindow(error.data);
                 this.errors.deleteContact = true;
             }).finally(function() {

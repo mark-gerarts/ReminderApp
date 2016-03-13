@@ -5,6 +5,8 @@ var authMixin = {
             win.document.body.innerHTML = msg;
         },
         authSignIn: function(data) {
+            this.submitting = true;
+
             this.$http.post('api/login', data).then(function(response) {
                 authStore.setAuthenticationStatus(true);
                 authStore.setUser(response.data.user);
@@ -17,16 +19,20 @@ var authMixin = {
                 this.setLocalStorage(data);
                 router.go('/home');
             }, function(error) {
-                this._openErrorWindow(error.data);
+                console.log(error)
+                if(error.data.error == "invalid_credentials")
+                {
+                    this.errorMessage = "Invalid credentials";
+                }
+                //this._openErrorWindow(error.data);
+            }).finally(function() {
+                this.submitting = false;
             });
         },
         authLogOut: function() {
             localStorage.removeItem('remindme_storage');
             authStore.setAuthenticationStatus(false);
             authStore.setUser(null);
-        },
-        handleNotLoggedIn: function() {
-            
         },
         setToken: function(token) {
             Vue.http.headers.common['Authorization'] = 'Bearer: ' + token;

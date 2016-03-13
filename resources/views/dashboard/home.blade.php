@@ -22,7 +22,7 @@
 
 <body id="app">
     <div class="wrapper">
-        <div class="container-fluid navbar">
+        <div class="container-fluid navbar" v-if="state.authenticated">
             <div class="container">
                 <nav>
                     <div class="no-padding-left">
@@ -32,8 +32,24 @@
                     <div><a v-link="{ path: '/contacts' }">Contacts</a></div>
                     <div><a v-link="{ path: '/account' }">Account</a></div>
                 </nav>
-                <div class="user">Logged in as //ToDo. <a v-link="{ path: '/logout' }" class="log-out">Log out</a></div>
+                <div class="user">Logged in as @{{ state.user.name }}. <a v-link="{ path: '/logout' }" class="log-out">Log out</a></div>
             </div>
+        </div>
+        <div class="container-fluid nav-wrapper alt" v-else>
+            <header>
+                <nav class="container">
+                    <ul class="nav-left">
+                        <li class="no-padding-left">
+                            <a href="{{ url('/') }}"><span class="logo"><span class="logo-brand">Remind</span><span class="logo-name">Me</span></span></a>
+                        </li>
+                    </ul>
+                    <ul class="nav-right">
+                        <li><a href="{{ url('/contact') }}">Contact</a></li>
+                        <li><a href="{{ url('/pricing') }}">Pricing</a></li>
+                        <li class="no-padding-right"><a href="{{ url('/dashboard#!/login') }}" class="highlight-text">Dashboard</a></li>
+                    </ul>
+                </nav>
+            </header>
         </div>
         <div class="container">
             <router-view></router-view>

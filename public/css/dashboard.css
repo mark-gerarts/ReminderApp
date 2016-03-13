@@ -55,7 +55,50 @@ h2 {
     padding-bottom: 5px;
     border-bottom: 1px solid #7f8c8d;
 }
+/** alt nav **/
+/** nav **/
+.nav-wrapper.alt {
+    background: #16a085;
+    padding: 0;
+}
+.alt header {
+    background: rgba(255, 255, 255, 0.1);
+}
+.alt nav {
+    color: #FFF;
+}
 
+.alt nav ul {
+    list-style-type: none;
+}
+.alt .nav-left {
+    float: left;
+}
+.alt .nav-right {
+    float: right;
+}
+.alt nav li {
+    float: left;
+    text-align: center;
+    display: inline-block;
+    padding: 0 50px;
+    height: 50px;
+    line-height: 50px;
+}
+.alt nav a {
+    display: inline-block;
+}
+.alt ul {
+    margin: 0;
+    padding: 0;
+}
+/** Logo **/
+.logo {
+    font-size: 28px;
+}
+.logo-brand {
+    font-weight: bold;
+}
 /** form **/
 .flat-form label, .flat-form input, .flat-form textarea, .flat-form select, .error-message {
     clear: both;
@@ -453,4 +496,7 @@ footer {
 .error-message {
     float: left;
     clear: both;
+}
+.warning-message {
+    text-align: center;
 }

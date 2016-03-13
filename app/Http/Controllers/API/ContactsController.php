@@ -26,7 +26,6 @@ class ContactsController extends Controller
      */
     public function __construct(IContactRepository $contact, IUserRepository $user, IUser_reminderRepository $userReminder)
     {
-        $this->middleware('jwt.auth');
         $this->_user = JWTAuth::parseToken()->toUser();
 
         $this->_contactRepository = $contact;

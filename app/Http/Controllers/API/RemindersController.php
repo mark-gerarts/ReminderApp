@@ -24,7 +24,6 @@ class RemindersController extends Controller
      */
     public function __construct(IUserRepository $userRepository, IUser_reminderRepository $userReminderRepository)
     {
-        $this->middleware('jwt.auth');
         $this->_user = JWTAuth::parseToken()->toUser();
 
         $this->_userRepository = $userRepository;

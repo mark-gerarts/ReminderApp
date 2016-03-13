@@ -25,6 +25,9 @@ var remindersMixin = {
                 }
             }, function(error) {
                 //Error
+                if(error.status == 401) {
+                    this.$dispatch('not-logged-in');
+                }
                 this._openErrorWindow(error.data);
             }).finally(function() {
                 this.isLoading.getUpcomingReminders = false;
@@ -52,6 +55,9 @@ var remindersMixin = {
                 }
             }, function(error) {
                 //Error
+                if(error.status == 401) {
+                    this.$dispatch('not-logged-in');
+                }
                 this._openErrorWindow(error.data);
             }).finally(function() {
                 this.isLoading.submitReminder = false;
@@ -73,6 +79,9 @@ var remindersMixin = {
                 }
             }, function(error) {
                 //Error
+                if(error.status == 401) {
+                    this.$dispatch('not-logged-in');
+                }
                 console.log(error);
             }).finally(function() {
                 this.isLoading.submitReminder = false;
@@ -97,6 +106,9 @@ var remindersMixin = {
                 }
             }, function(error) {
                 //Error
+                if(error.status == 401) {
+                    this.$dispatch('not-logged-in');
+                }
                 console.log(error);
                 var win = window.open("", "Title");
                 win.document.body.innerHTML = error.data;
