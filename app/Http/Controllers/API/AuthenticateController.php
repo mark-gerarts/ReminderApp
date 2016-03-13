@@ -45,6 +45,7 @@ class AuthenticateController extends Controller
         $response = [
             "token" => $token,
             "user" => [
+                "id" => $user->id,
                 "name" => $user->name,
                 "reminder_credits" => $user->reminder_credits
             ]

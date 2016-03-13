@@ -14,11 +14,6 @@ class HomePageTest extends TestCase
 
     public function testLinks()
     {
-        // Sign in link
-        $this->visit('/')
-            ->click('Sign in')
-            ->seePageIs('/login');
-
         //Contact link
         $this->visit('/')
             ->click('Contact')
@@ -28,10 +23,5 @@ class HomePageTest extends TestCase
         $this->visit('/')
             ->click('Pricing')
             ->seePageIs('/pricing');
-
-        //Contact link
-        $this->visit('/')
-            ->click('Sign up')
-            ->seePageIs('/register');
     }
 }

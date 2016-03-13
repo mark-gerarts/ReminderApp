@@ -94,6 +94,7 @@
     <script src="{{ url('js/vue/components/contactRow.vue.js')}}"></script>
     <script src="{{ url('js/vue/components/contacts.vue.js')}}"></script>
     <script src="{{ url('js/vue/components/account.vue.js')}}"></script>
+    <script src="{{ url('js/vue/components/thankyou.vue.js')}}"></script>
     <script src="{{ url('js/vue/app.vue.js')}}"></script>
 </body>
 </html>

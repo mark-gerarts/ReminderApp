@@ -20,6 +20,12 @@ class UserController extends Controller
 
     public function getUserDetails()
     {
-        return response()->json($this->_user);
+        $response = [
+            "id" => $this->_user->id,
+            "name" => $this->_user->name,
+            "reminder_credits" => $this->_user->reminder_credits
+        ];
+
+        return response()->json($response);
     }
 }

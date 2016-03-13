@@ -9,7 +9,7 @@ use App\Repositories\User_order\IUser_orderRepository;
 use App\Repositories\User\IUserRepository;
 use App\Repositories\Quick_reminder\IQuick_reminderRepository;
 use Mail;
-use Auth;
+use JWTAuth;
 use Mollie_API_Client;
 
 class PaymentController extends Controller
@@ -42,12 +42,10 @@ class PaymentController extends Controller
      */
     public function createUserOrder(Request $request)
     {
-        // Authenticate the user.
-        $this->middleware('auth');
-        $user = Auth::user();
-
         // Check the payment type in the request.
-        $this->validate($request, ['payment_type' => 'numeric|required']);
+        $this->validate($request, ['payment_type' => "numeric|required", '_uid' => "numeric|required"]);
+
+        $user = $this->_userRepository->getUserById($request->_uid);
 
         // The avaiable payment types. This could be fetched from a DB?
         // However, this is the only place where it is used, so it's a won't-have-now.
@@ -115,7 +113,7 @@ class PaymentController extends Controller
         }
 
         // Redirect to the dashboard homepage.
-        header("Location: " . url('/dashboard'));
+        header("Location: " . url('/dashboard#!/thankyou'));
         exit;
     }
 

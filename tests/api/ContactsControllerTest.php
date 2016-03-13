@@ -32,21 +32,12 @@ class ContactsControllerTest extends TestCase
 
     public function testGet()
     {
-        $user = factory(App\Models\User::class)->make([
-            "name" => "TestName",
-            "email" => "test@email.com"
-        ]);
-
-        $user->save();
-        $token = JWTAuth::fromUser($user);
-
-        $this->refreshApplication();
-        JWTAuth::refreshToken();
-        //Log::info($user);
-
-
-    $response = $this->get('api/contacts', ['HTTP_Authorization' => 'Bearer '. $token]);
-            Log::info($response->response);
+        $this->get('api/contacts', ['HTTP_Authorization' => 'Bearer '. $this->_token])
+            ->seeJsonStructure([
+                '*' => [
+                    'id', 'user_id', 'name', 'number'
+                ]
+            ]);
     }
 
     private function _createUser()
@@ -63,16 +54,15 @@ class ContactsControllerTest extends TestCase
 
     private function _generateContacts($user)
     {
-        $output = [];
-
-        for($i=0; $i<10; $i++)
+        $contacts = factory(App\Models\Contact::class, 10)->make([
+            "user_id" => $user->id
+        ]);
+        foreach ($contacts as $contact)
         {
-            $output[] = factory(App\Models\Contact::class)->make([
-                "user_id" => $user->id
-            ]);
+            $contact->save();
         }
 
-        return $output;
+        return $contacts;
     }
 
     private function _createToken($user)

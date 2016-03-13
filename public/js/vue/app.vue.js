@@ -55,6 +55,10 @@ router.map({
         component: Account,
         auth: true
     },
+    '/thankyou': {
+        component: Thankyou,
+        auth: true
+    },
     '/login': {
         component: Login,
         auth: false

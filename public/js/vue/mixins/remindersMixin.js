@@ -49,7 +49,7 @@ var remindersMixin = {
                         repeat_id: 1,
                     };                      // Reset the viewmodel. This only happens when the insert is successful,
                                             // thus the user doesn't have to re-enter values in case of an error.
-                    uservm.reminder_credits--;
+                    authStore.incrementCredits(-1);
                 } else {
                     //this.hasError.insertContact = true;
                 }
@@ -73,7 +73,7 @@ var remindersMixin = {
                 console.log(response);
                 if(response.status == 200) {
                     remindersStore.removeReminder(reminder);
-                    uservm.reminder_credits++;
+                    authStore.incrementCredits(1);
                 } else {
                     //this.hasError.insertContact = true;
                 }

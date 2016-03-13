@@ -3,7 +3,7 @@ var Account = Vue.extend({
 
     data: function() {
         return {
-            buyingCredit: false
+            state: authStore.state
         };
     }
 })

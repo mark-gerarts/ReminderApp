@@ -123,8 +123,12 @@ var Home = Vue.extend({
         },
 
         handleReminderSubmit() {
-            if(this.user.reminder_credits > 0) {
+            if(this.user.reminder_credits == 0) {
+                // ToDo;
                 return;
+            }
+            if(!this.isContactSelected) {
+                this.newReminder.recipient = this.query;
             }
             this.isSubmittedOnce = true;
             this.trim();
@@ -132,6 +136,8 @@ var Home = Vue.extend({
 
             if(Object.keys(this.validationErrors).length == 0) {
                 this.submitReminder(this.newReminder);
+            } else {
+                this.newReminder.recipient = null;
             }
         }
     }

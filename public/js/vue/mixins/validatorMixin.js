@@ -125,12 +125,16 @@ var validatorMixin = {
         },
 
         validateSignup: function(formdata) {
-            // ToDooooooooooooo
             var output = {};
-            var emailError = this._validate(formdata.email, "required");
-            var passwordError = this._validate(formdata.password, "required");
+            var nameError = this._validate(formdata.name, "required|max:255");
+            var emailError = this._validate(formdata.email, "required|max:255");
+            var passwordError = this._validate(formdata.password, "required|min:6");
             if(emailError) output.email = emailError;
             if(passwordError) output.password = passwordError;
+            if(nameError) output.name = nameError;
+            if(formdata.password != formdata.password_confirmation) {
+                output.password = "The passwords don't match.";
+            }
             return output;
         }
     }

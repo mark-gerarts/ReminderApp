@@ -8,6 +8,10 @@ var authStore = {
         this.state.user = user;
     },
 
+    incrementCredits: function (amount) {
+        this.state.user.reminder_credits += amount;
+    },
+
     setAuthenticationStatus: function(bool) {
         this.state.authenticated = bool;
     },
