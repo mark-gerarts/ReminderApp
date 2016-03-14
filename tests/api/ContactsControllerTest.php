@@ -11,7 +11,6 @@ class ContactsControllerTest extends TestCase
     private $_user;
     private $_token;
     private $_contacts;
-    private $_csrf;
 
     protected function setUp()
     {
@@ -25,9 +24,6 @@ class ContactsControllerTest extends TestCase
 
         // Generate a list of contacts
         $this->_contacts = $this->_generateContacts($this->_user);
-
-        // Generate a csrf token
-        $this->_csrf = csrf_token();
     }
 
     public function testGet()

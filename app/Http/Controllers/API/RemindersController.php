@@ -55,6 +55,10 @@ class RemindersController extends Controller
      */
     public function insertReminder(Request $request)
     {
+        if($this->_user->reminder_credits == 0)
+        {
+            return response("Not enough credits");
+        }
         // Remove a credit from the user.
         $newCredits = $this->_user->reminder_credits - 1;
         $this->_userRepository->updateUser($this->_user->id, ["reminder_credits" => $newCredits]);
@@ -65,7 +69,7 @@ class RemindersController extends Controller
     }
 
     /**
-     * Cancel (delete) a remidner.
+     * Cancel (delete) a reminder.
      *
      * @param Int $id
      * @return json

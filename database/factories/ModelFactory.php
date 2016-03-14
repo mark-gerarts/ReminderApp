@@ -23,8 +23,18 @@ $factory->define(App\Models\User::class, function (Faker\Generator $faker) {
 
 $factory->define(App\Models\Contact::class, function (Faker\Generator $faker) {
     return [
-        'user_id' => mt_rand(1, 10),
+        'user_id' => mt_rand(1, 100),
         'name' => $faker->name,
         'number' => str_random(10)
+    ];
+});
+
+$factory->define(App\Models\User_reminder::class, function (Faker\Generator $faker) {
+    return [
+        'user_id' => mt_rand(1, 100),
+        'send_datetime' => date('Y-m-d H:i:s'),
+        'message' => $faker->text(100),
+        'repeat_id' => mt_rand(1, 5),
+        'recipient' => str_random(10)
     ];
 });

@@ -48,6 +48,7 @@ Route::group(['middleware' => 'web'], function () {
 
 Route::group(['namespace' => 'API', 'prefix' => 'api'], function() {
     Route::group(['middleware' => 'jwt.auth'], function() {
+
         //Contacts
         Route::get('/contacts/{id?}', 'ContactsController@get');
         Route::post('/contacts', 'ContactsController@insert');

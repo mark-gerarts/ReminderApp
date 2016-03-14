@@ -73,6 +73,94 @@ class AuthenticateControllerTest extends TestCase
             ->assertResponseStatus(401);
     }
 
+    public function testRegisterGoodData()
+    {
+        $user = factory(App\Models\User::class)->make([
+            "password" => bcrypt("hunter2")
+        ]);
+
+        $request = [
+            "name" => $user->name,
+            "email" => $user->email,
+            "password" => "hunter2",
+            "password_confirmation" => "hunter2"
+        ];
+
+        $this->json('POST', 'api/register', $request)
+            ->seeJsonStructure([
+                "token",
+                "user" => [
+                    "id",
+                    "name",
+                    "reminder_credits"
+                ]
+            ])
+            ->assertResponseOk();
+
+        $this->seeInDatabase('users', [
+            "name" => $request["name"],
+            "email" => $request["email"]
+        ]);
+    }
+
+    public function testRegisterBadData()
+    {
+        $user = factory(App\Models\User::class)->make([
+            "password" => bcrypt("hunter2")
+        ]);
+
+        //No name
+        $request = [
+            "email" => $user->email,
+            "password" => "hunter2",
+            "password_confirmation" => "hunter2"
+        ];
+
+        $this->json('POST', 'api/register', $request)
+            ->assertResponseStatus(422);
+
+        //No email
+        $request = [
+            "name" => $user->name,
+            "password" => "hunter2",
+            "password_confirmation" => "hunter2"
+        ];
+
+        $this->json('POST', 'api/register', $request)
+            ->assertResponseStatus(422);
+
+        //No password
+        $request = [
+            "name" => $user->name,
+            "email" => $user->email,
+            "password_confirmation" => "hunter2"
+        ];
+
+        $this->json('POST', 'api/register', $request)
+            ->assertResponseStatus(422);
+
+        //No password confirm
+        $request = [
+            "name" => $user->name,
+            "email" => $user->email,
+            "password" => "hunter2"
+        ];
+
+        $this->json('POST', 'api/register', $request)
+            ->assertResponseStatus(422);
+
+        //Wrong password confirm
+        $request = [
+            "name" => $user->name,
+            "email" => $user->email,
+            "password" => "hunter2",
+            "password_confirmation" => "hunter3"
+        ];
+
+        $this->json('POST', 'api/register', $request)
+            ->assertResponseStatus(422);
+    }
+
     private function _createUser()
     {
         $user = factory(App\Models\User::class)->make([

@@ -113,7 +113,7 @@ class CheckReminders extends Command
         // Don't forget to check if the number is valid before sending it to the Twilio API
         // Preferably upon making a reminder instead of upon sendig.
 
-        // Twilio::message($recipient, $reminder->message);
+        //Twilio::message($recipient, $reminder->message);
     }
 
     /**
