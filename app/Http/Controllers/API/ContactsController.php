@@ -86,7 +86,7 @@ class ContactsController extends Controller
         // Check if the contact really belongs to the user.
         if($contact->user_id != $this->_user->id)
         {
-            return response()->json(false);
+            return response()->json(false, 403);
         }
 
         // Remove the contact id from all associated reminders, and
@@ -120,9 +120,13 @@ class ContactsController extends Controller
 
         // Check if the contact really belongs to the user.
         $contact = $this->_contactRepository->getContactById($request->id);
+        if(!$contact)
+        {
+            return response()->json("Not found.", 404);
+        }
         if($contact->user_id != $this->_user->id)
         {
-            return response()->json(false);
+            return response()->json(false, 403);
         }
 
         // Set the new values.
