@@ -57,7 +57,7 @@ class RemindersController extends Controller
     {
         if($this->_user->reminder_credits == 0)
         {
-            return response("Not enough credits");
+            return response("Not enough credits", 402);
         }
         // Remove a credit from the user.
         $newCredits = $this->_user->reminder_credits - 1;
@@ -78,21 +78,30 @@ class RemindersController extends Controller
     {
         if($id == NULL)
         {
-            return response()->json(false);
+            return response()->json("No ID given", 422);
         }
 
         // Get the reminder by id.
         $reminder = $this->_userReminderRepository->getUserReminderById($id);
-        if($reminder)
+
+        if(!$reminder)
         {
-            // Delete the reminder, and refund a credit for the user.
-            $this->_userReminderRepository->forceDeleteUserReminder($reminder->id);
-            $newCredits = $this->_user->reminder_credits + 1;
-            $this->_userRepository->updateUser($this->_user->id, ["reminder_credits" => $newCredits]);
-            return response()->json(true);
+            // If the reminder isn't found; return false.
+            return response()->json("Not found", 404);
         }
-        // If the reminder isn't found; return false.
-        return response()->json(false);
+        if($reminder->user_id != $this->_user->id)
+        {
+            // User is not authorized to delete this reminder.
+            return response()->json("Unauthorized", 403);
+
+        }
+
+        // Delete the reminder, and refund a credit for the user.
+        $this->_userReminderRepository->forceDeleteUserReminder($reminder->id);
+        $newCredits = $this->_user->reminder_credits + 1;
+        $this->_userRepository->updateUser($this->_user->id, ["reminder_credits" => $newCredits]);
+        return response()->json(true);
+
     }
 
     /**
@@ -131,7 +140,7 @@ class RemindersController extends Controller
         else
         {
             // At least one of both is required, so return false when the request contains neither.
-            return response()->json(false);
+            return response()->json("Contact or recipient is required", 422);
         }
 
         // Insert the new reminder and get the result (ID or false).

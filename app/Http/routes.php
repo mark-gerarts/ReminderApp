@@ -58,6 +58,7 @@ Route::group(['namespace' => 'API', 'prefix' => 'api'], function() {
         //Reminders
         Route::get('/reminders/upcoming', 'RemindersController@getUpcomingReminders');
         Route::get('/reminders/cancel/{id?}', 'RemindersController@cancelReminder');
+        Route::post('/reminders', 'RemindersController@insertReminder');
 
         //User
         Route::get('/user', 'UserController@getUserDetails');

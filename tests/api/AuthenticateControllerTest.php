@@ -163,11 +163,9 @@ class AuthenticateControllerTest extends TestCase
 
     private function _createUser()
     {
-        $user = factory(App\Models\User::class)->make([
+        $user = factory(App\Models\User::class)->create([
             "password" => bcrypt("hunter2")
         ]);
-
-        $user->save();
 
         return $user;
     }

@@ -92,10 +92,9 @@ class ContactsControllerTest extends TestCase
 
     public function testDeleteGoodRequest()
     {
-        $contact = factory(App\Models\Contact::class)->make([
+        $contact = factory(App\Models\Contact::class)->create([
             "user_id" => $this->_user->id
         ]);
-        $contact->save();
 
         $token = $this->_createToken($this->_user);
 
@@ -107,10 +106,9 @@ class ContactsControllerTest extends TestCase
     {
         //Test trying to delete a contact that does not belong to the user
         $fakeUser = $this->_createUser();
-        $contact = factory(App\Models\Contact::class)->make([
+        $contact = factory(App\Models\Contact::class)->create([
             "user_id" => $fakeUser->id
         ]);
-        $contact->save();
 
         $token = $this->_createToken($this->_user);
 
@@ -120,10 +118,9 @@ class ContactsControllerTest extends TestCase
 
     public function testUpdateGoodData()
     {
-        $contact = factory(App\Models\Contact::class)->make([
+        $contact = factory(App\Models\Contact::class)->create([
             "user_id" => $this->_user->id
         ]);
-        $contact->save();
 
         $updated = [
             "id" => $contact->id,
@@ -143,10 +140,9 @@ class ContactsControllerTest extends TestCase
 
     public function testUpdateBadData()
     {
-        $contact = factory(App\Models\Contact::class)->make([
+        $contact = factory(App\Models\Contact::class)->create([
             "user_id" => $this->_user->id
         ]);
-        $contact->save();
 
         //Number too short.
         $updated = [
@@ -179,25 +175,19 @@ class ContactsControllerTest extends TestCase
 
     private function _createUser()
     {
-        $user = factory(App\Models\User::class)->make([
+        $user = factory(App\Models\User::class)->create([
             "name" => "TestName",
             "email" => "test@email.com"
         ]);
-
-        $user->save();
 
         return $user;
     }
 
     private function _generateContacts($user)
     {
-        $contacts = factory(App\Models\Contact::class, 10)->make([
+        $contacts = factory(App\Models\Contact::class, 10)->create([
             "user_id" => $user->id
         ]);
-        foreach ($contacts as $contact)
-        {
-            $contact->save();
-        }
 
         return $contacts;
     }
