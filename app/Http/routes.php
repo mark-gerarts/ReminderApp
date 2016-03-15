@@ -27,13 +27,16 @@
 });*/
 
 Route::group(['middleware' => 'web'], function () {
-    Route::auth();
+    //Route::auth();
 
     //Homepage
     Route::get('/', 'HomeController@index');
     Route::get('/home', 'HomeController@index');
     Route::get('/pricing', 'HomeController@pricing');
     Route::get('/contact', 'HomeController@contact');
+
+    //Contact submit
+    Route::post('/contact', 'HomeController@handleContactSubmit');
 
     //payment
     Route::post('/checkout', 'PaymentController@createQuickReminderOrder');

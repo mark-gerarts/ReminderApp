@@ -22,12 +22,12 @@
         <div class="container-fluid nav-wrapper">
             <header>
                 <nav class="container">
-                    <ul class="nav-left">
+                    <ul class="nav-left brandname">
                         <li class="no-padding-left">
                             <a href="{{ url('/') }}"><span class="logo"><span class="logo-brand">Remind</span><span class="logo-name">Me</span></span></a>
                         </li>
                     </ul>
-                    <ul class="nav-right">
+                    <ul class="nav-right nav-links">
                         <li><a href="{{ url('/contact') }}">Contact</a></li>
                         <li><a href="{{ url('/pricing') }}">Pricing</a></li>
                         <li class="no-padding-right"><a href="{{ url('/dashboard#!/login') }}" class="highlight-text">Dashboard</a></li>
