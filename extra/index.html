@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<!-- prince -s style.css index.html mybook.pdf -->
+<html dir="ltr" lang="en-US">
+<head>
+    <meta charset="utf-8" />
+    <title>Eindwerk Scriptie</title>
+    <meta name="author" content="Mark gerarts"/>
+    <meta name="subject" content="Eindwerk Syntra Webontwikkelaar 2015-2016: ReminderApp"/>
+</head>
+<body>
+    <div class="frontcover">
+        <img src="images/syntra-logo.jpg" id="logo" />
+        <div id="title">
+            <h2>RemindMe</h2>
+        </div>
+    </div>
+    <div class="contents">
+        <h1>Inhoud</h1>
+
+        <ul class="toc">
+            <li><a href="#ch1">Inleiding</a></li>
+            <li><a href="#ch2">Samenvatting</a></li>
+            <li><a href="#ch3">Database structuur</a></li>
+            <li><a href="#ch4">Backend</a></li>
+            <li><a href="#ch5">Frontend</a></li>
+            <li><a href="#ch6">Besluit</a></li>
+        </ul>
+
+    </div>
+
+    <h1 id="ch1" class="chapter">Inleiding</h1>
+    <p>
+        RemindMe is een webapplicatie waarmee gebruikers een herinnering kunnen maken, die ze later dan per sms toegestuurd krijgen. Er kan een account aangemaakt worden. Dit biedt
+        onder andere de mogelijkheid om contacten te beheren en herinneringen te laten herhalen. Registreren is echter niet nodig, er kon ook een
+        zogenaamde 'Quick reminder' gemaakt worden. Het nadeel hiervan is dat de prijs veel hoger ligt.
+    </p>
+    <p>
+        De applicatie is geschreven in Laravel. Wanneer een gebruiker zich inlogt, komt hij terecht bij het 'dashboard'. Dit deel van de site maakt gebruikt van het JavaScript
+        framework Vue.js. Deze communiceert met de backend door middel van een API.
+
+    </p>
+
+    <h1 id="ch2" class="chapter">Samenvatting</h1>
+    <p>Zie inleiding.</p>
+
+    <h1 id="ch3" class="chapter">Database</h1>
+    <p>
+        De applicatie maakt gebruik van een MySQL (MariaDB) database. De structuur ziet er als volgt uit:
+    </p>
+    <ul class="db-table">
+        <li class="db-header">users</li>
+        <li>
+            <img src="images/pma/primary_key.png" />id
+            <span class="db-datatype"> : int(11)</span></li>
+        <li>
+            <img src="images/pma/varchar.png" />name
+            <span class="db-datatype"> : varchar(255)</span>
+        </li>
+        <li>
+            <img src="images/pma/varchar.png" />email
+            <span class="db-datatype"> : varchar(255)</span>
+        </li>
+        <li>
+            <img src="images/pma/varchar.png" />password
+            <span class="db-datatype"> : varchar(255)</span>
+        </li>
+        <li>
+            <img src="images/pma/int.png" />reminder_credits
+            <span class="db-datatype"> : int(11)</span>
+        </li>
+        <li>
+            <img src="images/pma/varchar.png" />remember_token
+            <span class="db-datatype"> : varchar(100)</span>
+        </li>
+        <li>
+            <img src="images/pma/datetime.png" />created_at
+            <span class="db-datatype"> : datetime</span>
+        </li>
+        <li>
+            <img src="images/pma/datetime.png" />updated_at :
+            <span class="db-datatype"> : datetime</span>
+        </li>
+    </ul>
+    <ul class="db-table">
+        <li class="db-header">user_reminders</li>
+        <li>
+            <img src="images/pma/primary_key.png" />id
+            <span class="db-datatype"> : int(11)</span></li>
+        <li>
+            <img src="images/pma/varchar.png" />recipient
+            <span class="db-datatype"> : varchar(255)</span>
+        </li>
+        <li>
+            <img src="images/pma/int.png" />contact_id
+            <span class="db-datatype"> : int(11)</span></li>
+        <li>
+        <li>
+            <img src="images/pma/datetime.png" />send_datetime
+            <span class="db-datatype"> : datetime</span>
+        </li>
+        <li>
+            <img src="images/pma/varchar.png" />message
+            <span class="db-datatype"> : text</span>
+        </li>
+        <li>
+            <img src="images/pma/int.png" />user_id
+            <span class="db-datatype"> : int(11)</span></li>
+        <li>
+        <li>
+            <img src="images/pma/int.png" />repeat_id
+            <span class="db-datatype"> : int(11)</span></li>
+        <li>
+        <li>
+            <img src="images/pma/datetime.png" />deleted_at :
+            <span class="db-datatype"> : datetime</span>
+        </li>
+    </ul>
+
+    <h1 id="ch4" class="chapter">Backend</h1>
+      <p>… </p>
+
+    <h1 id="ch5" class="chapter">Frontend</h1>
+    <p>… </p>
+
+    <h1 id="ch6" class="chapter">Besluit</h1>
+    <p>… </p>
+
+</body>
+</html>

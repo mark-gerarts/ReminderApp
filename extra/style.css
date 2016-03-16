@@ -1,0 +1,151 @@
+@import "prism.css";
+
+@page {
+  size: A4;
+
+  @bottom-left {
+    margin: 10pt 0 30pt 0;
+    border-top: .25pt solid #666;
+    content: "Mark Gerarts";
+    font-size: 9pt;
+    color: #333;
+  }
+
+  @bottom-right {
+    margin: 10pt 0 30pt 0;
+    border-top: .25pt solid #666;
+    content: counter(page);
+    font-size: 9pt;
+  }
+
+  @top-right {
+    content:  string(doctitle);
+    margin: 30pt 0 10pt 0;
+    font-size: 9pt;
+    color: #333;
+  }
+
+  @footnotes {
+    border-top: 0.6pt solid black;
+    padding-top: 8pt;
+  }
+}
+
+@page:first {
+    @bottom-right {
+        content: none;
+    }
+    @bottom-left {
+        content: none;
+    }
+}
+
+
+
+/* Reset chapter and figure counters on the body */
+body {
+  counter-reset: chapternum figurenum;
+  font-family: "Trebuchet MS", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Tahoma, sans-serif;
+  line-height: 1.5;
+  font-size: 11pt;
+}
+
+/* Get the title of the current chapter, which will be the content of the h1.
+Reset figure counter because figures start from 1 in each chapter. */
+h1 {
+  string-set: doctitle content();
+  page-break-before: always;
+  counter-reset: figurenum;
+  counter-reset: footnote;
+  line-height: 1.3;
+}
+
+/* Increment chapter counter */
+h1.chapter:before {
+  counter-increment: chapternum;
+  content: counter(chapternum) ". ";
+}
+
+/* Increment and display figure counter */
+figcaption:before {
+  counter-increment: figurenum;
+  content: counter(chapternum) "-" counter(figurenum) ". ";
+}
+
+
+/** Footnotes **/
+.fn {
+  float: footnote;
+}
+
+.fn {
+  counter-increment: footnote;
+}
+
+.fn::footnote-call {
+  content: counter(footnote);
+  font-size: 9pt;
+  vertical-align: super;
+  line-height: none;
+}
+
+.fn::footnote-marker {
+  font-weight: bold;
+}
+.contents .fn {
+    counter-reset: section;
+}
+
+.frontcover .fn {
+    display: none;
+}
+
+/**//**/
+h1, h2, h3, h4, h5 {
+  font-weight: bold;
+  page-break-after: avoid;
+  page-break-inside:avoid;
+}
+
+h1+p, h2+p, h3+p {
+  page-break-before: avoid;
+}
+
+table, figure {
+  page-break-inside: avoid;
+}
+ul.toc a::after {
+    content: leader('.') target-counter(attr(href), page);
+}
+
+
+/*** My Styles ***/
+/** Voorblad **/
+#logo {
+    width: 200px;
+}
+
+/** Database tabel **/
+.db-table {
+    border: 1px solid #aaa;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    width: auto;
+    float: left;
+}
+.db-table li {
+    padding: 0 5px;
+}
+.db-table li img {
+    margin-right: 5px;
+}
+.db-datatype {
+    color: #999;
+}
+.db-header {
+    background: url(images/pma/pmaheader.png);
+    background-repeat: repeat-x;
+    text-align: center;
+    font-weight: bold;
+}
