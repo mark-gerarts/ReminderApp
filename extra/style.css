@@ -40,12 +40,22 @@
     }
 }
 
+@font-face {
+    font-family: Lato;
+    src: url(lib/Lato-Regular.ttf);
+}
+@font-face {
+    font-family: lato;
+    src: url(lib/Lato-Bold.ttf);
+    font-weight: bold;
+}
+
 
 
 /* Reset chapter and figure counters on the body */
 body {
   counter-reset: chapternum figurenum;
-  font-family: "Trebuchet MS", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Tahoma, sans-serif;
+  font-family: "Lato", "Trebuchet MS", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Tahoma, sans-serif;
   line-height: 1.5;
   font-size: 11pt;
 }
@@ -111,7 +121,7 @@ h1+p, h2+p, h3+p {
   page-break-before: avoid;
 }
 
-table, figure {
+table, figure, p {
   page-break-inside: avoid;
 }
 ul.toc a::after {
@@ -128,11 +138,12 @@ ul.toc a::after {
 /** Database tabel **/
 .db-table {
     border: 1px solid #aaa;
-    margin: 0;
     padding: 0;
     list-style: none;
     width: auto;
     float: left;
+    margin: 5px 5px 0 0;
+    overflow: auto;
 }
 .db-table li {
     padding: 0 5px;
@@ -148,4 +159,14 @@ ul.toc a::after {
     background-repeat: repeat-x;
     text-align: center;
     font-weight: bold;
+}
+.db-wrapper {
+    overflow: auto;
+}
+.db-foreign-key {
+    background: rgba(0, 255, 0, 0.15);
+}
+.db-wrapper + p {
+    clear: both;
+    padding-top: 25px;
 }
