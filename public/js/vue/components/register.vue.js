@@ -33,5 +33,15 @@ var Register = Vue.extend({
                 this.authRegister(this.formData);
             }
         }
+    },
+
+    route: {
+        activate: function(transition) {
+            if(authStore.getAuthenticationStatus()) {
+                router.go('/home')
+            } else {
+                transition.next();
+            }
+        }
     }
 })

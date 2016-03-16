@@ -21,7 +21,7 @@
     <div class="wrapper">
         <div class="container-fluid nav-wrapper">
             <header>
-                <nav class="container">
+                <nav class="container nav-container">
                     <ul class="nav-left brandname">
                         <li class="no-padding-left">
                             <a href="{{ url('/') }}"><span class="logo"><span class="logo-brand">Remind</span><span class="logo-name">Me</span></span></a>

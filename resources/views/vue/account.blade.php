@@ -1,9 +1,11 @@
 <template id="dashboard-account">
     <div class="row">
-        <div class="col-md-6">
-            <h2>Account information</h2>
-            <p>Reset password etc</p>
-            <p>Remaining balance yada yada</p>
+        <div class="col-md-6 col-md-offset-3">
+            <h2 class="center">Account information</h2>
+            <div class="remaining-credits account">
+                <img src="{{ url('img/profile.png')}}" alt="profile icon" />
+                <p>@{{ state.user.name }}<br /> <span class="remaining-amount">@{{ state.user.reminder_credits }}</span> remaining reminder<span v-if="state.user.reminder_credits > 1">s</span></p>
+            </div>
         </div>
     </div>
     <h2 id="buymore">Buy more reminders.</h2>

@@ -500,3 +500,73 @@ footer {
 .warning-message {
     text-align: center;
 }
+.nav-links li:first-of-type {
+    padding-left: 0;
+}
+#buymore {
+    margin-top: 50px;
+}
+@media (max-width: 980px) {
+    .phone-img {
+        display: none;
+    }
+}
+
+@media (max-width: 690px) {
+    .brandname {
+        width: 100%;
+    }
+    .brandname li {
+        text-align: center;
+        width: 100%;
+        padding-right: 0;
+    }
+    .nav-links {
+        display: inline-block;
+        float: none!important;
+    }
+    .nav-container {
+        text-align: center;
+    }
+    .user {
+        float: left;
+        clear: both;
+        padding-left: 0;
+    }
+    .dashboard-nav {
+        text-align: center;
+    }
+    .dashboard-nav nav {
+        display: inline-block;
+        width: 100%;
+    }
+}
+.account {
+    line-height: 50px;
+}
+@media (max-width: 480px) {
+    .cellphone {
+        display: none;
+    }
+    .nav-links li:nth-of-type(1) {
+        padding-right: 20px;
+    }
+    .nav-links li:nth-of-type(2) {
+        padding-right: 20px;
+        padding-left: 20px;
+    }
+    .nav-links li:nth-of-type(3) {
+        padding-left: 20px;
+    }
+
+    .dashboard-nav nav div:nth-child(1) {
+        padding-right: 20px;
+    }
+    .dashboard-nav nav div:nth-child(2) {
+        padding-right: 20px;
+        padding-left: 20px;
+    }
+    .dashboard-nav nav div:nth-child(3) {
+        padding-left: 20px;
+    }
+}

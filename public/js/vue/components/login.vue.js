@@ -31,5 +31,15 @@ var Login = Vue.extend({
                 this.authSignIn(this.formData);
             }
         }
+    },
+
+    route: {
+        activate: function(transition) {
+            if(authStore.getAuthenticationStatus()) {
+                router.go('/home')
+            } else {
+                transition.next();
+            }
+        }
     }
 });

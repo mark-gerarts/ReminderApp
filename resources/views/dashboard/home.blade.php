@@ -23,7 +23,7 @@
 <body id="app">
     <div class="wrapper">
         <div class="container-fluid navbar" v-if="state.authenticated">
-            <div class="container">
+            <div class="container dashboard-nav">
                 <nav>
                     <div class="no-padding-left">
                         <a v-link="{ path: '/'}">Dashboard</a>
@@ -37,13 +37,13 @@
         </div>
         <div class="container-fluid nav-wrapper alt" v-else>
             <header>
-                <nav class="container">
-                    <ul class="nav-left">
+                <nav class="container nav-container">
+                    <ul class="nav-left brandname">
                         <li class="no-padding-left">
                             <a href="{{ url('/') }}"><span class="logo"><span class="logo-brand">Remind</span><span class="logo-name">Me</span></span></a>
                         </li>
                     </ul>
-                    <ul class="nav-right">
+                    <ul class="nav-right nav-links">
                         <li><a href="{{ url('/contact') }}">Contact</a></li>
                         <li><a href="{{ url('/pricing') }}">Pricing</a></li>
                         <li class="no-padding-right"><a href="{{ url('/dashboard#!/login') }}" class="highlight-text">Dashboard</a></li>

@@ -84,7 +84,7 @@ router.beforeEach(function (transition) {
     } else {
         transition.next();
     }
-})
+});
 
 window.onload = function() {
     // Some configurations.
