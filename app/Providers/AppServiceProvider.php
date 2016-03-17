@@ -23,6 +23,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        // Bind the repository interfaces to the correct class.
         $this->app->bind('App\Repositories\User\IUserRepository', 'App\Repositories\User\UserRepository');
         $this->app->bind('App\Repositories\Contact\IContactRepository', 'App\Repositories\Contact\ContactRepository');
         $this->app->bind('App\Repositories\Quick_reminder\IQuick_reminderRepository', 'App\Repositories\Quick_reminder\Quick_reminderRepository');

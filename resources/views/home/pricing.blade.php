@@ -45,8 +45,3 @@
     </div>
 </main>
 @endsection
-
-
-@section('scripts')
-    <script>console.log('scripts rendered!')</script>
-@endsection

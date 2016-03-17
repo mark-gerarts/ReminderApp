@@ -55,13 +55,20 @@ class RemindersController extends Controller
      */
     public function insertReminder(Request $request)
     {
-        if($this->_user->reminder_credits == 0)
+        // Check if the user has sufficient credits (>0)
+        if($this->_user->reminder_credits <= 0)
         {
             return response("Not enough credits", 402);
         }
+
         // Remove a credit from the user.
         $newCredits = $this->_user->reminder_credits - 1;
         $this->_userRepository->updateUser($this->_user->id, ["reminder_credits" => $newCredits]);
+
+        /**
+         * Could Have: send out an email when
+         * the user is almost out of reminders
+         **/
 
         // Create the new reminder & return the result.
         // ToDo: what if the insert failed?;
@@ -76,6 +83,7 @@ class RemindersController extends Controller
      */
     public function cancelReminder($id = NULL)
     {
+        // Check if an ID is given.
         if($id == NULL)
         {
             return response()->json("No ID given", 422);
@@ -84,9 +92,9 @@ class RemindersController extends Controller
         // Get the reminder by id.
         $reminder = $this->_userReminderRepository->getUserReminderById($id);
 
+        // If the reminder isn't found; return false.
         if(!$reminder)
         {
-            // If the reminder isn't found; return false.
             return response()->json("Not found", 404);
         }
         if($reminder->user_id != $this->_user->id)
@@ -101,7 +109,6 @@ class RemindersController extends Controller
         $newCredits = $this->_user->reminder_credits + 1;
         $this->_userRepository->updateUser($this->_user->id, ["reminder_credits" => $newCredits]);
         return response()->json(true);
-
     }
 
     /**
@@ -146,13 +153,6 @@ class RemindersController extends Controller
         // Insert the new reminder and get the result (ID or false).
         $identity = $this->_userReminderRepository->insertUserReminder($values);
 
-        if($identity)
-        {
-            return response()->json($identity);
-        }
-        else
-        {
-            return response()->json(false); //ToDo: Maybe return something more meaningful? Like a http code
-        }
+        return response()->json($identity);
     }
 }

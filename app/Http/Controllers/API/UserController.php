@@ -18,8 +18,14 @@ class UserController extends Controller
         $this->_user = JWTAuth::parseToken()->toUser();
     }
 
+    /**
+     * Get a viewmodel of the authenticated user.
+     *
+     * @return JSON response
+     */
     public function getUserDetails()
     {
+        // Only a few of the user details are returned.
         $response = [
             "id" => $this->_user->id,
             "name" => $this->_user->name,

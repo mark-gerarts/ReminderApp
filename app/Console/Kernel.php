@@ -24,6 +24,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        // Checks if there are reminders that need to be sent.
         $schedule->command('reminders:check')->everyMinute();
     }
 }

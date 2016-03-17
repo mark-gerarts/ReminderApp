@@ -59,6 +59,7 @@
         </footer>
     </div>
 
+    {{-- Put these in one file, e.g. vue.templates --}}
     @include('vue.home')
     @include('vue.contacts')
     @include('vue.contactrow')
@@ -78,6 +79,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/0.6.1/vue-resource.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-router/0.7.10/vue-router.js"></script>
 
+    {{-- ToDo: merge & minify --}}
     <script src="{{ url('js/vue/mixins/authMixin.js') }}"></script>
     <script src="{{ url('js/vue/mixins/contactsMixin.js') }}"></script>
     <script src="{{ url('js/vue/mixins/remindersMixin.js') }}"></script>

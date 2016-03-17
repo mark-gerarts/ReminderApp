@@ -24,4 +24,10 @@ class HomePageTest extends TestCase
             ->click('Pricing')
             ->seePageIs('/pricing');
     }
+
+    public function test404()
+    {
+        $this->get('/thispagedoesnotexist')
+            ->see('Page not found');
+    }
 }

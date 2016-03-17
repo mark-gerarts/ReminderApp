@@ -11,16 +11,6 @@ use Log;
 class HomeController extends Controller
 {
     /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
-
-    /**
      * Show the website homepage.
      *
      * @return Response
@@ -41,7 +31,7 @@ class HomeController extends Controller
     }
 
     /**
-     * Show the FAQ page - soon to be contact page.
+     * Show the contact page.
      *
      * @return Response
      */
@@ -50,6 +40,12 @@ class HomeController extends Controller
         return view('home.contact');
     }
 
+    /**
+     * Handle the contact form submit.
+     *
+     * @param POST request
+     * @return Response
+     */
     public function handleContactSubmit(Request $request)
     {
         $this->validate($request, [
@@ -64,6 +60,8 @@ class HomeController extends Controller
             "msg" => $request->message
         ];
 
+        // ToDo:
+        //
         // Mail::send('emails.contact', $emailData, function($m) use($request) {
         //     $m->from('localhost@mail.com', 'localhost');
         //     $m->to(env('CONTACT_EMAIL'))->subject($request->subject);

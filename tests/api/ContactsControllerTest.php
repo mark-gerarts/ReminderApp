@@ -112,8 +112,14 @@ class ContactsControllerTest extends TestCase
 
         $token = $this->_createToken($this->_user);
 
-        $r = $this->json('delete', 'api/contacts/' . $contact->id, [], $this->_headers($token))
+        $this->json('delete', 'api/contacts/' . $contact->id, [], $this->_headers($token))
             ->assertResponseStatus(403);
+
+        //Trying to delete a contact that doesn't exist.
+        $id = $contact->id;
+        $contact->delete();
+        $this->json('delete', 'api/contacts/' . $id, [], $this->_headers($token))
+            ->assertResponseStatus(404);
     }
 
     public function testUpdateGoodData()

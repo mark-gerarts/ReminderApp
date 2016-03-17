@@ -4,6 +4,7 @@ var Home = Vue.extend({
     mixins: [contactsMixin, remindersMixin, validatorMixin],
 
     ready: function() {
+        // Check if the stores are loaded, otherwise sent a request.
         if(!contactsStore.isLoaded) {
             this.getContacts();
             contactsStore.setLoadStatus(true);
@@ -54,12 +55,15 @@ var Home = Vue.extend({
     },
 
     computed: {
+        // The contacts that fit the query.
         filteredContacts: function() {
+            // Don't search contacts if the query is short.
             if(this.query.length < 2) {
                 return [];
             }
 
             var self = this;
+            //General function to check if a string is part of a bigger string.
             function contains(a, b) {
                 return a.toLowerCase().indexOf(b.toLowerCase()) != -1;
             }
@@ -70,13 +74,14 @@ var Home = Vue.extend({
     },
 
     methods: {
+        // Handle selecting a contact
         selectContact: function(contact) {
-            //ToDo: add check for either contact_id or a random number + check if correct etc
             this.selectedContact = contact;
             this.newReminder.contact_id = contact.id;
             this.query = contact.name + ' (' + contact.number + ')';
             this.isContactSelected = true;
         },
+        // Resets all involved vm's
         resetRecipient: function() {
             this.isContactSelected = false;
             this.selectedContact = {};
@@ -85,6 +90,7 @@ var Home = Vue.extend({
             this.query = '';
         },
 
+        // Used for selecting with the up & down keys.
         highlightContact: function(input) {
             switch(input) {
                 case 'down':
@@ -97,6 +103,7 @@ var Home = Vue.extend({
                     this.selectedIndex = input;
                     break;
             }
+
             var length = this.filteredContacts.length;
             if(this.selectedIndex > length - 1) {
                 this.selectedIndex = 0;
@@ -108,12 +115,14 @@ var Home = Vue.extend({
             this.highlightedContact = this.filteredContacts[this.selectedIndex];
         },
 
+        // Checks for validation errors, only if the form is already submitted once.
         validate: function() {
             if(this.isSubmittedOnce) {
                 this.$set('validationErrors', this.validateReminder(this.newReminder));
             }
         },
 
+        // Trims whitespace.
         trim: function() {
             for(var prop in this.newReminder) {
                 if(this.newReminder[prop]) {

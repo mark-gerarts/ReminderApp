@@ -1,9 +1,12 @@
 var dateTimePicker = Vue.extend({
     template: '#datetimepicker-template',
 
+    // Name is the input name;
+    // result is used to get data binding to the parent.
     props: ['name', 'result'],
 
     ready: function() {
+        // Set the current month to this day's month, and initialise the result as the current datetime
         this.activeMonth = this.generateMonth(this.currentDate.getFullYear(), this.currentDate.getMonth());
         this.selectedValues.year = this.currentDate.getFullYear();
         this.selectedValues.month = this.currentDate.getMonth() + 1;
@@ -38,6 +41,7 @@ var dateTimePicker = Vue.extend({
     },
     computed: {
         result: {
+            // The getter is computed from the selectedValue data.
             get: function() {
                 return this.selectedValues.year + '-'
                         + this.format(this.selectedValues.month) + '-'
@@ -45,11 +49,13 @@ var dateTimePicker = Vue.extend({
                         + this.format(this.selectedValues.hour) + ':'
                         + this.format(this.selectedValues.minute);
             }, set: function(newValue) {
+                // The setter is used when the user manually types a date & time.
                 this.parseFromString(newValue);
             }
         }
     },
     methods: {
+        // Get a datetime from a Y-m-d H:i:s string
         parseFromString: function(datetimestring) {
             datetimestring = datetimestring || '';
             var split = datetimestring.trim().split(' ');
@@ -64,9 +70,11 @@ var dateTimePicker = Vue.extend({
             this.selectedValues.minute = timeSplit[1] || this.currentDate.getMinutes();
 
         },
+        // Generate a month, to be used in the calendar.
         generateMonth: function(year, month) {
             var myDate = new Date(year, month);
             var startDay = myDate.getDay() - 1;
+            // Make the week start on monday in stead of sunday
             startDay = (startDay == -1) ? 6 : startDay;
             var daysInMonth = this.daysInMonth[month];
             var monthObj = {};
@@ -74,6 +82,7 @@ var dateTimePicker = Vue.extend({
             monthObj.month = month;
             monthObj.days = [];
 
+            // Check for leap year.
             if(month == 1 && (((year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0))) {
                 daysInMonth++;
             }
@@ -96,6 +105,7 @@ var dateTimePicker = Vue.extend({
             return monthObj;
         },
 
+        // Transition to the next month.
         nextMonth: function() {
             var nextYear = this.activeMonth.year;
             var nextMonth = ++this.activeMonth.month%12;
@@ -105,6 +115,7 @@ var dateTimePicker = Vue.extend({
             this.activeMonth = this.generateMonth(nextYear, nextMonth);
         },
 
+        // Transition to the previous month.
         previousMonth: function() {
             var prevYear = this.activeMonth.year;
             var prevMonth = (--this.activeMonth.month+12)%12;
@@ -114,6 +125,7 @@ var dateTimePicker = Vue.extend({
             this.activeMonth = this.generateMonth(prevYear, prevMonth);
         },
 
+        // Handle day select.
         selectDay: function(dayNumber) {
             if(dayNumber) {
                 this.selectedValues.year = this.activeMonth.year;
@@ -122,13 +134,16 @@ var dateTimePicker = Vue.extend({
             }
         },
 
+        // Put 0's to the left of a number < 10;
         format: function(number) {
-            if(number.toString().length < 2) {
+            if(number.toString().length < 2) { // .. change to < 10? todo?
                 return '0' + number;
             }
             return number;
         },
 
+        // Increment a number, between min and max,
+        // used in the timepicker.
         increment(myVar, min, max, increment) {
             increment = typeof increment !== 'undefined' ? increment : 1;
             myVar = parseInt(myVar) + increment;

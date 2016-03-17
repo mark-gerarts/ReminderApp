@@ -13,22 +13,33 @@ use App\Repositories\User\IUserRepository;
 
 class AuthenticateController extends Controller
 {
+    // The used repository.
     private $_userRepository;
 
+    /**
+     * Inject the repository.
+     *
+     */
     public function __construct(IUserRepository $user)
     {
         $this->_userRepository = $user;
     }
 
+    /**
+     * Authenticate the request and return a JWT token.
+     *
+     * @param Request - credentiald
+     * @return json
+     */
     public function authenticate(Request $request)
     {
-        // grab credentials from the request
+        // Grab credentials from the request
         $credentials = $request->only('email', 'password');
         $token = JWTAuth::attempt($credentials);
 
         try
         {
-            // attempt to verify the credentials and create a token for the user
+            // Attempt to verify the credentials and create a token for the user
             if (! $token)
             {
                 return response()->json(['error' => 'invalid_credentials'], 401);
@@ -36,12 +47,13 @@ class AuthenticateController extends Controller
         }
         catch (JWTException $e)
         {
-            // something went wrong whilst attempting to encode the token
+            // Something went wrong whilst attempting to encode the token
             return response()->json(['error' => 'could_not_create_token'], 500);
         }
 
         $user = JWTAuth::toUser($token);
 
+        // Return the token and userdetails in the response.
         $response = [
             "token" => $token,
             "user" => [
@@ -51,10 +63,15 @@ class AuthenticateController extends Controller
             ]
         ];
 
-        // all good so return the token
         return response()->json($response);
     }
 
+    /**
+     * Register using a POST request.
+     *
+     * @param Request - json
+     * @return json
+     */
     public function register(Request $request)
     {
         $this->validate($request, [
@@ -63,12 +80,14 @@ class AuthenticateController extends Controller
             'password' => 'required|confirmed|min:6',
         ]);
 
+        // Create a user from the request.
         $user = $this->_userRepository->createUser([
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
         ]);
 
+        // Create a token, and return it in the response, along with user details.
         $token = JWTAuth::fromUser($user);
 
         $response = [

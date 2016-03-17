@@ -83,10 +83,14 @@ class ContactsController extends Controller
         // Get the contact.
         $contact = $this->_contactRepository->getContactById($id);
 
+        if(!$contact)
+        {
+            return response()->json("Not found", 404);
+        }
         // Check if the contact really belongs to the user.
         if($contact->user_id != $this->_user->id)
         {
-            return response()->json(false, 403);
+            return response()->json("Not authorized", 403);
         }
 
         // Remove the contact id from all associated reminders, and
@@ -118,15 +122,16 @@ class ContactsController extends Controller
                 'number' => 'required|max:20|min:6'
             ]);
 
-        // Check if the contact really belongs to the user.
+        // Check if the contact exists.
         $contact = $this->_contactRepository->getContactById($request->id);
         if(!$contact)
         {
             return response()->json("Not found.", 404);
         }
+        // Check if the contact really belongs to the user.
         if($contact->user_id != $this->_user->id)
         {
-            return response()->json(false, 403);
+            return response()->json("Not authorized", 403);
         }
 
         // Set the new values.
