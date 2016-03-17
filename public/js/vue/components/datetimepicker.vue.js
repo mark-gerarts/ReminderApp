@@ -1,3 +1,9 @@
+/*
+ *
+ *   Component to display a datetime picker.
+ *
+ */
+
 var dateTimePicker = Vue.extend({
     template: '#datetimepicker-template',
 

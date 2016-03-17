@@ -1,4 +1,4 @@
-<template id="dashboard-home">
+<script type="x/template" id="dashboard-home">
    <div class="row row-grid">
        <div class="col-md-4">
            <h2>Schedule a Reminder</h2>
@@ -104,4 +104,4 @@
             </table>
         </div>
     </div>
-</template>
+</script>

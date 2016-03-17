@@ -1,3 +1,9 @@
+/*
+ *
+ *   Component to handle logout.
+ *
+ */
+
 var Logout = Vue.extend({
     mixins: [authMixin],
 

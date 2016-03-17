@@ -1,4 +1,4 @@
-<template id="login-template">
+<script type="x/template" id="login-template">
     <h1 class="center">Sign in</h1>
     <p v-if="errorMessage.length > 0" class="warning-message">@{{ errorMessage }}</p>
     <div class="row">
@@ -41,4 +41,4 @@
             </form>
         </div>
     </div>
-</template>
+</script>

@@ -35,6 +35,7 @@ var Register = Vue.extend({
         }
     },
 
+    // Checks if the user is already logged in. If so, redirects to /home.
     route: {
         activate: function(transition) {
             if(authStore.getAuthenticationStatus()) {

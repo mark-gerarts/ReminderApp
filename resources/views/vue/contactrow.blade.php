@@ -1,5 +1,5 @@
 <!--<script type="x/template" id="contact-template">-->
-<template id="contact-template">
+<script type="x/template" id="contact-template">
     <tr>
         {{-- The name field --}}
         <td v-show="!(editing || isLoading.updateContact)">@{{ contact.name }}</td>
@@ -43,4 +43,4 @@
             </span>
         </td>
     </tr>
-</template>
+</script>

@@ -1,5 +1,12 @@
-// Shared state to share data across several components.
-// Though this is used to keep the reminders in memory.
+/*
+ *
+ *   Shared state to share data across several components.
+ *   Essentially a plain JS object with getters and setters.
+ *   More info: http://vuejs.org/guide/application.html#State_Management.
+ *
+ *   RemindersStore: contains a list of reminders, along with some CRUD functions.
+ */
+
 var remindersStore = {
     state: {
         upcomingReminders: []

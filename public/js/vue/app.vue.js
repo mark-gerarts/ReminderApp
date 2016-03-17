@@ -3,7 +3,7 @@
  *   Main application logic.
  *   Contains:  - VueRoute
  *              - initialisation
- *  This will probably be split up some more later.
+ *
  */
 
 // Initialise the VueRouter.
@@ -12,11 +12,20 @@ var App = Vue.extend({
     mixins: [authMixin],
 
     ready: function() {
+        // When the page is loaded, this will first check whether the token in localstorage
+        // is 'fresh'. If the time since the token creation date is smaller than the token ttl,
+        // the token is most likely still valid, and the user is 'assumed' to be authenticated.
+        // This saves an initial authentication request.
+        // Should the token be invalid, then the first request that returns a 401 will result
+        // in a complete logout and a redirect to the login page.
+        // If the time since the stored token's creation date is greater than the ttl, then
+        // this means the token is expired. The user will be redirected to the login page
+        // immediately.
         var data = this.getLocalStorage();
         if(data) {
             var now = new Date();
             var creationDate = new Date(data.created_at);
-            if((now - creationDate) < 3600000) { //3600000
+            if((now - creationDate) < 3600000) {
                 this.setToken(data.token);
                 authStore.setAuthenticationStatus(true);
                 authStore.setUser(data.user);
@@ -31,6 +40,8 @@ var App = Vue.extend({
         }
     },
 
+    // When a request returns a 401, the 'not-logged-in'-event is fired. This event bubbles to this
+    // element, and is handled here.
     events: {
         'not-logged-in': function() {
             this.authLogOut();
@@ -79,6 +90,8 @@ router.map({
 });
 
 router.beforeEach(function (transition) {
+    // Checks if the route needs authentication. If so, redirect to /login if the
+    // user is not logged in.
     if (transition.to.auth && !authStore.getAuthenticationStatus()) {
         transition.redirect('/login');
     } else {

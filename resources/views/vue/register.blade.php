@@ -1,4 +1,4 @@
-<template id="register-template">
+<script type="x/template" id="register-template">
     <h1 class="center">Sign up</h1>
     <p v-if="errorMessage.length > 0" class="warning-message">@{{ errorMessage }}</p>
     <div class="row">
@@ -35,4 +35,4 @@
             </form>
         </div>
     </div>
-</template>
+</script>

@@ -1,4 +1,10 @@
-/* Thanks to https://github.com/zirafa/bootstrap-grid-only */
+/*
+ * Thanks to https://github.com/zirafa/bootstrap-grid-only
+ *
+ * This is essentially the grid system compiled from bootstrap, with some added
+ * styling to make it work standalone.
+ * 
+ */
 @-ms-viewport {
   width: device-width;
 }

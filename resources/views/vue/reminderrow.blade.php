@@ -1,4 +1,4 @@
-<template id="reminderrow">
+<script type="x/template" id="reminderrow">
     <tr>
         <td v-if="reminder.contact_id">
             <span v-for="contact in sharedState.contacts | exactFilterBy reminder.contact_id in 'id'">
@@ -20,4 +20,4 @@
             </p>
         </td>
     </tr>
-</template>
+</script>

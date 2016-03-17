@@ -1,4 +1,4 @@
-<template id="dashboard-account">
+<script type="x/template" id="dashboard-account">
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
             <h2 class="center">Account information</h2>
@@ -68,4 +68,4 @@
             </form>
         </div>
     </div>
-</template>
+</script>

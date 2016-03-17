@@ -1,7 +1,12 @@
+/*
+ *
+ *   Shared state to share data across several components.
+ *   Essentially a plain JS object with getters and setters.
+ *   More info: http://vuejs.org/guide/application.html#State_Management.
+ *
+ *   ContactsStore: contains a list of contacts, along with some CRUD functions.
+ */
 
-// Shared state to share data across several components.
-// Essentially a plain JS object with getters and setters.
-// More info: http://vuejs.org/guide/application.html#State_Management.
 var contactsStore = {
     // The shared state.
     state: {

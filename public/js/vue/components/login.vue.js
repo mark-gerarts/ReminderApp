@@ -1,3 +1,9 @@
+/*
+ *
+ *   Component for the login page.
+ *
+ */
+
 var Login = Vue.extend({
     template: '#login-template',
 
@@ -34,6 +40,7 @@ var Login = Vue.extend({
     },
 
     route: {
+        // Checks if the user is already logged in. If so, redirects to /home.
         activate: function(transition) {
             if(authStore.getAuthenticationStatus()) {
                 router.go('/home')

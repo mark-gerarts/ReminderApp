@@ -1,4 +1,4 @@
-<template id="dashboard-contacts">
+<script type="x/template" id="dashboard-contacts">
     <div class="row row-grid">
         <div class="col-md-7">
             <table class="contacts table">
@@ -63,4 +63,4 @@
             </form>
         </div>
     </div>
-</template>
+</script>

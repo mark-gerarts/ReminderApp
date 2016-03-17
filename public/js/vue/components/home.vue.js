@@ -1,3 +1,9 @@
+/*
+ *
+ *   Component for dashboard home page.
+ *
+ */
+
 var Home = Vue.extend({
     template: '#dashboard-home',
 

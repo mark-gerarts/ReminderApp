@@ -1,7 +1,6 @@
 /*
  *
  *   Mixin to share reminder http functions across components.
- *   Currently only used in the dashboard.home component.
  *
  */
 

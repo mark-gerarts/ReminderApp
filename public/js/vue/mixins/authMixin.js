@@ -1,3 +1,8 @@
+/*
+ *
+ *   Mixin that handles authentication & user related functions.
+ *
+ */
 var authMixin = {
     methods: {
         _openErrorWindow: function(msg) {

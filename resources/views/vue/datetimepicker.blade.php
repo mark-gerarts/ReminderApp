@@ -1,4 +1,4 @@
-<template id="datetimepicker-template"><!-- todo: move to <script> bc IE //-->
+<script type="x/template" id="datetimepicker-template"><!-- todo: move to <script> bc IE //-->
     <div class="datetimepicker-group-wrapper">
         <div class="input-wrapper">
             <input type="text"
@@ -68,4 +68,4 @@
             </div>
         </div>
     </div>
-</template>
+</script>

@@ -1,11 +1,12 @@
 /*
  *
- *   Simple Vue code for the quick reminder form.
+ *   Standalone component for the quick reminder form.
+ *   This component is not part of the dashboard.
  *
  */
 
- Vue.http.options.root = myRootUrl; //Set root
- Vue.http.headers.common['X-CSRF-TOKEN'] = csrf_token; //csrf token from global var is put in the header
+Vue.http.options.root = myRootUrl; //Set root
+Vue.http.headers.common['X-CSRF-TOKEN'] = csrf_token; //csrf token from global var is put in the header
 
 var vm = new Vue({
     el: '#vue-app',
