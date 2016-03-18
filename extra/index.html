@@ -28,6 +28,8 @@
                 <li><a href="#sub4-3"></a></li>
                 <li><a href="#sub4-4"></a></li>
                 <li><a href="#sub4-5"></a></li>
+                <li><a href="#sub4-6"></a></li>
+                <li><a href="#sub4-7"></a></li>
             </ul>
         </li>
         <li><a href="#ch5"></a>
@@ -41,6 +43,7 @@
 
 </div>
 
+<!-- Inleiding en samenvatting omwisselen, a la abstract //-->
 <h1 id="ch1" class="chapter">Inleiding</h1>
     <div>
         <p>
@@ -443,13 +446,14 @@
             </tbody>
         </table>
     </div>
-    <h2 class="subtitle" id="sub4-3">Models</h2>
-    <p>
-        <span class="p-subtitle">Eloquent ORM</span><br />
-        Laravel maakt gebruikt van het Eloquent ORM. Elk Eloquent model komt overeen met een tabel in de database. Op dit model kunnen dan relaties
-        gedefiniëerd worden. Standaard komt de classnaam overeen met de tabelnaam. Zo zal het model Contact queries uitvoeren op de 'contacts' tabel.
-        Het Contact model ziet er bijvoorbeeld als volgt uit:
-    </p>
+    <h2 class="subtitle" id="sub4-3">Models & Repositories</h2>
+    <div>
+        <p>
+            <span class="p-subtitle">Eloquent ORM</span><br />
+            Laravel maakt gebruikt van het Eloquent ORM. Elk Eloquent model komt overeen met een tabel in de database. Op dit model kunnen dan relaties
+            gedefiniëerd worden. Standaard komt de classnaam overeen met de tabelnaam. Zo zal het model Contact queries uitvoeren op de 'contacts' tabel.
+            Het Contact model ziet er bijvoorbeeld als volgt uit:
+        </p>
     <!-- Contact Model code -->
     <pre class="language-php"><code>
 <span class="token keyword">class</span> <span class="token class-name">Contact</span> <span class="token keyword">extends</span> <span class="token class-name">Model</span>
@@ -461,28 +465,29 @@
         <span class="token keyword">return</span> <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">belongsTo</span><span class="token punctuation">(</span><span class="token string">'User'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span></code></pre>
-    <p>
-        De '$timestamps' property wordt gebruikt om aan te duiden of er voor een model de datum moet worden bijgehouden waarop het aangemaakt of gewijzigd wordt.<br />
-        Relaties met andere tabellen worden aangeduid aan de hand van functies. Zo wordt bijvoorbeeld een OneToMany relatie uitgedrukt door hasMany() en belongsTo().
-    </p>
-    <p>
-        Eloquent zorgt ervoor dat veelgebruikte queries geëncapsuleerd worden op de models. Zo voorziet het enkele logische functies zoals 'delete()', 'save()' 'where()', enz.
-        Meer complexe operaties kunnen nog altijd in rauwe SQL worden uitgevoerd.
-    </p>
-    <p>
-        <span class="p-subtitle">Repository pattern</span><br />
-        De applicatie maakt gebruik van het repository pattern. Dit is een extra abstractie van de database layer. Een repository bundelt een aantal operaties op
-        een model in een class. De controller hoeft dan niet langer rechtstreeks de database layer aan te spreken via de models, maar gebruikt in de plaats de
-        repositories.<br />
-        De repository en het model zijn zo echter wel nog tightly coupled. Om dit tegen te gaan worden interfaces gebruikt. De interface definiëert een 'contract'
-        waar de repository zich aan moet houden. In de controller wordt vervolgens de interface als dependency gebruikt. Nu maakt het niet meer uit hoe de data
-        opgehaald wordt, als de implementatie zich maar aan de interface houdt. Dit zorgt niet enkele voor beter leesbare code, maar verbetert ook de mogelijkheid
-        tot unit testing.
-    </p>
-    <p>
-        De interface voor de contactpersonen ziet er bijvoorbeeld als volgt uit:
-    </p>
-    <!-- Code voor de repositoryinterface //-->
+        <p>
+            De '$timestamps' property wordt gebruikt om aan te duiden of er voor een model de datum moet worden bijgehouden waarop het aangemaakt of gewijzigd wordt.<br />
+            Relaties met andere tabellen worden aangeduid aan de hand van functies. Zo wordt bijvoorbeeld een OneToMany relatie uitgedrukt door hasMany() en belongsTo().
+        </p>
+        <p>
+            Eloquent zorgt ervoor dat veelgebruikte queries geëncapsuleerd worden op de models. Zo voorziet het enkele logische functies zoals 'delete()', 'save()' 'where()', enz.
+            Meer complexe operaties kunnen nog altijd in rauwe SQL worden uitgevoerd.
+        </p>
+        <p>
+            <span class="p-subtitle">Repository pattern</span><br />
+            De applicatie maakt gebruik van het repository pattern. Dit is een extra abstractie van de database layer. Een repository bundelt een aantal operaties op
+            een model in een class. De controller hoeft dan niet langer rechtstreeks de database layer aan te spreken via de models, maar gebruikt in de plaats de
+            repositories.<br />
+            De repository en het model zijn zo echter wel nog tightly coupled. Om dit tegen te gaan worden interfaces gebruikt. De interface definiëert een 'contract'
+            waar de repository zich aan moet houden. In de controller wordt vervolgens de interface als dependency gebruikt. Nu maakt het niet meer uit hoe de data
+            opgehaald wordt, als de implementatie zich maar aan de interface houdt. <br />
+            Het gebruik van repositories zorgt niet enkele voor beter leesbare code, maar verbetert ook de mogelijkheid
+            tot unit testing.
+        </p>
+        <p>
+            De interface voor de contactpersonen ziet er bijvoorbeeld als volgt uit:
+        </p>
+        <!-- Code voor de repositoryinterface //-->
     <pre class="language-php"><code><span class="token keyword">interface</span> <span class="token class-name">IContactRepository</span>
 <span class="token punctuation">{</span>
     <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">getContactById</span><span class="token punctuation">(</span><span class="token variable">$contactid</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -495,10 +500,10 @@
 
     <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">updateContact</span><span class="token punctuation">(</span><span class="token variable">$id</span><span class="token punctuation">,</span> <span class="token variable">$newValues</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span></code></pre>
-    <p>
-        Vervolgens implementeert de repository de bijhorende interface. Zo ziet de 'getContactsByUserId()' er als volgt uit.
-    </p>
-    <!-- Code voor de interface implementatie //-->
+        <p>
+            Vervolgens implementeert de repository de bijhorende interface. Zo ziet de 'getContactsByUserId()' er als volgt uit.
+        </p>
+        <!-- Code voor de interface implementatie //-->
     <pre class="language-php"><code><span class="token keyword">namespace</span> <span class="token package">App<span class="token punctuation">\</span>Repositories<span class="token punctuation">\</span>Contact</span><span class="token punctuation">;</span>
 
 <span class="token keyword">use</span> <span class="token package">App<span class="token punctuation">\</span>Models<span class="token punctuation">\</span>Contact</span><span class="token punctuation">;</span>
@@ -521,16 +526,54 @@
 
     <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
 <span class="token punctuation">}</span></code></pre>
+        <p>Om de repository te gebruiken wordt de interface geïnjecteerd in de constructor.</p>
+        <!-- Constructor code //-->
+    <pre class="language-php"><code><span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">__construct</span><span class="token punctuation">(</span>IContactRepository <span class="token variable">$contact</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">_contactRepository</span> <span class="token operator">=</span> <span class="token variable">$contact</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+        <p>
+            Omdat enkel de interface wordt gebruikt in de controller, weet Laravel niet welke implementatie ze hiervoor moet gebruiken. Daarom moeten de interface en
+            de bijhorende implementatie aan elkaar gekoppeld worden. Dit gebeurt in de 'register' method in de AppServiceProvider.
+         </p>
+         <!-- Code voor de app_>bind() //-->
+         <pre class="language-php"><code><span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">app</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">bind</span><span class="token punctuation">(</span><span class="token string">'App\Repositories\Contact\IContactRepository'</span><span class="token punctuation">,</span>
+        <span class="token string">'App\Repositories\Contact\ContactRepository'</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+    </div>
+    <h2 class="subtitle" id="sub4-4">Controllers</h2>
+    <div>
+        <p>
+            Folderstructuur, requests, validatie, ...
+        </p>
+    </div>
+    <h2 class="subtitle" id="sub4-5">Views</h2>
+    <div>
+        <p>
+            Blade templates, layouts, sections, JSON?, ...
+        </p>
+    </div>
+    <h2 class="subtitle" id="sub4-6">Authenticatie</h2>
+    <div>
+        <p>
+            JWT uitleggen: 3 delen, headers, middleware, ...
+        </p>
+    </div>
+    <h2 class="subtitle" id="sub4-7">Berichten service</h2>
+    <div>
+        <p>Scheduler, reminders:check command</p>
+    </div>
 <h1 id="ch5" class="chapter">Frontend</h1>
     <h2 class="subtitle" id="sub5-1">Gebruikte technologiën</h2>
-        <p>...</p>
-    <h2 class="subtitle" id="sub5-2">Folderstructuur</h2>
+    <div>
+        <p>VueJS, grid, fa, ....</p>
+    </div>
+    <h2 class="subtitle" id="sub5-2">Structuur</h2>
         <p>
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorum unde, pariatur dicta ipsa commodi, sit quasi autem blanditiis nesciunt ullam harum
             accusantium neque in incidunt modi labore quis nulla iure.
         </p>
 
-<h1 id="ch6" class="chapter">Besluit</h1>
+<h1 id="ch6" class="chapter">Conclusie</h1>
 <p>… </p>
 
 </body>
