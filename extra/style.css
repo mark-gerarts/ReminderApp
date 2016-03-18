@@ -131,7 +131,7 @@ h1+p, h2+p, h3+p {
   page-break-before: avoid;
 }
 
-tr, figure, p, code, pre {
+tr, figure, p, code, pre, .keep-together {
   page-break-inside: avoid;
 }
 /** algemeen **/
@@ -261,6 +261,15 @@ ul.toc a:after {
     padding-bottom: 25px;
 }
 /** Code **/
-code[class*="language-"], pre[class*="language-"] {
+code[class*="language"], pre[class*="language-"] {
     line-height: 1.2!important;
+}
+.folder-structure {
+    font-size: 12px;
+}
+:not(pre) > code {
+    background: #f5f2f0;
+    padding: 1px 5px;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.125);
+    line-height: 1.0;
 }

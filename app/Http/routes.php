@@ -68,7 +68,7 @@ Route::group(['namespace' => 'API', 'prefix' => 'api'], function() {
     });
 
     //Quick Reminders
-    Route::post('/quickreminders', 'QuickRemindersController@insertQuickReminder');
+    //Route::post('/quickreminders', 'QuickRemindersController@insertQuickReminder');
 
     //Auth
     Route::post('/login', 'AuthenticateController@authenticate');

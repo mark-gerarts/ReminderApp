@@ -55,10 +55,18 @@ class RemindersController extends Controller
      */
     public function insertReminder(Request $request)
     {
+        $this->validate($request, [
+                'recipient' => 'max:255',
+                'contact_id' => 'numeric',
+                'send_datetime' => 'required',
+                'message' => 'required|max:255',
+                'repeat_id' => 'required|numeric'
+            ]);
+
         // Check if the user has sufficient credits (>0)
         if($this->_user->reminder_credits <= 0)
         {
-            return response("Not enough credits", 402);
+            return response()->json("Not enough credits", 402);
         }
 
         // Remove a credit from the user.
@@ -119,14 +127,6 @@ class RemindersController extends Controller
      */
     private function _createUserReminder($user_id, $request)
     {
-        $this->validate($request, [
-                'recipient' => 'max:255',
-                'contact_id' => 'numeric',
-                'send_datetime' => 'required',
-                'message' => 'required|max:255',
-                'repeat_id' => 'required|numeric'
-            ]);
-
         // Set up the new reminder.
         $values = [
             "message" => $request->message,

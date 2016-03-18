@@ -1,11 +1,16 @@
 <!DOCTYPE html>
 <!-- prince -s style.css index.html mybook.pdf -->
+<!-- prince  index.html builds/eindwerk.pdf  --javascript -->
 <html dir="ltr" lang="en-US">
 <head>
     <meta charset="utf-8" />
     <title>Eindwerk Paper</title>
     <meta name="author" content="Mark gerarts"/>
     <meta name="subject" content="Eindwerk Syntra Webontwikkelaar 2015-2016: ReminderApp"/>
+    <link rel="stylesheet" href="highlight/styles/tomorrow.css" />
+    <script src="highlight/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 <div class="frontcover">
@@ -377,7 +382,8 @@
             De API voorziet een aantal endpoints om met de applicatie te werken. Ze maakt gebruik van de zogenaamde 'HTTP werkwoorden' die overeenstemmen met een CRUD operatie.
             Zo staat een POST request voor een insert, GET voor een read, PUT voor een update, en een DELETE request zorgt voor een delete.<br />
             Deze requests worden gebundeld onder de 'api' route. Om bijvoorbeeld alle contacten op te vragen, dient er een GET request gestuurd te worden naar '../api/contacts'.
-            De API maakt gebruik van JSON als dataformaat.
+            De API maakt gebruik van JSON als dataformaat. De server stuurt ook logische HTTP statuscodes. Een niet gevonden record geeft bijvoorbeeld een 404 als antwoord, of
+            een niet geauthorizeerde actie levert een 403 op.
         </p>
         <table class="api-endpoints">
             <thead>
@@ -454,7 +460,7 @@
             gedefiniëerd worden. Standaard komt de classnaam overeen met de tabelnaam. Zo zal het model Contact queries uitvoeren op de 'contacts' tabel.
             Het Contact model ziet er bijvoorbeeld als volgt uit:
         </p>
-    <!-- Contact Model code -->
+        <!-- Contact Model code -->
     <pre class="language-php"><code>
 <span class="token keyword">class</span> <span class="token class-name">Contact</span> <span class="token keyword">extends</span> <span class="token class-name">Model</span>
 <span class="token punctuation">{</span>
@@ -466,11 +472,13 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span></code></pre>
         <p>
-            De '$timestamps' property wordt gebruikt om aan te duiden of er voor een model de datum moet worden bijgehouden waarop het aangemaakt of gewijzigd wordt.<br />
-            Relaties met andere tabellen worden aangeduid aan de hand van functies. Zo wordt bijvoorbeeld een OneToMany relatie uitgedrukt door hasMany() en belongsTo().
+            De <code>$timestamps</code> property wordt gebruikt om aan te duiden of er voor een model de datum moet worden bijgehouden waarop het aangemaakt of gewijzigd wordt.<br />
+            Relaties met andere tabellen worden aangeduid aan de hand van functies. Zo wordt bijvoorbeeld een OneToMany relatie uitgedrukt door <code>hasMany()</code> en
+            <code>belongsTo()</code>.
         </p>
         <p>
-            Eloquent zorgt ervoor dat veelgebruikte queries geëncapsuleerd worden op de models. Zo voorziet het enkele logische functies zoals 'delete()', 'save()' 'where()', enz.
+            Eloquent zorgt ervoor dat veelgebruikte queries geëncapsuleerd worden op de models. Zo voorziet het enkele logische functies zoals <code>delete()</code>, <code>save()</code>,
+            <code>where()</code>, enz.
             Meer complexe operaties kunnen nog altijd in rauwe SQL worden uitgevoerd.
         </p>
         <p>
@@ -501,7 +509,7 @@
     <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">updateContact</span><span class="token punctuation">(</span><span class="token variable">$id</span><span class="token punctuation">,</span> <span class="token variable">$newValues</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span></code></pre>
         <p>
-            Vervolgens implementeert de repository de bijhorende interface. Zo ziet de 'getContactsByUserId()' er als volgt uit.
+            Vervolgens implementeert de repository de bijhorende interface. Zo ziet de <code>getContactsByUserId()</code> er als volgt uit.
         </p>
         <!-- Code voor de interface implementatie //-->
     <pre class="language-php"><code><span class="token keyword">namespace</span> <span class="token package">App<span class="token punctuation">\</span>Repositories<span class="token punctuation">\</span>Contact</span><span class="token punctuation">;</span>
@@ -534,14 +542,200 @@
 <span class="token punctuation">}</span></code></pre>
         <p>
             Omdat enkel de interface wordt gebruikt in de controller, weet Laravel niet welke implementatie ze hiervoor moet gebruiken. Daarom moeten de interface en
-            de bijhorende implementatie aan elkaar gekoppeld worden. Dit gebeurt in de 'register' method in de AppServiceProvider.
+            de bijhorende implementatie aan elkaar gekoppeld worden. Dit gebeurt in de <code>register</code> method in de <code>AppServiceProvider</code>.
          </p>
          <!-- Code voor de app_>bind() //-->
          <pre class="language-php"><code><span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">app</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">bind</span><span class="token punctuation">(</span><span class="token string">'App\Repositories\Contact\IContactRepository'</span><span class="token punctuation">,</span>
         <span class="token string">'App\Repositories\Contact\ContactRepository'</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+        <p>
+            <span class="p-subtitle">Structuur</span><br />
+            Elk model krijgt op deze manier zijn eigen repository. Omdat dit project relatief klein is, heeft elke repository zijn eigen interface.
+            Een betere oplossing voor grotere projecten is om een basis interface te schrijven met algemene CRUD acties. Vervolgens kunnen specifieke
+            interfaces deze erven en eventueel nog methods toevoegen of aanpassen.
+        </p>
+        <div class="keep-together">
+            <p>
+                De folderstructuur voor de models ziet er als volgt uit:
+            </p>
+            <pre class="folder-structure">
+app/
+  ...
+  .
+  |-- Models/
+      |-- Contact.php
+      |-- Quick_reminder.php
+      |-- User_order.php
+      |-- User_reminder.php
+      `-- User.php
+  `-- Repositories/
+      |-- Contact/
+          |-- ContactRepository.php
+          `-- IContactRepository.php
+      |-- Quick_reminder/
+          |-- Quick_reminderRepository.php
+          `-- IQuick_reminderRepository.php
+      |-- User_order/
+          |-- User_orderRepository.php
+          `-- IUser_orderRepository.php
+      |-- User_reminder/
+          |-- User_reminderRepository.php
+          `-- IUser_reminderRepository.php
+      `-- User/
+          |-- UserRepository.php
+          `-- IUserRepository.php
+            </pre>
+        </div>
+        <p>
+            Alle repositories hebben enkele basis CRUD methods. De enige repository die hiervan afwijkt is de UserRepository. De <code>tymon/jwt-auth</code>
+            library gebruikt standaard het zijn eigen UserInterface. Daarom moet de UserRepository een extra interface implementeren. Ook moet in
+            <code>config/jwt.php</code> een verwijzing toegevoegd worden naar de nieuwe implementatie.
+        </p>
+        <pre class="language-php"><code><span class="token keyword">namespace</span> <span class="token package">App<span class="token punctuation">\</span>Repositories<span class="token punctuation">\</span>User</span><span class="token punctuation">;</span>
+
+<span class="token keyword">use</span> <span class="token package">App<span class="token punctuation">\</span>Models<span class="token punctuation">\</span>User</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token package">Tymon<span class="token punctuation">\</span>JWTAuth<span class="token punctuation">\</span>Providers<span class="token punctuation">\</span>User<span class="token punctuation">\</span>UserInterface</span><span class="token punctuation">;</span>
+
+<span class="token keyword">class</span> <span class="token class-name">UserRepository</span> <span class="token keyword">implements</span> <span class="token class-name">IUserRepository</span><span class="token punctuation">,</span> UserInterface
+<span class="token punctuation">{</span>
+  <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">}</span></code></pre>
     </div>
     <h2 class="subtitle" id="sub4-4">Controllers</h2>
     <div>
+        <p>
+            De controllers worden opgesplits in twee delen. Enerzijds zijn er de controllers die verantwoordelijk zijn voor de API. Deze bevatten allerhande
+            methods om de gewenste database operaties uit te voeren. Anderzijds zijn er de controllers die de webpagina's genereren. Deze doen vaak niets anders
+            dan een view returnen.
+        </p>
+        <pre class="folder-structure">
+Controllers/
+  |-- API/
+      |-- AuthenticateController.php
+      |-- ContactsController.php
+      |-- RemindersController.php
+      `-- UserController.php
+  |-- Controller.php
+  |-- DashboardController.php
+  |-- HomeController.php
+  `-- PaymentController.php
+        </pre>
+        <p>
+            <span class="p-subtitle">ContactsController</span><br />
+            De ContactsController is niet meer dan een bundeling van CRUD operaties. De methods krijgen dan ook namen die overeenstemmen met de actie.
+        </p>
+        <!-- Code voor contact controller //-->
+<pre class="language-php"><code><span class="token keyword">namespace</span> <span class="token package">App<span class="token punctuation">\</span>Http<span class="token punctuation">\</span>Controllers<span class="token punctuation">\</span>API</span><span class="token punctuation">;</span>
+
+<span class="token keyword">use</span> <span class="token package">App<span class="token punctuation">\</span>Http<span class="token punctuation">\</span>Requests</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+
+<span class="token keyword">class</span> <span class="token class-name">ContactsController</span> <span class="token keyword">extends</span> <span class="token class-name">Controller</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token variable">$_contactRepository</span><span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token variable">$_userRepository</span><span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token variable">$_userReminderRepository</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">private</span> <span class="token variable">$_user</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">__construct</span><span class="token punctuation">(</span><span class="token punctuation">..</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">get</span><span class="token punctuation">(</span><span class="token punctuation">..</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">insert</span><span class="token punctuation">(</span><span class="token punctuation">..</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">delete</span><span class="token punctuation">(</span><span class="token punctuation">..</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">update</span><span class="token punctuation">(</span><span class="token punctuation">..</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+        <p>
+            In de constructor worden de nodige repositories via dependency injection geïnstantieerd. Deze worden dan als properties bijgehouden om zo
+            gebruikt te kunnen worden in de methods.
+        </p>
+        <!-- ContactsController constructor //-->
+        <pre class="language-php"><code><span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">__construct</span><span class="token punctuation">(</span>IContactRepository <span class="token variable">$contact</span><span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">_user</span> <span class="token operator">=</span> JWTAuth<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">parseToken</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">toUser</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">_contactRepository</span> <span class="token operator">=</span> <span class="token variable">$contact</span><span class="token punctuation">;</span>
+    <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">_userRepository</span> <span class="token operator">=</span> <span class="token variable">$user</span><span class="token punctuation">;</span>
+    <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">_userReminderRepository</span> <span class="token operator">=</span> <span class="token variable">$userReminder</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+        <p>
+            De ContactsController kan alleen maar gebruikt worden als de user geauthenticeerd is, en gebruikt daarom de <code>jwt.auth</code>
+            middleware. De geauthenticeerde gebruiker wordt via de <code>toUser()</code> method in een property gestoken.
+        </p>
+        <p>
+            Vrijwel alle methods volgen de zelfde structuur. Eerst wordt de eventuele input gevalideerd. Vervolgens wordt de logica uitgevoerd
+            die van de method verwacht wordt. Ten slotte wordt er een JSON antwoord teruggestuurd. Moest er ergens in de method iets foutlopen,
+            dan wordt ook een logische HTTP code teruggestuurd. Zo zal foutieve data voor een 422 code zorgen.<br />
+            Als voorbeeld de <code>delete()</code> method:
+        </p>
+        <!-- Delete contactscontroller //-->
+    <pre class="language-php"><code><span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">delete</span><span class="token punctuation">(</span>Request <span class="token variable">$request</span><span class="token punctuation">,</span> <span class="token variable">$id</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// Get the contact.</span>
+    <span class="token variable">$contact</span> <span class="token operator">=</span> <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">_contactRepository</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">getContactById</span><span class="token punctuation">(</span><span class="token variable">$id</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">!</span><span class="token variable">$contact</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token function">response</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">json</span><span class="token punctuation">(</span><span class="token string">"Not found"</span><span class="token punctuation">,</span> <span class="token number">404</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token comment" spellcheck="true">// Check if the contact really belongs to the user.</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token variable">$contact</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">user_id</span> <span class="token operator">!=</span> <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">_user</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">id</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token function">response</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">json</span><span class="token punctuation">(</span><span class="token string">"Not authorized"</span><span class="token punctuation">,</span> <span class="token number">403</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// Remove the contact id from all associated reminders, and</span>
+    <span class="token comment" spellcheck="true">// set the recipient to the contact's number.</span>
+    <span class="token comment" spellcheck="true">// This is so the set reminders can still be sent.</span>
+    <span class="token variable">$reminders</span> <span class="token operator">=</span> <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">_userReminderRepository</span>
+                      <span class="token operator">-</span><span class="token operator">></span><span class="token function">getUserRemindersWhere</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token string">"contact_id"</span><span class="token punctuation">,</span> <span class="token variable">$id</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">foreach</span><span class="token punctuation">(</span><span class="token variable">$reminders</span> <span class="token keyword">as</span> <span class="token variable">$reminder</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">_userReminderRepository</span>
+             <span class="token operator">-</span><span class="token operator">></span><span class="token function">updateUserReminder</span><span class="token punctuation">(</span><span class="token variable">$reminder</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">id</span><span class="token punctuation">,</span> <span class="token punctuation">[</span>
+                 <span class="token string">"recipient"</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token variable">$contact</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">number</span><span class="token punctuation">,</span>
+                 <span class="token string">"contact_id"</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token keyword">NULL</span>
+             <span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// Finally, delete the contact & return the result.</span>
+    <span class="token variable">$result</span> <span class="token operator">=</span> <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">_contactRepository</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">deleteContact</span><span class="token punctuation">(</span><span class="token variable">$id</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token function">response</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">json</span><span class="token punctuation">(</span><span class="token variable">$result</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+        <p>
+            <span class="p-subtitle">RemindersController</span><br />
+            De RemindersController is verantwoordelijk voor de operaties op de User_reminders tabel. Deze is vrijwel analoog aan de ContactsController.
+            Het enige verschil hier is dat er een extra <code>_createUserReminder()</code> method is. Deze wordt gebruikt bij <code>insertReminder()</code>.
+            Dit is een aparte method om de code overzichtelijker te maken.
+        </p>
+        <!-- RemindersController //-->
+        <pre class="php"><code>namespace App\Http\Controllers\API;
+
+use ...;
+
+class RemindersController extends Controller
+{
+    private $_userRepository;
+    private $_userReminderRepository;
+    private $_user;
+
+    public function __construct(..) { .. }
+
+    public function getUpcomingReminders() { .. }
+
+    public function insertReminder(..) { .. }
+
+    public function cancelReminder(..) { .. }
+
+    private function _createUserReminder(..) { .. }
+}
+        </code></pre>
+        <p>
+            <span class="p-subtitle">AuthenticateController</span><br />
+            Deze controller zorgt voor de authenticatie en registratie van de gebruiker.
+        </p>
         <p>
             Folderstructuur, requests, validatie, ...
         </p>
