@@ -201,3 +201,43 @@ ul.toc a:after {
     clear: both;
     padding-top: 25px;
 }
+
+/** gebruikte texhs **/
+.gebruikte-techs {
+    border-collapse: collapse;
+}
+.gebruikte-techs td:first-child {
+    width: 150px;
+    vertical-align: top;
+    text-align: center;
+}
+.gebruikte-techs td {
+    padding-bottom: 25px;
+}
+.gebruikte-techs img {
+    width: 100%;
+    margin-top: 28px;
+}
+#logo-laravel {
+    width: 75%;
+}
+#logo-twilio {
+    width: 90%;
+    margin-top: -8px;
+}
+#logo-mollie {
+    width: 80%;
+}
+#logo-jwt {
+    width: 50%;
+}
+.tech-title {
+    font-weight: bold;
+}
+.tech-alts {
+    font-weight: bold;
+}
+
+.gebruikte-techs td {
+    border: 1px solid black;
+}
