@@ -131,10 +131,13 @@ h1+p, h2+p, h3+p {
   page-break-before: avoid;
 }
 
-table, figure, p {
+tr, figure, p, code, pre {
   page-break-inside: avoid;
 }
-
+/** algemeen **/
+.p-subtitle {
+    font-weight: bold;
+}
 /** Index **/
 ul.toc li a {
     content: target-content(attr(href));
@@ -238,6 +241,26 @@ ul.toc a:after {
     font-weight: bold;
 }
 
-.gebruikte-techs td {
-    border: 1px solid black;
+/** API endpoints **/
+.api-endpoints {
+    page-break-inside: avoid;
+}
+.api-endpoints thead th {
+    text-align: left;
+}
+.api-endpoints td:first-child {
+    width: 170px;
+}
+.api-endpoints td, .api-endpoints th {
+    padding: 0 5px;
+}
+.api-endpoints td {
+    vertical-align: top;
+}
+.api-endpoints .section-end td {
+    padding-bottom: 25px;
+}
+/** Code **/
+code[class*="language-"], pre[class*="language-"] {
+    line-height: 1.2!important;
 }

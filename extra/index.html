@@ -24,7 +24,10 @@
         <li><a href="#ch4"></a>
             <ul class="toc toc-sub">
                 <li><a href="#sub4-1"></a></li>
-                <lI><a href="#sub4-2"></a></lI>
+                <li><a href="#sub4-2"></a></li>
+                <li><a href="#sub4-3"></a></li>
+                <li><a href="#sub4-4"></a></li>
+                <li><a href="#sub4-5"></a></li>
             </ul>
         </li>
         <li><a href="#ch5"></a>
@@ -39,263 +42,268 @@
 </div>
 
 <h1 id="ch1" class="chapter">Inleiding</h1>
-    <p>
-        RemindMe is een webapplicatie waarmee gebruikers een herinnering kunnen maken, die ze later dan per sms toegestuurd krijgen. Er kan een account aangemaakt worden. Dit biedt
-        onder andere de mogelijkheid om contacten te beheren en herinneringen te laten herhalen. Registreren is echter niet nodig, er kon ook een
-        zogenaamde 'Quick reminder' gemaakt worden. Het nadeel hiervan is dat de prijs veel hoger ligt.
-    </p>
-    <p>
-        De applicatie is geschreven in Laravel. Wanneer een gebruiker zich inlogt, komt hij terecht bij het 'dashboard'. Dit deel van de site maakt gebruikt van het JavaScript
-        framework Vue.js. Deze communiceert met de backend door middel van een API.
+    <div>
+        <p>
+            RemindMe is een webapplicatie waarmee gebruikers een herinnering kunnen maken, die ze later dan per sms toegestuurd krijgen. Er kan een account aangemaakt worden. Dit biedt
+            onder andere de mogelijkheid om contacten te beheren en herinneringen te laten herhalen. Registreren is echter niet nodig, er kon ook een
+            zogenaamde 'Quick reminder' gemaakt worden. Het nadeel hiervan is dat de prijs veel hoger ligt.
+        </p>
+        <p>
+            De applicatie is geschreven in Laravel. Wanneer een gebruiker zich inlogt, komt hij terecht bij het 'dashboard'. Dit deel van de site maakt gebruikt van het JavaScript
+            framework Vue.js. Deze communiceert met de backend door middel van een API.
 
-    </p>
+        </p>
+    </div>
 
 <h1 id="ch2" class="chapter">Samenvatting</h1>
     <p>Zie inleiding.</p>
 
 <h1 id="ch3" class="chapter">Database</h1>
-    <p>
-        De applicatie maakt gebruik van een MySQL (MariaDB) database. De structuur ziet er als volgt uit:
-    </p>
-    <!-- Database tables a la MySQL //-->
-    <div class="db-wrapper">
-        <!-- Users //-->
-        <ul class="db-table">
-            <li class="db-header">users</li>
-            <li>
-                <img src="images/pma/primary_key.png" />id
-                <span class="db-datatype"> : int(11)</span>
-            </li>
-            <li>
-                <img src="images/pma/varchar.png" />name
-                <span class="db-datatype"> : varchar(255)</span>
-            </li>
-            <li>
-                <img src="images/pma/varchar.png" />email
-                <span class="db-datatype"> : varchar(255)</span>
-            </li>
-            <li>
-                <img src="images/pma/varchar.png" />password
-                <span class="db-datatype"> : varchar(255)</span>
-            </li>
-            <li>
-                <img src="images/pma/int.png" />reminder_credits
-                <span class="db-datatype"> : int(11)</span>
-            </li>
-            <li>
-                <img src="images/pma/varchar.png" />remember_token
-                <span class="db-datatype"> : varchar(100)</span>
-            </li>
-            <li>
-                <img src="images/pma/datetime.png" />created_at
-                <span class="db-datatype"> : datetime</span>
-            </li>
-            <li>
-                <img src="images/pma/datetime.png" />updated_at :
-                <span class="db-datatype"> : datetime</span>
-            </li>
-        </ul>
-        <!-- User_reminders //-->
-        <ul class="db-table">
-            <li class="db-header">user_reminders</li>
-            <li>
-                <img src="images/pma/primary_key.png" />id
-                <span class="db-datatype"> : int(11)</span>
-            </li>
-            <li>
-                <img src="images/pma/varchar.png" />recipient
-                <span class="db-datatype"> : varchar(255)</span>
-            </li>
-            <li class="db-foreign-key">
-                <img src="images/pma/int.png" />contact_id
-                <span class="db-datatype"> : int(11)</span></li>
-            <li>
-            <li>
-                <img src="images/pma/datetime.png" />send_datetime
-                <span class="db-datatype"> : datetime</span>
-            </li>
-            <li>
-                <img src="images/pma/varchar.png" />message
-                <span class="db-datatype"> : text</span>
-            </li>
-            <li class="db-foreign-key">
-                <img src="images/pma/int.png" />user_id
-                <span class="db-datatype"> : int(11)</span></li>
-            <li>
-            <li class="db-foreign-key">
-                <img src="images/pma/int.png" />repeat_id
-                <span class="db-datatype"> : int(11)</span></li>
-            <li>
-            <li>
-                <img src="images/pma/datetime.png" />deleted_at :
-                <span class="db-datatype"> : datetime</span>
-            </li>
-        </ul>
-        <!-- User_orders //-->
-        <ul class="db-table">
-            <li class="db-header">user_orders</li>
-            <li>
-                <img src="images/pma/primary_key.png" />id
-                <span class="db-datatype"> : int(11)</span>
-            </li>
-            <li>
-                <img src="images/pma/varchar.png" />payment_id
-                <span class="db-datatype"> : varchar(255)</span>
-            </li>
-            <li class="db-foreign-key">
-                <img src="images/pma/int.png" />user_id
-                <span class="db-datatype"> : int(11)</span></li>
-            <li>
-            <li>
-                <img src="images/pma/int.png" />amount
-                <span class="db-datatype"> : decimal(8,2)</span></li>
-            <li>
-            <li>
-                <img src="images/pma/int.png" />reminder_credits
-                <span class="db-datatype"> : int(11)</span>
-            </li>
-            <li>
-                <img src="images/pma/datetime.png" />created_at :
-                <span class="db-datatype"> : datetime</span>
-            </li>
-            <li>
-                <img src="images/pma/datetime.png" />updated_at :
-                <span class="db-datatype"> : datetime</span>
-            </li>
-            <li>
-                <img src="images/pma/datetime.png" />deleted_at :
-                <span class="db-datatype"> : datetime</span>
-            </li>
-        </ul>
-        <!-- Quick reminders //-->
-        <ul class="db-table">
-            <li class="db-header">quick_reminders</li>
-            <li>
-                <img src="images/pma/primary_key.png" />id
-                <span class="db-datatype"> : int(11)</span>
-            </li>
-            <li>
-                <img src="images/pma/varchar.png" />recipient
-                <span class="db-datatype"> : varchar(255)</span>
-            </li>
-            <li>
-                <img src="images/pma/datetime.png" />send_datetime
-                <span class="db-datatype"> : datetime</span>
-            </li>
-            <li>
-                <img src="images/pma/varchar.png" />message
-                <span class="db-datatype"> : text</span>
-            </li>
-            <li>
-                <img src="images/pma/datetime.png" />created_at :
-                <span class="db-datatype"> : datetime</span>
-            </li>
-            <li>
-                <img src="images/pma/datetime.png" />updated_at :
-                <span class="db-datatype"> : datetime</span>
-            </li>
-            <li>
-                <img src="images/pma/datetime.png" />deleted_at :
-                <span class="db-datatype"> : datetime</span>
-            </li>
-            <li>
-                <img src="images/pma/int.png" />is_payed :
-                <span class="db-datatype"> : tinyint(1)</span>
-            </li>
-            <li>
-                <img src="images/pma/varchar.png" />payment_id
-                <span class="db-datatype"> : varchar(255)</span>
-            </li>
-        </ul>
-        <!-- Contacts //-->
-        <ul class="db-table">
-            <li class="db-header">contacts</li>
-            <li>
-                <img src="images/pma/primary_key.png" />id
-                <span class="db-datatype"> : int(11)</span>
-            </li>
-            <li>
-                <img src="images/pma/varchar.png" />name
-                <span class="db-datatype"> : varchar(255)</span>
-            </li>
-            <li>
-                <img src="images/pma/varchar.png" />number
-                <span class="db-datatype"> : varchar(20)</span></li>
-            <li>
-            <li class="db-foreign-key">
-                <img src="images/pma/int.png" />user_id
-                <span class="db-datatype"> : int(11)</span></li>
-            <li>
-        </ul>
-        <!-- Password_resets //-->
-        <ul class="db-table">
-            <li class="db-header">password_resets</li>
-            <li>
-                <img src="images/pma/primary_key.png" />id
-                <span class="db-datatype"> : int(11)</span>
-            </li>
-            <li>
-                <img src="images/pma/varchar.png" />email
-                <span class="db-datatype"> : varchar(255)</span>
-            </li>
-            <li>
-                <img src="images/pma/varchar.png" />token
-                <span class="db-datatype"> : varchar(255)</span>
-            </li>
-            <li>
-                <img src="images/pma/datetime.png" />created_at
-                <span class="db-datatype"> : datetime</span>
-            </li>
-        </ul>
-        <!-- Repeats //-->
-        <ul class="db-table" id="db-table-repeats">
-            <li class="db-header">repeats</li>
-            <li>
-                <img src="images/pma/primary_key.png" />id
-                <span class="db-datatype"> : int(11)</span>
-            </li>
-            <li>
-                <img src="images/pma/varchar.png" />repeat_interval
-                <span class="db-datatype"> : varchar(20)</span>
-            </li>
-        </ul>
+    <div>
+        <p>
+            De applicatie maakt gebruik van een MySQL (MariaDB) database. De structuur ziet er als volgt uit:
+        </p>
+        <!-- Database tables a la MySQL //-->
+        <div class="db-wrapper">
+            <!-- Users //-->
+            <ul class="db-table">
+                <li class="db-header">users</li>
+                <li>
+                    <img src="images/pma/primary_key.png" />id
+                    <span class="db-datatype"> : int(11)</span>
+                </li>
+                <li>
+                    <img src="images/pma/varchar.png" />name
+                    <span class="db-datatype"> : varchar(255)</span>
+                </li>
+                <li>
+                    <img src="images/pma/varchar.png" />email
+                    <span class="db-datatype"> : varchar(255)</span>
+                </li>
+                <li>
+                    <img src="images/pma/varchar.png" />password
+                    <span class="db-datatype"> : varchar(255)</span>
+                </li>
+                <li>
+                    <img src="images/pma/int.png" />reminder_credits
+                    <span class="db-datatype"> : int(11)</span>
+                </li>
+                <li>
+                    <img src="images/pma/varchar.png" />remember_token
+                    <span class="db-datatype"> : varchar(100)</span>
+                </li>
+                <li>
+                    <img src="images/pma/datetime.png" />created_at
+                    <span class="db-datatype"> : datetime</span>
+                </li>
+                <li>
+                    <img src="images/pma/datetime.png" />updated_at :
+                    <span class="db-datatype"> : datetime</span>
+                </li>
+            </ul>
+            <!-- User_reminders //-->
+            <ul class="db-table">
+                <li class="db-header">user_reminders</li>
+                <li>
+                    <img src="images/pma/primary_key.png" />id
+                    <span class="db-datatype"> : int(11)</span>
+                </li>
+                <li>
+                    <img src="images/pma/varchar.png" />recipient
+                    <span class="db-datatype"> : varchar(255)</span>
+                </li>
+                <li class="db-foreign-key">
+                    <img src="images/pma/int.png" />contact_id
+                    <span class="db-datatype"> : int(11)</span></li>
+                <li>
+                <li>
+                    <img src="images/pma/datetime.png" />send_datetime
+                    <span class="db-datatype"> : datetime</span>
+                </li>
+                <li>
+                    <img src="images/pma/varchar.png" />message
+                    <span class="db-datatype"> : text</span>
+                </li>
+                <li class="db-foreign-key">
+                    <img src="images/pma/int.png" />user_id
+                    <span class="db-datatype"> : int(11)</span></li>
+                <li>
+                <li class="db-foreign-key">
+                    <img src="images/pma/int.png" />repeat_id
+                    <span class="db-datatype"> : int(11)</span></li>
+                <li>
+                <li>
+                    <img src="images/pma/datetime.png" />deleted_at :
+                    <span class="db-datatype"> : datetime</span>
+                </li>
+            </ul>
+            <!-- User_orders //-->
+            <ul class="db-table">
+                <li class="db-header">user_orders</li>
+                <li>
+                    <img src="images/pma/primary_key.png" />id
+                    <span class="db-datatype"> : int(11)</span>
+                </li>
+                <li>
+                    <img src="images/pma/varchar.png" />payment_id
+                    <span class="db-datatype"> : varchar(255)</span>
+                </li>
+                <li class="db-foreign-key">
+                    <img src="images/pma/int.png" />user_id
+                    <span class="db-datatype"> : int(11)</span></li>
+                <li>
+                <li>
+                    <img src="images/pma/int.png" />amount
+                    <span class="db-datatype"> : decimal(8,2)</span></li>
+                <li>
+                <li>
+                    <img src="images/pma/int.png" />reminder_credits
+                    <span class="db-datatype"> : int(11)</span>
+                </li>
+                <li>
+                    <img src="images/pma/datetime.png" />created_at :
+                    <span class="db-datatype"> : datetime</span>
+                </li>
+                <li>
+                    <img src="images/pma/datetime.png" />updated_at :
+                    <span class="db-datatype"> : datetime</span>
+                </li>
+                <li>
+                    <img src="images/pma/datetime.png" />deleted_at :
+                    <span class="db-datatype"> : datetime</span>
+                </li>
+            </ul>
+            <!-- Quick reminders //-->
+            <ul class="db-table">
+                <li class="db-header">quick_reminders</li>
+                <li>
+                    <img src="images/pma/primary_key.png" />id
+                    <span class="db-datatype"> : int(11)</span>
+                </li>
+                <li>
+                    <img src="images/pma/varchar.png" />recipient
+                    <span class="db-datatype"> : varchar(255)</span>
+                </li>
+                <li>
+                    <img src="images/pma/datetime.png" />send_datetime
+                    <span class="db-datatype"> : datetime</span>
+                </li>
+                <li>
+                    <img src="images/pma/varchar.png" />message
+                    <span class="db-datatype"> : text</span>
+                </li>
+                <li>
+                    <img src="images/pma/datetime.png" />created_at :
+                    <span class="db-datatype"> : datetime</span>
+                </li>
+                <li>
+                    <img src="images/pma/datetime.png" />updated_at :
+                    <span class="db-datatype"> : datetime</span>
+                </li>
+                <li>
+                    <img src="images/pma/datetime.png" />deleted_at :
+                    <span class="db-datatype"> : datetime</span>
+                </li>
+                <li>
+                    <img src="images/pma/int.png" />is_payed :
+                    <span class="db-datatype"> : tinyint(1)</span>
+                </li>
+                <li>
+                    <img src="images/pma/varchar.png" />payment_id
+                    <span class="db-datatype"> : varchar(255)</span>
+                </li>
+            </ul>
+            <!-- Contacts //-->
+            <ul class="db-table">
+                <li class="db-header">contacts</li>
+                <li>
+                    <img src="images/pma/primary_key.png" />id
+                    <span class="db-datatype"> : int(11)</span>
+                </li>
+                <li>
+                    <img src="images/pma/varchar.png" />name
+                    <span class="db-datatype"> : varchar(255)</span>
+                </li>
+                <li>
+                    <img src="images/pma/varchar.png" />number
+                    <span class="db-datatype"> : varchar(20)</span></li>
+                <li>
+                <li class="db-foreign-key">
+                    <img src="images/pma/int.png" />user_id
+                    <span class="db-datatype"> : int(11)</span></li>
+                <li>
+            </ul>
+            <!-- Password_resets //-->
+            <ul class="db-table">
+                <li class="db-header">password_resets</li>
+                <li>
+                    <img src="images/pma/primary_key.png" />id
+                    <span class="db-datatype"> : int(11)</span>
+                </li>
+                <li>
+                    <img src="images/pma/varchar.png" />email
+                    <span class="db-datatype"> : varchar(255)</span>
+                </li>
+                <li>
+                    <img src="images/pma/varchar.png" />token
+                    <span class="db-datatype"> : varchar(255)</span>
+                </li>
+                <li>
+                    <img src="images/pma/datetime.png" />created_at
+                    <span class="db-datatype"> : datetime</span>
+                </li>
+            </ul>
+            <!-- Repeats //-->
+            <ul class="db-table" id="db-table-repeats">
+                <li class="db-header">repeats</li>
+                <li>
+                    <img src="images/pma/primary_key.png" />id
+                    <span class="db-datatype"> : int(11)</span>
+                </li>
+                <li>
+                    <img src="images/pma/varchar.png" />repeat_interval
+                    <span class="db-datatype"> : varchar(20)</span>
+                </li>
+            </ul>
+        </div>
+        <p>
+            <strong>Users:</strong><br />
+            Deze tabel bevat details over de gebruiker, samen met een aantal timestamps. Het wachtwoord wordt gehashed in de database opgeslagen. Het veld "reminder_credits" bevat
+            het aantal reminders dat de gebruiker nog heeft.
+        </p>
+        <p>
+            <strong>User_reminders</strong><br />
+            Bevat reminders die door een geregistreerde gebruiker gemaakt zijn. Zo'n reminder wordt ofwel naar een opgeslagen contact verstuurd, of naar een willekeurig nummer. Daarom
+            heeft deze tabel naast het veld "recipient" ook nog een referentie naar de Contacts tabel.
+        </p>
+        <p>
+            <strong>User_orders</strong><br />
+            Bevat gegevens over betalingen die door geregistreerde gebruikers worden uitgevoerd. Zo wordt het bedrag opgeslagen, en het aantal reminders dat gekocht werd. "Payment_id"
+            verwijst naar de betaling die via de Mollie API wordt gemaakt. Dit kan gebruikt worden om de betalingsstatus na te gaan.
+        </p>
+        <p>
+            <strong>Quick_reminders</strong><br />
+            Hier worden alle details opgeslagen over reminders die door niet-geregistreerde gebruikers worden gemaakt. Ook hier wordt een referentie naar de betaling van Mollie bijgehouden.
+            Ook is er een boolean voorzien om na te gaan of de betaling al voltooid is of niet. Dit om ervoor te zorgen dat er niet elke minuut een request naar de Mollie API gestuurd dient
+            te worden.
+        </p>
+        <p>
+            <strong>Contacts</strong><br />
+            De tabel om contacten in op te slaan. Elke rij bevat een verwijzing naar de user waarmee ze geässocieerd is.
+        </p>
+        <p>
+            <strong>Password_resets</strong><br />
+            Deze tabel is nodig om gebruikers de mogelijkheid te geven hun wachtwoord te veranderen.
+        </p>
+        <p>
+            <strong>Repeats</strong><br />
+            Dit is niet meer dan een enum voor de beschikbare herhalingen.
+        </p>
     </div>
-    <p>
-        <strong>Users:</strong><br />
-        Deze tabel bevat details over de gebruiker, samen met een aantal timestamps. Het wachtwoord wordt gehashed in de database opgeslagen. Het veld "reminder_credits" bevat
-        het aantal reminders dat de gebruiker nog heeft.
-    </p>
-    <p>
-        <strong>User_reminders</strong><br />
-        Bevat reminders die door een geregistreerde gebruiker gemaakt zijn. Zo'n reminder wordt ofwel naar een opgeslagen contact verstuurd, of naar een willekeurig nummer. Daarom
-        heeft deze tabel naast het veld "recipient" ook nog een referentie naar de Contacts tabel.
-    </p>
-    <p>
-        <strong>User_orders</strong><br />
-        Bevat gegevens over betalingen die door geregistreerde gebruikers worden uitgevoerd. Zo wordt het bedrag opgeslagen, en het aantal reminders dat gekocht werd. "Payment_id"
-        verwijst naar de betaling die via de Mollie API wordt gemaakt. Dit kan gebruikt worden om de betalingsstatus na te gaan.
-    </p>
-    <p>
-        <strong>Quick_reminders</strong><br />
-        Hier worden alle details opgeslagen over reminders die door niet-geregistreerde gebruikers worden gemaakt. Ook hier wordt een referentie naar de betaling van Mollie bijgehouden.
-        Ook is er een boolean voorzien om na te gaan of de betaling al voltooid is of niet. Dit om ervoor te zorgen dat er niet elke minuut een request naar de Mollie API gestuurd dient
-        te worden.
-    </p>
-    <p>
-        <strong>Contacts</strong><br />
-        De tabel om contacten in op te slaan. Elke rij bevat een verwijzing naar de user waarmee ze geässocieerd is.
-    </p>
-    <p>
-        <strong>Password_resets</strong><br />
-        Deze tabel is nodig om gebruikers de mogelijkheid te geven hun wachtwoord te veranderen.
-    </p>
-    <p>
-        <strong>Repeats</strong><br />
-        Dit is niet meer dan een enum voor de beschikbare herhalingen.
-    </p>
 
 <h1 id="ch4" class="chapter">Backend</h1>
     <h2 class="subtitle" id="sub4-1">Gebruikte technologiën</h2>
+    <div>
         <table class="gebruikte-techs">
             <tbody>
                 <tr>
@@ -317,10 +325,10 @@
                         <img src="images/techs/twilio.png" id="logo-twilio"/>
                     </td>
                     <td>
-                        <strong>Twilio</strong><br />
-                        Om SMS-berichten te versturen maakt de applicatie gebruik van Twilio. Deze service maakt gebruik van een API, waardoor een bericht verstuurd
-                        kan worden door middel van een HTTP request. Twilio voorziet ook een library die via Composer geïnstalleerd kan worden. Dit zorgt ervoor dat de
-                        service snel opgezet kan worden.
+                        <span class="tech-title">Twilio</span><br />
+                        Om SMS-berichten te versturen kunnen maakt de applicatie gebruik van Twilio. Deze service voorziet een API, waardoor een bericht
+                        verstuurd kan worden door middel van een HTTP request. Twilio voorziet ook een library die beschikbaar is via Composer. Dit zorgt ervoor
+                        dat de service snel opgezet kan worden.
                         <br /><span class="tech-alts">Alternatieven:</span> Plivo, Nexmo
                     </td>
                 </tr>
@@ -329,9 +337,13 @@
                         <img src="images/techs/mollie.png" id="logo-mollie"/>
                     </td>
                     <td>
-                        <strong>Mollie</strong><br />
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Hic quasi velit, tenetur totam tempora libero perspiciatis asperiores,
-                        necessitatibus quod voluptatum similique, rem minus, quis earum temporibus saepe consectetur architecto. Accusamus.
+                        <span class="tech-title">Mollie</span><br />
+                        Mollie is een service om online betalingen te regelen. Het voorziet veel betalingsmogelijkheden, gaande van Bancontact tot Paypal en zelfs
+                        bitcoin. Mollie host een API en voorziet hiervoor ook een PHP library, wat maakt dat er met een paar regels code al een betaling kan worden
+                        uitgevoerd.<br />
+                        Voor de ontwikkeling van een applicatie kan een test-API gebruikt worden. Deze stelt de developer in staat om betalingen na te bootsen, zonder
+                        deze effectief uit te voeren.
+                        <br /><span class="tech-alts">Alternatieven:</span> Adyen, Ingenico
                     </td>
                 </tr>
                 <tr>
@@ -339,19 +351,176 @@
                         <img src="images/techs/jwt.png" id="logo-jwt"/>
                     </td>
                     <td>
-                        <strong>JSON Web Token</strong><br />
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Hic quasi velit, tenetur totam tempora libero perspiciatis asperiores,
-                        necessitatibus quod voluptatum similique, rem minus, quis earum temporibus saepe consectetur architecto. Accusamus.
+                        <span class="tech-title">JSON Web Token</span><br />
+                        De applicatie maakt hevig gebruik van een API. Een RESTful API is per definitie stateless. Dit wil zeggen dat session-based authenticatie geen
+                        goede optie is. JSON Web Token (JWT) biedt hiervoor een oplossing. Een token bevat geëncrypteerde authenticatiegegevens van de gebruiker, en wordt
+                        client-side bijgehouden. Dit token wordt meegegeven in de header van elk request naar de API, om zo de gebruiker te kunnen authenticeren.<br />
+                        De applicatie maakt gebruik van de opensource tymon/jwt-auth library, specifiek voor Laravel.
+                        <br /><span class="tech-alts">Alternatieven:</span> OAuth, basic
                     </td>
                 </tr>
             </tbody>
         </table>
-    <h2 class="subtitle" id="sub4-2">Folderstructuur</h2>
+    </div>
+    <h2 class="subtitle" id="sub4-2">Structuur</h2>
+    <div>
         <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorum unde, pariatur dicta ipsa commodi, sit quasi autem blanditiis nesciunt ullam harum
-            accusantium neque in incidunt modi labore quis nulla iure.
+            Het dashboard van de applicatie is een zogenaamde 'Single Page Application (SPA)'. Bij het navigeren naar het dashboard wordt eenmalig alle nodige code geladen.
+            Een JavaScript framework zorgt ervoor dat alle requests asynchroon geladen worden. Ook de routing wordt afgehandeld door het framework. Hierdoor hoeft de gebruiker
+            nooit rechtstreeks een nieuwe pagina op te vragen of te herladen. Dit zorgt voor een vlotte user experience.<br />
+            Om dit allemaal te kunnen voorzien maakt de applicatie gebruik van een RESTful API.
         </p>
+        <p>
+            De API voorziet een aantal endpoints om met de applicatie te werken. Ze maakt gebruik van de zogenaamde 'HTTP werkwoorden' die overeenstemmen met een CRUD operatie.
+            Zo staat een POST request voor een insert, GET voor een read, PUT voor een update, en een DELETE request zorgt voor een delete.<br />
+            Deze requests worden gebundeld onder de 'api' route. Om bijvoorbeeld alle contacten op te vragen, dient er een GET request gestuurd te worden naar '../api/contacts'.
+            De API maakt gebruik van JSON als dataformaat.
+        </p>
+        <table class="api-endpoints">
+            <thead>
+                <tr>
+                    <th>Endpoint</th>
+                    <th>Method</th>
+                    <th>Omschrijving</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>/contacts/{id?}</td>
+                    <td>GET</td>
+                    <td>Antwoord met een array van alle contactpersonen van de geauthenticeerde gebruiker, of met slechts 1 contactpersoon als er een id wordt gegeven</td>
+                </tr>
+                <tr>
+                    <td>/contacts</td>
+                    <td>POST</td>
+                    <td>Insert een contactpersoon aan de hand van de POST-gegevens.</td>
+                </tr>
+                <tr>
+                    <td>/contacts/{id}</td>
+                    <td>DELETE</td>
+                    <td>Delete de contactpersoon met het gegeven ID.</td>
+                </tr>
+                <tr class="section-end">
+                    <td>/contacts</td>
+                    <td>PUT</td>
+                    <td>Update de contactpersoon aan de hand van de gegevens.</td>
+                </tr>
+                <tr>
+                    <td>/reminders/upcoming</td>
+                    <td>GET</td>
+                    <td>Antwoord met een array van alle reminders met een datum later dan vandaag.</td>
+                </tr>
+                <tr>
+                    <td>/reminders/cancel/{id}</td>
+                    <td>GET</td>
+                    <td>Annuleert de reminder met het gegeven ID.</td>
+                </tr>
+                <tr>
+                    <td>/reminders</td>
+                    <td>POST</td>
+                    <td>Insert een nieuwe reminder aan de hand van de POST-gegevens.</td>
+                </tr>
+                <tr class="section-end">
+                    <td>/quickreminder</td>
+                    <td>POST</td>
+                    <td>Insert een quick reminder aan de hand van de POST-gegevens.</td>
+                </tr>
+                <tr>
+                    <td>/login</td>
+                    <td>POST</td>
+                    <td>Probeert een gebruiker te authenticeren. Antwoord met een JWT als de authenticatie succesvol is</td>
+                </tr>
+                <tr>
+                    <td>/register</td>
+                    <td>POST</td>
+                    <td>Registreert een nieuwe gebruiker.</td>
+                </tr>
+                <tr>
+                    <td>/user</td>
+                    <td>GET</td>
+                    <td>Antwoord met enkele gegevens van de geauthenticeerde gebruiker.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <h2 class="subtitle" id="sub4-3">Models</h2>
+    <p>
+        <span class="p-subtitle">Eloquent ORM</span><br />
+        Laravel maakt gebruikt van het Eloquent ORM. Elk Eloquent model komt overeen met een tabel in de database. Op dit model kunnen dan relaties
+        gedefiniëerd worden. Standaard komt de classnaam overeen met de tabelnaam. Zo zal het model Contact queries uitvoeren op de 'contacts' tabel.
+        Het Contact model ziet er bijvoorbeeld als volgt uit:
+    </p>
+    <!-- Contact Model code -->
+    <pre class="language-php"><code>
+<span class="token keyword">class</span> <span class="token class-name">Contact</span> <span class="token keyword">extends</span> <span class="token class-name">Model</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token variable">$timestamps</span> <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
 
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">user</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">belongsTo</span><span class="token punctuation">(</span><span class="token string">'User'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+    <p>
+        De '$timestamps' property wordt gebruikt om aan te duiden of er voor een model de datum moet worden bijgehouden waarop het aangemaakt of gewijzigd wordt.<br />
+        Relaties met andere tabellen worden aangeduid aan de hand van functies. Zo wordt bijvoorbeeld een OneToMany relatie uitgedrukt door hasMany() en belongsTo().
+    </p>
+    <p>
+        Eloquent zorgt ervoor dat veelgebruikte queries geëncapsuleerd worden op de models. Zo voorziet het enkele logische functies zoals 'delete()', 'save()' 'where()', enz.
+        Meer complexe operaties kunnen nog altijd in rauwe SQL worden uitgevoerd.
+    </p>
+    <p>
+        <span class="p-subtitle">Repository pattern</span><br />
+        De applicatie maakt gebruik van het repository pattern. Dit is een extra abstractie van de database layer. Een repository bundelt een aantal operaties op
+        een model in een class. De controller hoeft dan niet langer rechtstreeks de database layer aan te spreken via de models, maar gebruikt in de plaats de
+        repositories.<br />
+        De repository en het model zijn zo echter wel nog tightly coupled. Om dit tegen te gaan worden interfaces gebruikt. De interface definiëert een 'contract'
+        waar de repository zich aan moet houden. In de controller wordt vervolgens de interface als dependency gebruikt. Nu maakt het niet meer uit hoe de data
+        opgehaald wordt, als de implementatie zich maar aan de interface houdt. Dit zorgt niet enkele voor beter leesbare code, maar verbetert ook de mogelijkheid
+        tot unit testing.
+    </p>
+    <p>
+        De interface voor de contactpersonen ziet er bijvoorbeeld als volgt uit:
+    </p>
+    <!-- Code voor de repositoryinterface //-->
+    <pre class="language-php"><code><span class="token keyword">interface</span> <span class="token class-name">IContactRepository</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">getContactById</span><span class="token punctuation">(</span><span class="token variable">$contactid</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">getContactsByUserId</span><span class="token punctuation">(</span><span class="token variable">$userid</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">insertContact</span><span class="token punctuation">(</span><span class="token variable">$contact</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">deleteContact</span><span class="token punctuation">(</span><span class="token variable">$contactid</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">updateContact</span><span class="token punctuation">(</span><span class="token variable">$id</span><span class="token punctuation">,</span> <span class="token variable">$newValues</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+    <p>
+        Vervolgens implementeert de repository de bijhorende interface. Zo ziet de 'getContactsByUserId()' er als volgt uit.
+    </p>
+    <!-- Code voor de interface implementatie //-->
+    <pre class="language-php"><code><span class="token keyword">namespace</span> <span class="token package">App<span class="token punctuation">\</span>Repositories<span class="token punctuation">\</span>Contact</span><span class="token punctuation">;</span>
+
+<span class="token keyword">use</span> <span class="token package">App<span class="token punctuation">\</span>Models<span class="token punctuation">\</span>Contact</span><span class="token punctuation">;</span>
+
+<span class="token keyword">class</span> <span class="token class-name">ContactRepository</span> <span class="token keyword">implements</span> <span class="token class-name">IContactRepository</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token variable">$_contact</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">__construct</span><span class="token punctuation">(</span>Contact <span class="token variable">$contact</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">_contact</span> <span class="token operator">=</span> <span class="token variable">$contact</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">getContactsByUserId</span><span class="token punctuation">(</span><span class="token variable">$userid</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">_contact</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">where</span><span class="token punctuation">(</span><span class="token string">'user_id'</span><span class="token punctuation">,</span> <span class="token variable">$userid</span><span class="token punctuation">)</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">}</span></code></pre>
 <h1 id="ch5" class="chapter">Frontend</h1>
     <h2 class="subtitle" id="sub5-1">Gebruikte technologiën</h2>
         <p>...</p>
