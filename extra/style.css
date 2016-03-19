@@ -18,12 +18,18 @@
     font-size: 9pt;
   }
 
-  @top-right {
-    content:  string(doctitle);
-    margin: 30pt 0 10pt 0;
-    font-size: 9pt;
-    color: #333;
-  }
+    @top-left {
+        content:  string(doctitle);
+        margin: 30pt 0 10pt 0;
+        font-size: 9pt;
+        color: #333;
+    }
+    @top-right {
+        content: string(subtitle);
+        margin: 30pt 0 10pt 0;
+        font-size: 9pt;
+        color: #333;
+    }
 
   @footnotes {
     border-top: 0.6pt solid black;
@@ -84,6 +90,9 @@ h1.chapter:before {
 }
 h2.subtitle:before {
     content: counter(chapternum) "." counter(subnum) " "
+}
+h2.subtitle {
+    string-set: subtitle content();
 }
 
 /* Increment and display figure counter */

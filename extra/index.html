@@ -7,9 +7,7 @@
     <title>Eindwerk Paper</title>
     <meta name="author" content="Mark gerarts"/>
     <meta name="subject" content="Eindwerk Syntra Webontwikkelaar 2015-2016: ReminderApp"/>
-    <link rel="stylesheet" href="highlight/styles/tomorrow.css" />
-    <script src="highlight/highlight.pack.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <link rel="stylesheet" href="instantHighlightJS/prism.css" />
     <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -662,12 +660,13 @@ Controllers/
 <span class="token punctuation">}</span></code></pre>
         <p>
             De ContactsController kan alleen maar gebruikt worden als de user geauthenticeerd is, en gebruikt daarom de <code>jwt.auth</code>
-            middleware. De geauthenticeerde gebruiker wordt via de <code>toUser()</code> method in een property gestoken.
+            middleware. Deze is gedefiniëerd in <code>routes.php</code>. De geauthenticeerde gebruiker wordt via de <code>toUser()</code> method
+             in een property gestoken.
         </p>
         <p>
-            Vrijwel alle methods volgen de zelfde structuur. Eerst wordt de eventuele input gevalideerd. Vervolgens wordt de logica uitgevoerd
-            die van de method verwacht wordt. Ten slotte wordt er een JSON antwoord teruggestuurd. Moest er ergens in de method iets foutlopen,
-            dan wordt ook een logische HTTP code teruggestuurd. Zo zal foutieve data voor een 422 code zorgen.<br />
+            Vrijwel alle methods van de controller volgen de zelfde structuur. Eerst wordt de eventuele input gevalideerd. Vervolgens wordt de
+            logica uitgevoerd die van de method verwacht wordt. Ten slotte wordt er een JSON antwoord teruggestuurd. Moest er ergens in de method
+            iets foutlopen, dan wordt ook een logische HTTP code teruggestuurd. Zo zal foutieve data voor een 422 code zorgen.<br />
             Als voorbeeld de <code>delete()</code> method:
         </p>
         <!-- Delete contactscontroller //-->
@@ -711,37 +710,169 @@ Controllers/
             Dit is een aparte method om de code overzichtelijker te maken.
         </p>
         <!-- RemindersController //-->
-        <pre class="php"><code>namespace App\Http\Controllers\API;
+        <pre class="language-php"><code><span class="token keyword">class</span> <span class="token class-name">RemindersController</span> <span class="token keyword">extends</span> <span class="token class-name">Controller</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token variable">$_userRepository</span><span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token variable">$_userReminderRepository</span><span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token variable">$_user</span><span class="token punctuation">;</span>
 
-use ...;
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">__construct</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
 
-class RemindersController extends Controller
-{
-    private $_userRepository;
-    private $_userReminderRepository;
-    private $_user;
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">getUpcomingReminders</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
 
-    public function __construct(..) { .. }
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">insertReminder</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
 
-    public function getUpcomingReminders() { .. }
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">cancelReminder</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
 
-    public function insertReminder(..) { .. }
-
-    public function cancelReminder(..) { .. }
-
-    private function _createUserReminder(..) { .. }
-}
-        </code></pre>
+    <span class="token keyword">private</span> <span class="token keyword">function</span> <span class="token function">_createUserReminder</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+        <p>
+            <span class="p-subtitle">UserController</span><br />
+            De UserController heeft slechts één method, <code>getUserDetails()</code>. Deze wordt gebruikt, zoals de naam al zegt, om enkele details van
+            de gebruiker op te vragen. Uiteraard gebruikt deze controller ook de <code>jwt.auth</code> middleware.
+        </p>
         <p>
             <span class="p-subtitle">AuthenticateController</span><br />
-            Deze controller zorgt voor de authenticatie en registratie van de gebruiker.
+            Deze controller zorgt voor de authenticatie en registratie van de gebruiker. <code>Authenticate()</code> probeert aan de hand van de logingegevens
+            een JWT token aan te maken. Als de authenticatie succesvol is, worden er, samen met het token, enkele details over de gebruiker meegegeven. Dit om
+            een request te besparen.<br /> De <code>register()</code> method wordt gebruikt om een gebruiker te registreren.
+        </p>
+        <pre class="language-php"><code><span class="token keyword">class</span> <span class="token class-name">AuthenticateController</span> <span class="token keyword">extends</span> <span class="token class-name">Controller</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token variable">$_userRepository</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">__construct</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">authenticate</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">register</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+        <p>
+            <span class="p-subtitle">DashboardController</span><br />
+            Het enige wat deze controller doet, is een view returnen voor het dashboard.
         </p>
         <p>
-            Folderstructuur, requests, validatie, ...
+            <span class="p-subtitle">HomeController</span><br />
+            De HomeController zorgt voor alle pagina's van de 'gewone' website: de homepage, de pricing pagina, en de contactpagina.
+            Ook heeft de controller een method om het verzenden vanhet contactformulier af te handelen.
         </p>
+        <p>
+            <span class="p-subtitle">PaymentController</span><br />
+            De PaymentController is vrijwel de meest uitgebreide controller. De controller zorgt voor zowel het kopen van quick reminders
+            alsook het kopen van credits door een gebruiker. Ook zorgt deze controller voor het aanmaken van de quick reminder wanneer de
+            betaling succesvol is afgehandeld.
+        </p>
+        <pre class="language-php"><code><span class="token keyword">namespace</span> <span class="token package">App<span class="token punctuation">\</span>Http<span class="token punctuation">\</span>Controllers</span><span class="token punctuation">;</span>
+
+<span class="token keyword">use</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">;</span>
+
+<span class="token keyword">class</span> <span class="token class-name">PaymentController</span> <span class="token keyword">extends</span> <span class="token class-name">Controller</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token variable">$_mollie</span><span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token variable">$_userOrderRepository</span><span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token variable">$_userRepository</span><span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token variable">$_quickReminderRepository</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">__construct</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">createUserOrder</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">userOrderRedirect</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">createQuickReminderOrder</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">quickReminderOrderRedirect</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+        <p>
+            Een betaling bestaat altijd uit twee delen, de <code>create</code> en de <code>redirect</code>. In de <code>create</code> wordt eerst de
+            input gevalideerd. Vervolgens wordt een order aangemaakt. Deze gegevens worden hierna naar de Mollie API verstuurd. Het order wordt hierna
+            geüpdate met het ID van de betaling. Ten slotte wordt de gebruiker geredirect naar de website van Mollie om te betaling te voltooien.
+        </p>
+        <p>
+            Wanneer de gebruiker de betaling succesvol afhandelt, wordt hij doorverwezen naar de <code>redirect</code> method. Hier wordt nagegaan
+            of de betaling gelukt is. Vervolgens wordt het order geupdate, en wordt de actie uitgevoerd waar de gebruiker voor betaald heeft.
+        </p>
+        <p>
+            In de constructur wordt eerst de Mollie API library geïnstantieerd. Dit gebeurt aan de hand van de API key. Vervolgens worden ook alle
+            nodige repositories geladen.
+        </p>
+        <pre class="language-php"><code><span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">__construct</span><span class="token punctuation">(</span>IUserRepository <span class="token variable">$userRepository</span><span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">_mollie</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Mollie_API_Client</span><span class="token punctuation">;</span>
+    <span class="token variable">$key</span> <span class="token operator">=</span> <span class="token function">env</span><span class="token punctuation">(</span><span class="token string">'MOLLIE_API_KEY'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">_mollie</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">setApiKey</span><span class="token punctuation">(</span><span class="token variable">$key</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">_userOrderRepository</span> <span class="token operator">=</span> <span class="token variable">$userOrderRepository</span><span class="token punctuation">;</span>
+    <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">_userRepository</span> <span class="token operator">=</span> <span class="token variable">$userRepository</span><span class="token punctuation">;</span>
+    <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">_quickReminderRepository</span> <span class="token operator">=</span> <span class="token variable">$quickReminderRepository</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+        <p>
+            Als voorbeeld het aanmaken van een quick reminder order:
+        </p>
+        <pre class="language-php"><code><span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">createQuickReminderOrder</span><span class="token punctuation">(</span>Request <span class="token variable">$request</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">validate</span><span class="token punctuation">(</span><span class="token variable">$request</span><span class="token punctuation">,</span> <span class="token punctuation">[</span>
+            <span class="token string">'recipient'</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token string">'max:255|required'</span><span class="token punctuation">,</span>
+            <span class="token string">'send_datetime'</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token string">'required'</span><span class="token punctuation">,</span>
+            <span class="token string">'message'</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token string">'required|max:255'</span>
+        <span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// Set up the new reminder.</span>
+    <span class="token variable">$values</span> <span class="token operator">=</span> <span class="token punctuation">[</span>
+        <span class="token string">"recipient"</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token variable">$request</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">recipient</span><span class="token punctuation">,</span>
+        <span class="token string">"send_datetime"</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token variable">$request</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">send_datetime</span><span class="token punctuation">,</span>
+        <span class="token string">"message"</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token variable">$request</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">message</span><span class="token punctuation">,</span>
+        <span class="token string">"is_payed"</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token boolean">false</span>
+    <span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// Insert the reminder & get the new ID.</span>
+    <span class="token variable">$identity</span> <span class="token operator">=</span> <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">_quickReminderRepository</span>
+                     <span class="token operator">-</span><span class="token operator">></span><span class="token function">insertQuickReminder</span><span class="token punctuation">(</span><span class="token variable">$values</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// Create the Mollie payment.</span>
+    <span class="token variable">$payment</span> <span class="token operator">=</span> <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">_mollie</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">payments</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">create</span><span class="token punctuation">(</span><span class="token keyword">array</span><span class="token punctuation">(</span>
+        <span class="token string">"amount"</span>      <span class="token operator">=</span><span class="token operator">></span> <span class="token number">0.50</span><span class="token punctuation">,</span>
+        <span class="token string">"description"</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token string">"Your quick reminder."</span><span class="token punctuation">,</span>
+        <span class="token string">"redirectUrl"</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token function">url</span><span class="token punctuation">(</span><span class="token string">'/thankyou/'</span><span class="token punctuation">.</span><span class="token variable">$identity</span><span class="token punctuation">)</span>
+    <span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// Update the reminder with the payment ID.</span>
+    <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">_quickReminderRepository</span>
+       <span class="token operator">-</span><span class="token operator">></span><span class="token function">updateQuickReminder</span><span class="token punctuation">(</span><span class="token variable">$identity</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token string">"payment_id"</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token variable">$payment</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">id</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// Redirect the user to the Mollie payment page.</span>
+    <span class="token function">header</span><span class="token punctuation">(</span><span class="token string">"Location: "</span> <span class="token punctuation">.</span> <span class="token variable">$payment</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">getPaymentUrl</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    exit<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+        <p>
+            Nadat de request gevalideerd is, wordt een nieuwe reminder aangemaakt in de database. De boolean <code>is_payed</code> wordt op <code>false</code>
+            gezet. Hierdoor zal de reminder genegeerd worden door de berichtenservice.<br />
+            Het ID van de nieuwe reminder wordt meegegeven aan de Mollie API. Ook wordt dit ID verwerkt in de <code>redirectUrl</code>. Wanneer de betaling
+            verstuurd is, wordt de reminder geüpdate met de <code>payment_id</code>. Dit ID wordt gebruikt om later de betaalstatus op te vragen.
+        </p>
+        <p>
+            Als de betaling is uitgevoerd, wordt de gebruik geredirect naar de opgegeven URL. Aan de hand van de orderID in deze URL wordt
+            de reminder terug opgevraagd uit de database, en wordt de betalingsstatus nagekeken. Is alles goed verlopen, dan wordt de boolean
+            <code>is_payed</code> op <code>true</code> gezet, en krijgt de gebruiker te zijn dat de betaling gelukt is. De reminder is nu
+            klaar om verstuurd te worden.<br />
+            Als er iets is misgelopen, of als de betaling nog niet voltooid is, dan krijgt de gebruiker dit ook te zien.
+        </p>
+        <pre class="language-php"><code><span class="token variable">$payment</span> <span class="token operator">=</span> <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">_mollie</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">payments</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">get</span><span class="token punctuation">(</span><span class="token variable">$reminder</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">payment_id</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// Check if the payment is successful.</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token variable">$payment</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">isPaid</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// Update the reminder & set the message.</span>
+    <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">_quickReminderRepository</span>
+         <span class="token operator">-</span><span class="token operator">></span><span class="token function">updateQuickReminder</span><span class="token punctuation">(</span><span class="token variable">$reminder</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">id</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token string">"is_payed"</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token boolean">true</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token variable">$data</span><span class="token punctuation">[</span><span class="token string">"message"</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">"We received your payment successfully!"</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
     </div>
     <h2 class="subtitle" id="sub4-5">Views</h2>
     <div>
+        <p>
+            <span class="p-subtitle">Blade templates</span><br />
+        </p>
         <p>
             Blade templates, layouts, sections, JSON?, ...
         </p>
