@@ -371,7 +371,11 @@
     <h2 class="subtitle" id="sub4-2">Structuur</h2>
     <div>
         <p>
-            Het dashboard van de applicatie is een zogenaamde 'Single Page Application (SPA)'. Bij het navigeren naar het dashboard wordt eenmalig alle nodige code geladen.
+            Het informatieve deel van de applicatie is een 'normale' website. Het gaat over de homepage, de contactpagina en de pricing pagina. Dit
+            zijn vrijwel volledig statische pagina's.
+        </p>
+        <p>
+            Het dashboard daarentegen is een zogenaamde 'Single Page Application (SPA)'. Bij het navigeren naar het dashboard wordt eenmalig alle nodige code geladen.
             Een JavaScript framework zorgt ervoor dat alle requests asynchroon geladen worden. Ook de routing wordt afgehandeld door het framework. Hierdoor hoeft de gebruiker
             nooit rechtstreeks een nieuwe pagina op te vragen of te herladen. Dit zorgt voor een vlotte user experience.<br />
             Om dit allemaal te kunnen voorzien maakt de applicatie gebruik van een RESTful API.
@@ -793,7 +797,7 @@ Controllers/
             of de betaling gelukt is. Vervolgens wordt het order geupdate, en wordt de actie uitgevoerd waar de gebruiker voor betaald heeft.
         </p>
         <p>
-            In de constructur wordt eerst de Mollie API library geïnstantieerd. Dit gebeurt aan de hand van de API key. Vervolgens worden ook alle
+            In de constructor wordt eerst de Mollie API library geïnstantieerd. Dit gebeurt aan de hand van de API key. Vervolgens worden ook alle
             nodige repositories geladen.
         </p>
         <pre class="language-php"><code><span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">__construct</span><span class="token punctuation">(</span>IUserRepository <span class="token variable">$userRepository</span><span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span>
@@ -872,7 +876,32 @@ Controllers/
     <div>
         <p>
             <span class="p-subtitle">Blade templates</span><br />
+            Alle pagina's maken gebruik van het Blade templating systeem van Laravel. Dit is een systeem dat veel gelijkenissen toont met Razor in
+            ASP.NET. Het zorgt ervoor dat er gemakkelijk layouts gedefiniëerd kunnen worden, en dat scripts en styles op een overzichtelijke manier
+            kunnen worden ingeladen. <br />
+            Inline PHP code ziet er ook een stuk beter uit door het gebruik van accolades in plaats van <code>&lt;php&gt;</code> tags.
         </p>
+        <p>
+            <span class="p-subtitle">Structuur</span><br />
+            ....
+        </p>
+        <pre class="folder-structure">
+views/
+  |-- dashboard/
+      `-- home.blade.php
+  |-- errors/
+      |-- 404.blade.php
+      `-- 503.blade.php
+  |-- home/
+      |-- contact.blade.php
+      |-- index.blade.php
+      |-- paymentcomplete.blade.php
+      `-- pricing.blade.php
+  |-- layouts/
+      `-- site.blade.php
+  `-- vue
+      `-- ...
+        </pre>
         <p>
             Blade templates, layouts, sections, JSON?, ...
         </p>
