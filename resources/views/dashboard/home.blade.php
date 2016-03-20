@@ -14,8 +14,6 @@
     <link rel="stylesheet" href="{{ url('lib/grid12.css') }}">
     <link rel="stylesheet" href="{{ url('css/dashboard.css') }}">
     <link rel="stylesheet" href="{{ url('css/datetimepicker.css') }}">
-    <!-- Page specific styles -->
-    @yield('style')
 
 </head>
 

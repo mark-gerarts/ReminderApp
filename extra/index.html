@@ -879,11 +879,12 @@ Controllers/
             Alle pagina's maken gebruik van het Blade templating systeem van Laravel. Dit is een systeem dat veel gelijkenissen toont met Razor in
             ASP.NET. Het zorgt ervoor dat er gemakkelijk layouts gedefiniëerd kunnen worden, en dat scripts en styles op een overzichtelijke manier
             kunnen worden ingeladen. <br />
-            Inline PHP code ziet er ook een stuk beter uit door het gebruik van accolades in plaats van <code>&lt;php&gt;</code> tags.
+            Inline PHP code ziet er ook een stuk beter uit door het gebruik van accolades in plaats van <code>&lt;?php?&gt;</code> tags.
         </p>
         <p>
             <span class="p-subtitle">Structuur</span><br />
-            ....
+            De views worden gesorteerd in folders. Elk deel van de site krijgt zijn eigen folder, alsook de errorpagina's en de gedeelde layouts.
+            Vue.js maakt ook gebruik van een aantal templates, dat hier ook een eigen folder krijgt
         </p>
         <pre class="folder-structure">
 views/
@@ -899,17 +900,65 @@ views/
       `-- pricing.blade.php
   |-- layouts/
       `-- site.blade.php
-  `-- vue
+  `-- vue/
       `-- ...
         </pre>
         <p>
-            Blade templates, layouts, sections, JSON?, ...
+            <span class="p-subtitle">Layouts</span><br />
+            De website maakt gebruik van een Blade layout. Dit zorgt ervoor dat gemeenschappelijke delen, zoals header of footer, maar op
+            één plaats aangepast hoeven te worden. De verschillende pagina's 'extenden' dan de layout. Scripts of stylesheets die specifiek
+            zijn voor een pagina kunnen in sections geplaats worden.<br />
+            De structuur van de layout ziet er als volgt uit:
+        </p>
+        <pre class="language-html"><code><span class="token doctype">&lt;!DOCTYPE html&gt;</span>
+<span class="token tag"><span class="token tag"><span class="token punctuation"><</span>html</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation"><</span>head</span><span class="token punctuation">></span></span>
+    ...
+    @yield('style')
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>head</span><span class="token punctuation">></span></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation"><</span>body</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation"><</span>header</span><span class="token punctuation">></span></span>...<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>header</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation"><</span>main</span><span class="token punctuation">></span></span>
+        @yield('content')
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>main</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation"><</span>footer</span><span class="token punctuation">></span></span>...<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>footer</span><span class="token punctuation">></span></span>
+
+    @yield('scripts')
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>html</span><span class="token punctuation">></span></span></code></pre>
+        <p>
+            Een pagina ziet er dan als volgt uit: eerst wordt aangeduid welke layout gebruikt wordt, en vervolgens wordt voor elke section specifieke
+            code geschreven. Moest een pagina bijvoorbeeld geen speciaal script nodig hebben, dan kan deze section gewoon weggelaten worden.
+        </p>
+        <pre class="language-html"><code>@extends('layouts.site')
+
+@section('style')
+    <span class="token tag"><span class="token tag"><span class="token punctuation"><</span>link</span> <span class="token attr-name">rel</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>stylesheet<span class="token punctuation">"</span></span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>{{ url(<span class="token punctuation">'</span>css/main.css<span class="token punctuation">'</span>) }}<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+@endsection
+
+@section('content')
+    <span class="token comment" spellcheck="true">&lt;!-- Page specific HTML //--&gt;</span>
+@endsection
+
+@section('scripts')
+    <span class="token tag"><span class="token tag"><span class="token punctuation"><</span>script</span> <span class="token attr-name">src"myscript.js"</span><span class="token punctuation">></span></span><span class="token script language-javascript"></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+@endsection</code></pre>
+        <p>
+            De views in de Vue folder worden nog verder besproken in het deel frontend.
         </p>
     </div>
     <h2 class="subtitle" id="sub4-6">Authenticatie</h2>
     <div>
         <p>
-            JWT uitleggen: 3 delen, headers, middleware, ...
+            De applicatie maakt gebruik van een RESTful API. Zo'n API is per definitie stateless. Concreet wil dit zeggen dat elk request alle nodige
+            informatie bevat om afgehandeld te worden door de server. Dit betekent dat de API technisch gezien geen gebruik mag maken van session
+            based authenticatie.<br />
+            Alternatieven zoals OAuth en JSON Web Tokens (JWT) bieden hiervoor een oplossing. De applicatie maakt gebruik van dit laatste.
+        </p>
+        <p>
+            <span class="p-subtitle">JSON Web Token</span><br />
+            
         </p>
     </div>
     <h2 class="subtitle" id="sub4-7">Berichten service</h2>

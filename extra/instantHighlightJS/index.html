@@ -21,7 +21,7 @@
     <p>
         <button id="highlight">Highlight!</button>
     </p>
-    <pre><code class="php language-php" id="hidden"></code></pre>
+    <pre><code class="html language-html" id="hidden"></code></pre>
     <pre id="output"></pre>
 
 
@@ -41,11 +41,10 @@
             // output.innerHTML = hidden.innerHTML.replace(/<(?:.|\n)*?>/gm, '&amp');
         });*/
         btn.addEventListener('click', function() {
-            hidden.innerHTML = input.value;
+            var tmp = input.value.replace(/>/gm, '&gt;').replace(/</gm, '&lt;');
+            hidden.innerHTML = tmp;
             Prism.highlightElement(hidden);
-            var hiddentext = hidden.innerHTML.replace(/>/gm, '&gt;');
-            var hiddentext = hiddentext.replace(/</gm, '&lt;');
-            output.innerHTML = hiddentext;
+            output.innerHTML = hidden.innerHTML.replace(/>/gm, '&gt;').replace(/</gm, '&lt;');
         });
     </script>
 </body>
