@@ -1013,12 +1013,12 @@ views/
     <div>
         <p>
             Om reminders per SMS te versturen maakt de applicatie gebruik van een Laravel command. Dit is een class die zowel in de applicatie
-            gebruikt kan worden, alsook via de console. Zo kunnen de reminders verstuurd worden via het volgende console command: <br />
-            <code>$ php artisan reminders:check</code><br />
-            Via een cronjob wordt dit command elke minuut uitgevoerd.
+            gebruikt kan worden, alsook via de console. Zo kunnen de reminders verstuurd worden via het volgende console command:
         </p>
+            <code>$ php artisan reminders:check</code><br />
         <p>
-            De class wordt opgeslagen in <code>app/Console/Commands</code>. De structuur ziet er als volgt uit:
+            Via een cronjob wordt dit command elke minuut uitgevoerd. De class wordt opgeslagen in <code>app/Console/Commands</code> en
+            ziet er als volgt uit:
         </p>
         <pre class="language-php"><code><span class="token keyword">class</span> <span class="token class-name">CheckReminders</span> <span class="token keyword">extends</span> <span class="token class-name">Command</span>
 <span class="token punctuation">{</span>
@@ -1040,14 +1040,125 @@ views/
     <span class="token keyword">private</span> <span class="token keyword">function</span> <span class="token function">_handleRepeatedReminder</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
 
     <span class="token keyword">private</span> <span class="token keyword">function</span> <span class="token function">_getRecipient</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
-<span class="token punctuation">}</span></pre>
+<span class="token punctuation">}</span></code></pre>
         <p>
-            In de constructor worden weer de gebruikte repositories geïnjecteerd. Het grootste deel speelt zich af ...
+            In de constructor worden weer de gebruikte repositories geïnjecteerd. De kern van de logica bevindt zich in de <code>handle()</code>
+            method. Hier worden eerst alle reminders opgehaald die een <code>send_datetime</code> hebben eerder dan de huidige datetime.
+            Voor elk van deze berichten wordt dan een SMS verstuurd met behulp van de Twilio API. De Twilio library zorgt ervoor dat dit in
+            één regel code kan:
         </p>
-        <p>Scheduler, reminders:check command</p>
+        <pre class="language-php"><code>Twilio<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">message</span><span class="token punctuation">(</span><span class="token variable">$reminder</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">recipient</span><span class="token punctuation">,</span> <span class="token variable">$reminder</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">message</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+        <p>
+            Naast het versturen van het bericht, wordt er ook nog een log hiervan gemaakt. Dit gebeurt allebei in de <code>_sendReminder()</code>
+            method. <br />
+            Voor quick reminders houdt het er hierbij op. Voor user reminders daarentegen moet er ook nog gekeken worden of de reminder herhaalt dient te worden.
+            Als dit het geval is, wordt er een nieuwe reminder aangemaakt met een latere <code>send_datetime</code>. Het gebruik van de PHP
+            <code>DateTime</code> class zorgt dat dit in duidelijke code kan gebeuren.
+        </p>
+        <pre class="language-php"><code><span class="token variable">$newDate</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name"><span class="token punctuation">\</span>DateTime</span><span class="token punctuation">(</span><span class="token variable">$reminder</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">send_datetime</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">switch</span><span class="token punctuation">(</span><span class="token variable">$reminder</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">repeat_id</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">case</span> <span class="token number">2</span><span class="token punctuation">:</span> <span class="token comment" spellcheck="true">// Daily.</span>
+        <span class="token variable">$newDate</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name"><span class="token punctuation">\</span>DateInterval</span><span class="token punctuation">(</span><span class="token string">"P1D"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">break</span><span class="token punctuation">;</span>
+    <span class="token keyword">case</span> <span class="token number">3</span><span class="token punctuation">:</span> <span class="token comment" spellcheck="true">// Weekly.</span>
+        <span class="token variable">$newDate</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name"><span class="token punctuation">\</span>DateInterval</span><span class="token punctuation">(</span><span class="token string">"P7D"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">break</span><span class="token punctuation">;</span>
+    <span class="token keyword">case</span> <span class="token number">4</span><span class="token punctuation">:</span> <span class="token comment" spellcheck="true">// Monthly.</span>
+        <span class="token variable">$newDate</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name"><span class="token punctuation">\</span>DateInterval</span><span class="token punctuation">(</span><span class="token string">"P1M"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">break</span><span class="token punctuation">;</span>
+    <span class="token keyword">case</span> <span class="token number">5</span><span class="token punctuation">:</span> <span class="token comment" spellcheck="true">// Yearly.</span>
+        <span class="token variable">$newDate</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name"><span class="token punctuation">\</span>DateInterval</span><span class="token punctuation">(</span><span class="token string">"P1Y"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">break</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+        <p>
+            De <code>_getRecipient()</code> method is een helperfunctie die nagaat of de reminder een <code>contact_id</code> heeft. Als dit zo is,
+            dan wordt het nummer van de bijhorende contactpersoon opgehaald.
+        </p>
+        <p>
+            <span class="p-subtitle">Scheduler</span><br />
+            Laravel voorziet een Task Scheduler. Hier maakt de applicatie dan ook gebruik van. Om van de scheduler gebruik te kunnen maken, moet er
+            een cronjob opgesteld worden op de server:
+        </p>
+            <code>* * * * * php /path/to/artisan schedule:run >> /dev/null 2>&1</code><br />
+        <p>
+            Deze cronjob voert elke minuut het artisan command <code>schedule:run</code> uit. Wat dit command doet wordt bepaald in
+            <code>app/Console/Kernel.php</code>. Omdat we een apart command hebben geschreven voor de berichtenservice, is deze class
+            heel compact:
+        </p>
+        <pre class="language-php"><code><span class="token keyword">namespace</span> <span class="token package">App<span class="token punctuation">\</span>Console</span><span class="token punctuation">;</span>
+
+<span class="token keyword">use</span> <span class="token package">Illuminate<span class="token punctuation">\</span>Console<span class="token punctuation">\</span>Scheduling<span class="token punctuation">\</span>Schedule</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token package">Illuminate<span class="token punctuation">\</span>Foundation<span class="token punctuation">\</span>Console<span class="token punctuation">\</span>Kernel</span> <span class="token keyword">as</span> ConsoleKernel<span class="token punctuation">;</span>
+
+<span class="token keyword">class</span> <span class="token class-name">Kernel</span> <span class="token keyword">extends</span> <span class="token class-name">ConsoleKernel</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">/**
+     * The Artisan commands provided by your application.
+     *
+     * @var array
+     */</span>
+    <span class="token keyword">protected</span> <span class="token variable">$commands</span> <span class="token operator">=</span> <span class="token punctuation">[</span>
+        Commands\<span class="token package">CheckReminders</span><span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token keyword">class</span>
+    <span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * Define the application's command schedule.
+     *
+     * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
+     * @return void
+     */</span>
+    <span class="token keyword">protected</span> <span class="token keyword">function</span> <span class="token function">schedule</span><span class="token punctuation">(</span>Schedule <span class="token variable">$schedule</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// Checks if there are reminders that need to be sent.</span>
+        <span class="token variable">$schedule</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">command</span><span class="token punctuation">(</span><span class="token string">'reminders:check'</span><span class="token punctuation">)</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">everyMinute</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
     </div>
 <h1 id="ch5" class="chapter">Frontend</h1>
     <h2 class="subtitle" id="sub5-1">Gebruikte technologiën</h2>
+    <div>
+        <table class="gebruikte-techs">
+            <tbody>
+                <tr>
+                    <td>
+                        <img src="images/techs/vuejs.png" id="logo-vuejs"/>
+                    </td>
+                    <td>
+                        <span class="tech-title">Vue.js</span><br />
+                        Vue is een klein en flexibel JavaScript framework. Het stelt ons in staat om snel interactieve pagina's
+                        te maken. Het is vergelijkbaar met andere MV* frameworks zoals Angular of React, en deelt ook veel eigenschappen.
+                        Het dashboard van de applicatie is volledig rond dit framework gebouwd.
+                        <br /><span class="tech-alts">Alternatieven:</span> AngularJS, React
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <img src="images/techs/bootstrap.png" id="logo-bootstrap" />
+                    </td>
+                    <td>
+                        <span class="tech-title">Bootstrap Grid</span><br />
+                        Omdat Bootstrap sites vaak erg op elkaar lijken, heb ik ervoor gekozen om de styling van de site volledig
+                        zelf te schrijven. Wel gebruik ik het gridsysteem om responsive design te vergemakkelijken.
+                        Op de website van Bootstrap kunnen custom builds compiled worden. De applicatie maakt gebruik van een build die enkel
+                        het gridsysteem bevat, met wat kleine aanpassingen.
+                        <br /><span class="tech-alts">Alternatieven:</span> Foundation, Kickstart
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <img src="images/techs/fa.png" id="logo-fa" />
+                    </td>
+                    <td>
+                        <span class="tech-title">Font Awesome</span><br />
+                        Font Awesome is een populair icon font. Het zorgt voor kwalitatieve icons, die gemakkelijk zijn in het gebruik.
+                        Font Awesome voorziet zelfs handige CSS classes om bijvoorbeeld een loading icon te spinnen.
+                        <br /><span class="tech-alts">Alternatieven:</span> Glyphicons, Fontello
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
     <div>
         <p>VueJS, grid, fa, ....</p>
     </div>

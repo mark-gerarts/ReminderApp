@@ -243,6 +243,15 @@ ul.toc a:after {
 #logo-jwt {
     width: 50%;
 }
+#logo-vuejs {
+    width: 50%;
+}
+#logo-bootstrap {
+    width: 85%;
+}
+#logo-fa {
+    width: 60%;
+}
 .tech-title {
     font-weight: bold;
 }
