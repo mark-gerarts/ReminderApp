@@ -463,8 +463,7 @@
             Het Contact model ziet er bijvoorbeeld als volgt uit:
         </p>
         <!-- Contact Model code -->
-    <pre class="language-php"><code>
-<span class="token keyword">class</span> <span class="token class-name">Contact</span> <span class="token keyword">extends</span> <span class="token class-name">Model</span>
+    <pre class="language-php"><code><span class="token keyword">class</span> <span class="token class-name">Contact</span> <span class="token keyword">extends</span> <span class="token class-name">Model</span>
 <span class="token punctuation">{</span>
     <span class="token keyword">public</span> <span class="token variable">$timestamps</span> <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
 
@@ -849,7 +848,7 @@ Controllers/
     exit<span class="token punctuation">;</span>
 <span class="token punctuation">}</span></code></pre>
         <p>
-            Nadat de request gevalideerd is, wordt een nieuwe reminder aangemaakt in de database. De boolean <code>is_payed</code> wordt op <code>false</code>
+            Nadat het request gevalideerd is, wordt een nieuwe reminder aangemaakt in de database. De boolean <code>is_payed</code> wordt op <code>false</code>
             gezet. Hierdoor zal de reminder genegeerd worden door de berichtenservice.<br />
             Het ID van de nieuwe reminder wordt meegegeven aan de Mollie API. Ook wordt dit ID verwerkt in de <code>redirectUrl</code>. Wanneer de betaling
             verstuurd is, wordt de reminder geüpdate met de <code>payment_id</code>. Dit ID wordt gebruikt om later de betaalstatus op te vragen.
@@ -958,11 +957,93 @@ views/
         </p>
         <p>
             <span class="p-subtitle">JSON Web Token</span><br />
-            
+            Een JSON Web Token is een compact token dat mee verstuurd kan worden in de header van een request. Het wordt serverside aangemaakt
+            en geëncrypteerd aan de hand van een secret key. Hierdoor kan de authenticiteit geverifiëerd worden.
         </p>
+        <p>
+            Een token bestaat uit 3 delen: header, payload en signature. Deze worden gescheiden door een punt. Een token heeft dus de volgende
+            vorm: <br />
+            <code>xxxx.yyyy.zzzz</code>
+        </p>
+        <p>
+            De header is een JSON object dat doorgaans bestaat uit twee properties: het type token, en het soort hashing algoritme. Dit object
+            wordt vervolgens Base64 geëncodeerd.
+        </p>
+        <p>
+            Het tweede deel, de payload, bevat het grootste deel van de informatie. Ook dit is een JSON object dat Base64 geëncodeerd wordt.
+            Het bevat enkele vaste properties, zoals bijvoorbeel de issuer (<code>iss</code>) en de expiration date (<code>exp</code>).
+            Naast deze properties kunnen er nog custom properties aangemaakt worden, die bijvoorbeeld meer informatie over de gebruiker
+            bevatten.
+        </p>
+        <p>
+            Het laatste deel is de signature. Dit is een geëncrypteerde vorm van de header en de payload, aan de hand van een secret key. Deze
+            signature wordt gebruikt om de authenticiteit te verifiëren. Het bevat de header en de payload om ervoor te zorgen dat deze niet
+            gewijzigd kunnen worden.
+        </p>
+        <div class="keep-together">
+            <p>
+                Een token kan er dan uitendelijk als volgt uitzien:
+            </p>
+            <p>
+                <span class="jwt-color-1">eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9</span>.<br />
+                <span class="jwt-color-2">eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9</span>.<br />
+                <span class="jwt-color-3">TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ</span>
+            </p>
+        </div>
+        <p>
+            <span class="p-subtitle">JWT Auth</span><br />
+            De applicatie maakt gebruikt van de <code>tymon/jwt-auth</code> library. Deze open-source library is specifiek voor Laravel geschreven
+            en biedt alle nodige middelen om met JWT te werken. Zo voorziet het bijvoorbeeld een method om van een user een token te maken met
+            <code>JWTAuth::fromUser()</code>, of de <code>make()</code> method om een eigen payload te maken.
+        </p>
+        <p>
+            De library voorziet ook een eigen authenticatie middleware. Deze middleware zal het token uit een request halen en proberen een gebruiker
+            te authenticeren. Alle API controllers die authenticatie nodig hebben worden dan ook gegroepeerd onder deze middleware. Dit gebeurt in het
+            <code>routes.php</code> bestand.
+        </p>
+        <pre class="language-php"><code>Route<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">group</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'namespace'</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token string">'API'</span><span class="token punctuation">,</span> <span class="token string">'prefix'</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token string">'api'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    Route<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">group</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'middleware'</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token string">'jwt.auth'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// Routes die authenticatie nodig hebben.</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// Overige API routes</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
     </div>
-    <h2 class="subtitle" id="sub4-7">Berichten service</h2>
+    <h2 class="subtitle" id="sub4-7">Berichtenservice</h2>
     <div>
+        <p>
+            Om reminders per SMS te versturen maakt de applicatie gebruik van een Laravel command. Dit is een class die zowel in de applicatie
+            gebruikt kan worden, alsook via de console. Zo kunnen de reminders verstuurd worden via het volgende console command: <br />
+            <code>$ php artisan reminders:check</code><br />
+            Via een cronjob wordt dit command elke minuut uitgevoerd.
+        </p>
+        <p>
+            De class wordt opgeslagen in <code>app/Console/Commands</code>. De structuur ziet er als volgt uit:
+        </p>
+        <pre class="language-php"><code><span class="token keyword">class</span> <span class="token class-name">CheckReminders</span> <span class="token keyword">extends</span> <span class="token class-name">Command</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">protected</span> <span class="token variable">$signature</span> <span class="token operator">=</span> <span class="token string">'reminders:check'</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">protected</span> <span class="token variable">$description</span> <span class="token operator">=</span> <span class="token string">'Checks if there are ...'</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">private</span> <span class="token variable">$_quickReminderRepository</span><span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token variable">$_userReminderRepository</span><span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token variable">$_userRepository</span><span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token variable">$_contactRepository</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">__construct</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">handle</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">function</span> <span class="token function">_sendReminder</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">function</span> <span class="token function">_handleRepeatedReminder</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">function</span> <span class="token function">_getRecipient</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></pre>
+        <p>
+            In de constructor worden weer de gebruikte repositories geïnjecteerd. Het grootste deel speelt zich af ...
+        </p>
         <p>Scheduler, reminders:check command</p>
     </div>
 <h1 id="ch5" class="chapter">Frontend</h1>
