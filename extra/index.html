@@ -7,6 +7,7 @@
     <title>Eindwerk Paper</title>
     <meta name="author" content="Mark gerarts"/>
     <meta name="subject" content="Eindwerk Syntra Webontwikkelaar 2015-2016: ReminderApp"/>
+    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="instantHighlightJS/prism.css" />
     <link rel="stylesheet" href="style.css" />
 </head>
@@ -33,7 +34,7 @@
                 <li><a href="#sub4-5"></a></li>
                 <li><a href="#sub4-6"></a></li>
                 <li><a href="#sub4-7"></a></li>
-                <li><a href="#sub4-7"></a></li>
+                <li><a href="#sub4-8"></a></li>
             </ul>
         </li>
         <li><a href="#ch5"></a>
@@ -1124,7 +1125,7 @@ views/
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span></code></pre>
     </div>
-    <h2 class="subtitle" id="sub6-8">Unit Testing</h2>
+    <h2 class="subtitle" id="sub4-8">Unit Testing</h2>
     <div>
         <p>
             //ToDo
@@ -1339,11 +1340,12 @@ router<span class="token punctuation">.</span><span class="token function">map</
     |-- contactsMixin.js
     |-- remindersMixin.js
     `-- validatorMixin.js </pre>
-    <p>
-        <span class="p-subtitle">RemindersMixin</span><br />
-        ...
-    </p>
-    <pre class="language-javascript"><code><span class="token keyword">var</span> remindersMixin <span class="token operator">=</span> <span class="token punctuation">{</span>
+        <p>
+            <span class="p-subtitle">RemindersMixin</span><br />
+            Alle functies die HTTP requests uitvoeren in verband met de reminders, worden in deze mixin geplaatst. Het gaat dan over de gewoonlijke
+            CRUD operaties.
+        </p>
+        <pre class="language-javascript"><code><span class="token keyword">var</span> remindersMixin <span class="token operator">=</span> <span class="token punctuation">{</span>
     methods<span class="token punctuation">:</span> <span class="token punctuation">{</span>
         getUpcomingReminders<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
         submitReminder<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
@@ -1351,12 +1353,156 @@ router<span class="token punctuation">.</span><span class="token function">map</
         submitQuickReminder<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">}</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span></code></pre>
+        <p>
+            Alle methods lijken erg op elkaar. Voor het request wordt verstuurd, worden er enkele variabelen geïnitialiseerd om bijvoorbeeld
+            een laadicoontje te kunnen tonen. In het request worden dan een success- en errorfunctie gedefiniëerd. Ten slotte wordt er een
+            <code>finally</code> functie gebruikt om de variabelen te resetten. Als voorbeeld de <code>getUpcomingReminders</code>.
+        </p>
+        <pre class="language-javascript"><code><span class="token function">getUpcomingReminders</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>isLoading<span class="token punctuation">.</span>getUpcomingReminders <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>error <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">this</span><span class="token punctuation">.</span>$http<span class="token punctuation">.</span><span class="token keyword">get</span><span class="token punctuation">(</span><span class="token string">'api/reminders/upcoming'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span>response<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">//Success</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span>response<span class="token punctuation">.</span>status <span class="token operator">==</span> <span class="token number">200</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// Binds the response object to the data object</span>
+            remindersStore<span class="token punctuation">.</span><span class="token function">setUpcomingReminders</span><span class="token punctuation">(</span>response<span class="token punctuation">.</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span>error<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">//Error</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span>error<span class="token punctuation">.</span>status <span class="token operator">==</span> <span class="token number">401</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">$dispatch</span><span class="token punctuation">(</span><span class="token string">'not-logged-in'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>error <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token keyword">finally</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>isLoading<span class="token punctuation">.</span>getUpcomingReminders <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
     </div>
+        <p>
+            Als de applicatie een <code>401</code> statuscode terugstuurt, betekent dit dat de gebruiker niet meer is ingelogd. Wanneer
+            dit gebeurt, wordt er een event afgevuurd door middel van <code>$dispatch</code>. Dit event bubblet naar de parent component.
+            Hier wordt dit dan afgehandeld.
+        </p>
+        <p>
+            <span class="p-subtitle">ContactsMixin</span><br />
+            Deze mixin volgt hetzelfde principe als de remindersMixin. Het bevat methods om een contact te updaten, deleten en inserten.
+            De requests zijn op dezelfde manier opgebouwd als eerder besproken.
+        </p>
+        <p>
+            <span class="p-subtitle">ValidatorMixin</span><br />
+            Alle input wordt clientside gevalideerd voor er een request versturd wordt. Deze validatie speelt zich volledig af in de
+            validatorMixin.
+        </p>
+        <pre class="language-javascript"><code><span class="token keyword">var</span> validatorMixin <span class="token operator">=</span> <span class="token punctuation">{</span>
+    methods<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+        _maxlength<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+        _minlength<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+        _required<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+        _numeric<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+        _validate<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+        validateContact<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+        validateReminder<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+        validateQuickReminder<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+        validateLogin<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+        validateSignup<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+        <p>
+            Voor elk formulier dat gevalideerd moet worden, wordt er een aparte method aangemaakt. Vervolgens kan elke input gevalideerd worden
+            aan de hand van een syntax die op Laravel lijkt. De <code>_validate</code> method parset de validatiestring en past dan de bijhorende
+            validatiemethod toe.
+        </p>
+        <pre class="language-javascript"><code><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">_validate</span><span class="token punctuation">(</span>contact<span class="token punctuation">.</span>number<span class="token punctuation">,</span> <span class="token string">'required|max:20|min:6'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+        <p>
+            <span class="p-subtitle">AuthMixin</span><br />
+            Deze mixin is verantwoordelijk voor alle authenticatiemethods. De login en registratie gebeuren via HTTP requests. De logout
+            verwijdert alle data in de <code>localStorage</code>. Ook wordt deze mixin gebruikt om details over de gebruiker op te halen.
+        </p>
     <h2 class="subtitle" id="sub5-5">Stores</h2>
     <div>
         <p>
-            ...
+            Om data te kunnen delen tussen de verschillende components wordt er gebruik gemaakt van stores. Dit is een vorm van state
+            management. Een store heeft een shared state. Deze bevat de data die de components kunnen gebruiken. Naast deze shared state
+            bevat de store een aantal methods om de data te manipuleren. Hierdoor wordt de state voor alle components ook geüpdate.
+            Dit principe wordt ook gebruikt in React (Flux). Volgende afbeelding, overgenomen van vuejs.org, vat het principe samen.
         </p>
+        <div class="center-text">
+            <img src="images/state.png" id="state-image" />
+        </div>
+        <p>
+            De applicatie maakt gebruik voor een store voor de contactpersonen, de reminders en de gebruikersgegevens. Een extra voordeel
+            van het gebruik van stores, is dat de data niet telkens opnieuw opgehaald dient te worden van de server.
+        </p>
+        <pre class="folder-structure">|-- stores/
+    |-- authStore.js
+    |-- contactsStore.js
+    `-- remindersStore.js </pre>
+        <p>
+            <span class="p-subtitle">ContactsStore</span><br />
+            Zoals eerder vermeld bestaat een store enerzijds uit de gedeelde state, en anderzijds uit een aantal methods om
+            deze state te manipuleren. Zoals de naam al doet vermoeden, bestaat de state van de contactsStore uit een array
+            van contactpersonen.
+        </p>
+        <pre class="language-javascript"><code><span class="token keyword">var</span> contactsStore <span class="token operator">=</span> <span class="token punctuation">{</span>
+    state<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+        contacts<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+    isLoaded<span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+    setLoadStatus<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+    getIndexOf<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    setContacts<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    removeContact<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span>contact<span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    addContact<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    updateContact<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+        <p>
+            De <code>isLoaded</code> property dient ervoor om snel na te gaan of de data al geladen is of niet. De andere methods dienen er dan
+            voor om CRUD operaties uit te voeren op de shared state. Zo'n method ziet er dan als volgt uit:
+        </p>
+        <pre class="language-javascript"><code>removeContact<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span>contact<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">var</span> index <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">getIndexOf</span><span class="token punctuation">(</span>contact<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// Check if the given contact exists in the shared state.</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span>index <span class="token operator">></span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>state<span class="token punctuation">.</span>contacts<span class="token punctuation">.</span><span class="token function">splice</span><span class="token punctuation">(</span>index<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+        <p>
+            <span class="p-subtitle">RemindersStore</span><br />
+            Deze store bevat alle reminders. De werking ervan is volledig analoog aan de <code>contactsStore</code>.
+        </p>
+        <p>
+            <span class="p-subtitle">AuthStore</span><br />
+            De authStore is een kleine store die enerzijds de gegevens over de gebruiker bijhoudt, en anderzijds de authenticatiestatus.
+            Deze status wordt door de router gebruikt om te bepalen welke routes getoond mogen worden en welke niet.
+        </p>
+        <pre class="language-javascript"><code><span class="token keyword">var</span> authStore <span class="token operator">=</span> <span class="token punctuation">{</span>
+    state<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+        user<span class="token punctuation">:</span> <span class="token keyword">null</span><span class="token punctuation">,</span>
+        authenticated<span class="token punctuation">:</span> <span class="token boolean">false</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+    setUser<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span>user<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>state<span class="token punctuation">.</span>user <span class="token operator">=</span> user<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+    incrementCredits<span class="token punctuation">:</span> <span class="token keyword">function</span> <span class="token punctuation">(</span>amount<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>state<span class="token punctuation">.</span>user<span class="token punctuation">.</span>reminder_credits <span class="token operator">+</span><span class="token operator">=</span> amount<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+    setAuthenticationStatus<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span>bool<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>state<span class="token punctuation">.</span>authenticated <span class="token operator">=</span> bool<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+    getAuthenticationStatus<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>state<span class="token punctuation">.</span>authenticated<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
     </div>
     <h2 class="subtitle" id="sub5-6">Dashboard Home</h2>
     <div>

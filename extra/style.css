@@ -57,11 +57,13 @@
 }
 
 
-
+h1, h2, .p-subtitle {
+    font-family: "Lato";
+}
 /* Reset chapter and figure counters on the body */
 body {
     counter-reset: chapternum figurenum;
-    font-family: "Lato", "Trebuchet MS", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Tahoma, sans-serif;
+    font-family: "Source Sans Pro", "Lato", "Trebuchet MS", "Lucida Sans", Tahoma, sans-serif;
     line-height: 1.5;
     font-size: 11pt;
 }
@@ -301,4 +303,12 @@ code[class*="language"], pre[class*="language-"] {
 }
 .jwt-color-3 {
     color: #00b9f1;
+}
+
+.center-text {
+    text-align: center;
+}
+#state-image {
+    display: inline-block;
+    width: 80%;
 }
