@@ -1186,20 +1186,171 @@ views/
             te kunnen sturen.
         </p>
         <p>
-            
+            Vue maakt gebruik van de <code>Vue</code> class om een viewmodel te maken. Aan dit viewmodel wordt een view gebonden. In deze view
+            kunnen dan Vue directives gebruikt worden. De applicatie is opgebouwd uit zogenaamde 'components'. Dit zijn Vue classes die makkelijk
+            door elkaar gebruikt kunnen worden. <br />
+            De structuur van zo'n component ziet er als volgt uit:
         </p>
+        <pre class="language-javascript"><code><span class="token keyword">var</span> vm <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Vue</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// Het template verwijst naar de view waar Vue</span>
+    <span class="token comment" spellcheck="true">// gebruikt kan worden.</span>
+    template<span class="token punctuation">:</span> <span class="token string">'#template-element'</span><span class="token punctuation">,</span>
+
+    <span class="token comment" spellcheck="true">// Mixins zijn herbruikbare functies die gebundeld</span>
+    <span class="token comment" spellcheck="true">// worden in een object.</span>
+    mixins<span class="token punctuation">:</span> <span class="token punctuation">[</span>myMixin<span class="token punctuation">]</span><span class="token punctuation">,</span>
+
+    <span class="token comment" spellcheck="true">// Code die eventueel uitgevoerd moet worden bij het</span>
+    <span class="token comment" spellcheck="true">// instantiëren van de component.</span>
+    ready<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'Component loaded'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+    <span class="token comment" spellcheck="true">// Een component kan zelf andere components gebruiken.</span>
+    <span class="token comment" spellcheck="true">// Deze heten dan child components.</span>
+    components<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+        <span class="token string">'childcomponent'</span><span class="token punctuation">:</span> childComponent
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+    <span class="token comment" spellcheck="true">// Op de data property worden de models geïnstantieerd</span>
+    data<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token punctuation">{</span>
+            model<span class="token punctuation">:</span> <span class="token string">'Hello world'</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+    <span class="token comment" spellcheck="true">// Deze property kan gebruikt worden om models te</span>
+    <span class="token comment" spellcheck="true">// definiëren die op voorhand berekend moeten worden.</span>
+    computed<span class="token punctuation">:</span> <span class="token punctuation">{</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+    <span class="token comment" spellcheck="true">// De methods van de component.</span>
+    methods<span class="token punctuation">:</span> <span class="token punctuation">{</span> <span class="token punctuation">}</span>
+
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+        <p>
+            Elke route heeft zijn eigen component. Ook zijn er components voor bijvoorbeeld de datetimepicker. Bij elk van deze components
+            hoort ook een view. Deze worden opgeslagen in de <code>resources/view/vue</code> folder.
+        </p>
+        <p>
+            Vue maakt ook gebruik van mixins. Een mixin is een bundeling van herbruikbare functies. Zo is er een contactsMixin die de
+            verschillende HTTP requests bevat.
+        </p>
+        <p>
+            Om data te delen over de verschillende components, wordt er gebruikt gemaakt van stores. Dit zijn simpele JavaSCript objecten
+            die de data bevat, samen met getters en setters.
+        </p>
+        <p>
+            De initialisatie van de applicatie gebeurt in <code>app.vue.js</code>. Dit zorgt voor volgende folderstructuur:
+        </p>
+        <pre class="folder-structure">vue/
+  |-- components/
+      `-- ...
+  |-- mixins/
+      `-- ...
+  |-- stores/
+      `-- ...
+  |-- app.vue.js
+  `-- homepage.vue.js</pre>
     </div>
     <h2 class="subtitle" id="sub5-3">Routing</h2>
     <div>
         <p>
-            ...
+            Routing zit niet in het standaard Vue.js pakket. Hiervoor moet er gebruikt gemaakt worden van een extra plugin. Er zijn er
+            verschillende beschikbaar, maar de applicatie maakt gebruik van <code>vue-router</code>. Dit omdat deze officieel ondersteund
+            wordt.
+        </p>
+        <p>
+            Het gebruik van de router zorgt ervoor dat de SPA zich gedraagt als een gewone webapplicatie. Zo worden de routes ook opgeslagen
+            in de browsergeschiedenis, om de gebruiksvriendelijkheid te verhogen.
+        </p>
+        <p>
+            De routing wordt geïnstantieerd in <code>app.vue.js</code>. Aan elke route dient er een component gekoppeld te worden. Deze component
+            voorziet dan de view en de logica voor de route. Ook krijgt elke route een <code>auth</code> property. Deze wordt gebruikt om bepaalde
+            views enkel bereikbaar te maken voor een geauthenticeerde gebruiker.
+        </p>
+        <p>
+            Om de router te kunnen gebruiker dient er eerst een basis Vue instantie gemaakt te worden. Deze zal dan dienen als parent voor alle
+            routes.
+        </p>
+        <pre class="language-javascript"><code><span class="token keyword">var</span> App <span class="token operator">=</span> Vue<span class="token punctuation">.</span><span class="token function">extend</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token keyword">var</span> router <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">VueRouter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+router<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    <span class="token string">'/'</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+        component<span class="token punctuation">:</span> Home<span class="token punctuation">,</span>
+        auth<span class="token punctuation">:</span> <span class="token boolean">true</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token string">'/contacts'</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+        component<span class="token punctuation">:</span> Contacts<span class="token punctuation">,</span>
+        auth<span class="token punctuation">:</span> <span class="token boolean">true</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token string">'/account'</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+        component<span class="token punctuation">:</span> Account<span class="token punctuation">,</span>
+        auth<span class="token punctuation">:</span> <span class="token boolean">true</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token string">'/thankyou'</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+        component<span class="token punctuation">:</span> Thankyou<span class="token punctuation">,</span>
+        auth<span class="token punctuation">:</span> <span class="token boolean">true</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token string">'/login'</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+        component<span class="token punctuation">:</span> Login<span class="token punctuation">,</span>
+        auth<span class="token punctuation">:</span> <span class="token boolean">false</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token string">'/register'</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+        component<span class="token punctuation">:</span> Register<span class="token punctuation">,</span>
+        auth<span class="token punctuation">:</span> <span class="token boolean">false</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token string">'/logout'</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+        component<span class="token punctuation">:</span> Logout<span class="token punctuation">,</span>
+        auth<span class="token punctuation">:</span> <span class="token boolean">false</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token string">'*'</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+        component<span class="token punctuation">:</span> Home
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+        <p>
+            Alle routes in <code>router.map</code> staan voor een pagina in de applicatie. De uitzonderingen zijn <code>'/logout'</code> en
+            <code>'*'</code>. <code>'/logout'</code> wordt gebruikt om te gebruiker lokaal uit te loggen en redirect vervolgens terug naar de
+            homepage. <code>'*'</code> is een 'jokerroute'. Het zal ervoor zorgen dat een request naar een onbestaande pagina redirect naar
+            de <code>Home</code> component.
         </p>
     </div>
     <h2 class="subtitle" id="sub5-4">Mixins</h2>
     <div>
         <p>
-            ...
+            Omdat components vaak dezelfde functies gebruiken, worden deze in een apart object gebundeld om herhalende code te vermijden.
+            Dit soort objecten worden door Vue 'mixins' genoemd. Om van zo'n mixin gebruik te kunnen maken, moet deze gedeclareerd worden
+            op de component.
         </p>
+        <pre class="language-javascript"><code><span class="token keyword">var</span> myComponent <span class="token operator">=</span> Vue<span class="token punctuation">.</span><span class="token function">extend</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+
+    mixins<span class="token punctuation">:</span> <span class="token punctuation">[</span>myMixin<span class="token punctuation">,</span> otherMixin<span class="token punctuation">]</span><span class="token punctuation">,</span>
+
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+        <p>
+            De applicatie maakt gebruik van 4 mixins. De <code>remindersMixin</code> en de <code>contactsMixin</code> bundelen de http requests voor
+            deze objecten. De <code>authMixin</code> bevat alle functies in verband met authenticatie. De <code>validatorMixin</code> zorgt ten slotte
+            voor alle validatiefuncties.
+        </p>
+        <pre class="folder-structure">|-- mixins/
+    |-- authMixin.js
+    |-- contactsMixin.js
+    |-- remindersMixin.js
+    `-- validatorMixin.js </pre>
+    <p>
+        <span class="p-subtitle">RemindersMixin</span><br />
+        ...
+    </p>
+    <pre class="language-javascript"><code><span class="token keyword">var</span> remindersMixin <span class="token operator">=</span> <span class="token punctuation">{</span>
+    methods<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+        getUpcomingReminders<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+        submitReminder<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+        cancelReminder<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+        submitQuickReminder<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
     </div>
     <h2 class="subtitle" id="sub5-5">Stores</h2>
     <div>
