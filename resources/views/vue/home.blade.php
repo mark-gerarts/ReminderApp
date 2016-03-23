@@ -9,7 +9,7 @@
                     <strong>@{{ validationErrors.no_recipient }}</strong>
                 </span>
                 <div class="suggestion-wrapper">
-                    <input  type="text" placeholder="International format" id="fi_search"
+                    <input  type="text" placeholder="Number or contact" id="fi_search"
                             v-model="query"
                             @focus="showSuggestions = true"
                             @blur="showSuggestions = false"

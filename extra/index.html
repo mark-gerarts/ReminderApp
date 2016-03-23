@@ -1522,7 +1522,187 @@ router<span class="token punctuation">.</span><span class="token function">map</
         </p>
         <pre class="language-javascript"><code>mixins<span class="token punctuation">:</span> <span class="token punctuation">[</span>contactsMixin<span class="token punctuation">,</span> remindersMixin<span class="token punctuation">,</span> validatorMixin<span class="token punctuation">]</span><span class="token punctuation">,</span></code></pre>
         <p>
-            Wanneer de component geladen is, wordt er nagekeken ...
+            Wanneer de component geladen is, wordt er nagekeken of de contactpersonen en reminders al geladen zijn. Dit gebeurt in
+            de <code>ready</code> functie. Moesten ze nog niet geladen zijn, dan wordt er een request verstuurd met behulp van de
+            bijhorende mixin.
+        </p>
+        <pre class="language-javascript"><code>ready<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// Check if the stores are loaded, otherwise sent a request.</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">!</span>contactsStore<span class="token punctuation">.</span>isLoaded<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">getContacts</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        contactsStore<span class="token punctuation">.</span><span class="token function">setLoadStatus</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">!</span>remindersStore<span class="token punctuation">.</span>isLoaded<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">getUpcomingReminders</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        remindersStore<span class="token punctuation">.</span><span class="token function">setLoadStatus</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">,</span></code></pre>
+        <p>
+            Vervolgens worden de gebruikte components aangegeven. Een reminder wordt weergegeven in een tabel met behulp van de
+            <code>reminderRow</code> component. Het formulier om een nieuwe reminder aan te maken, maakt gebruikt van de
+            <code>dateTimePicker</code> component.
+        </p>
+        <pre class="language-javascript"><code>components<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+    <span class="token string">'reminder-row'</span><span class="token punctuation">:</span> reminderRow<span class="token punctuation">,</span>
+    <span class="token string">'datetimepicker'</span><span class="token punctuation">:</span> dateTimePicker
+<span class="token punctuation">}</span><span class="token punctuation">,</span></code></pre>
+        <p>
+            Gebruikte models worden aangegeven in de <code>data</code> property. Hierbij zit onder andere het model voor een
+            nieuwe reminder, alsook een heel aantal variabelen. Ook de gebruikte stores worden in de <code>data</code> property
+            gezet.
+        </p>
+        <p>
+            Sommige data models dienen berekend te worden. Hiervoor dient de <code>computed</code> property. Voor deze pagina
+            is er slechts één computed property, namelijk de <code>filteredContacts</code>. Deze wordt gebruikt om in de suggestiebox
+            de contacten te tonen die overeenkomen met de query.
+        </p>
+        <pre class="language-javascript"><code>computed<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+    filteredContacts<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">var</span> self <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">;</span>
+        <span class="token keyword">function</span> <span class="token function">contains</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> b<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> a<span class="token punctuation">.</span><span class="token function">toLowerCase</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">indexOf</span><span class="token punctuation">(</span>b<span class="token punctuation">.</span><span class="token function">toLowerCase</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">!=</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>sharedState<span class="token punctuation">.</span>contacts<span class="token punctuation">.</span><span class="token function">filter</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span>contact<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> <span class="token function">contains</span><span class="token punctuation">(</span>contact<span class="token punctuation">.</span>name<span class="token punctuation">,</span> self<span class="token punctuation">.</span>query<span class="token punctuation">)</span> <span class="token operator">||</span>
+                   <span class="token function">contains</span><span class="token punctuation">(</span>contact<span class="token punctuation">.</span>number<span class="token punctuation">,</span> self<span class="token punctuation">.</span>query<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">,</span></code></pre>
+        <p>
+            Aan de viewmodel worden ook een aantal methods gebonden. Deze kunnen dan in de view gebruikt worden.
+        </p>
+        <pre class="language-javascript"><code>methods<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// Het selecteren van een contact in de suggestiebox.</span>
+    <span class="token comment" spellcheck="true">// Hier wordt de geselecteerde contactpersoon aan de</span>
+    <span class="token comment" spellcheck="true">// viewmodel gebonden.</span>
+    selectContact<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span>contact<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+    <span class="token comment" spellcheck="true">// Het highlighten van een contactpersoon in de </span>
+    <span class="token comment" spellcheck="true">// suggestiebox, door middel van de pijltjestoetsen.</span>
+    highlightContact<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span>input<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+    <span class="token comment" spellcheck="true">// Valideren van de input aan de hand van de</span>
+    <span class="token comment" spellcheck="true">// validatorMixin.</span>
+    validate<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+    <span class="token comment" spellcheck="true">// Hulpfunctie om de input te trimmen.</span>
+    trim<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+    <span class="token comment" spellcheck="true">// Het submitten van een reminder, met behulp</span>
+    <span class="token comment" spellcheck="true">// van de remindersMixin.</span>
+    handleReminderSubmit<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span></code></pre>
+        <p>
+            De views worden opgeslagen in <code>resources/views/vue</code>. Dankzij Vue kan er databinding toegepast worden. Dit gebeurt
+            rechtstreeks op de HTML elementen. Vue gebruikt de <code>v-</code> syntax. Events kunnen ook rechtstreeks op de elementen
+            geplaatst worden. Dit gebeurt met de verkorte <code>@</code> syntax.
+        </p>
+        <p>
+            Als eerste is er het formulier om een nieuwe reminder aan te maken.
+        </p>
+        <pre class="language-html"><code><span class="token tag"><span class="token tag"><span class="token punctuation"><</span>form</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>flat-form overflow<span class="token punctuation">"</span></span> <span class="token attr-name">@submit.prevent</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>handleReminderSubmit<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+
+    ...
+
+    <span class="token tag"><span class="token tag"><span class="token punctuation"><</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>submit<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>Submit<span class="token punctuation">"</span></span> <span class="token attr-name">v-if</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>user.reminder_credits<span class="token punctuation">></span>0<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation"><</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>submit<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>No reminders!<span class="token punctuation">"</span></span> <span class="token attr-name">disabled</span> <span class="token attr-name">v-else</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>form</span><span class="token punctuation">></span></span></code></pre>
+        <p>
+            In het formulier zijn alle inputs gebonden aan het bijhorende model. Dit gebeurt met de <code>v-model</code> tag. Het formulier
+            wordt verzonden met behulp van de <code>handleReminderSubmit</code> method. Hier wordt eerst validatie uitgevoerd alvorens er
+            een request verstuurd wordt.
+        </p>
+        <p>
+            De verzendknop wordt conditioneel gerenderd. Wanneer de gebruiker geen reminder credits meer heeft, kan het formulier niet verzonden
+            worden. De knop wordt dan disabled, en krijgt een andere tekst. Dit gebeurt met <code>v-if</code> en <code>v-else</code>.
+        </p>
+        <p>
+            De meest uitgebreide input van het formulier is deze voor de ontvanger. omdat de gebruiker hiervoor ook een contact kan opgeven,
+            krijgt hij een suggestiebox te zien wanneer hij een contact begint te typen.
+        </p>
+        <pre class="language-html"><code><span class="token tag"><span class="token tag"><span class="token punctuation"><</span>input</span>  <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>text<span class="token punctuation">"</span></span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>fi_search<span class="token punctuation">"</span></span>
+        <span class="token attr-name">v-model</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>query<span class="token punctuation">"</span></span>
+        <span class="token attr-name">@focus</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>showSuggestions <span class="token punctuation">=</span> true<span class="token punctuation">"</span></span>
+        <span class="token attr-name">@blur</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>showSuggestions <span class="token punctuation">=</span> false<span class="token punctuation">"</span></span>
+        <span class="token attr-name">@keyup.down.prevent</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>highlightContact(<span class="token punctuation">'</span>down<span class="token punctuation">'</span>)<span class="token punctuation">"</span></span>
+        <span class="token attr-name">@keyup.up.prevent</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>highlightContact(<span class="token punctuation">'</span>up<span class="token punctuation">'</span>)<span class="token punctuation">"</span></span>
+        <span class="token attr-name">@keyup.enter.prevent</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>selectContact(highlightedContact)<span class="token punctuation">"</span></span>
+        <span class="token attr-name">@input</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>validate<span class="token punctuation">"</span></span>
+        <span class="token attr-name">autocomplete</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>off<span class="token punctuation">"</span></span>
+        <span class="token attr-name">v-if</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>!isContactSelected<span class="token punctuation">"</span></span>
+<span class="token punctuation">></span></span></code></pre>
+        <p>
+            Als eerste wordt de databinding aangegeven door <code>v-model</code>. Vervolgens worden er een hele reeks events aan de
+            input gekoppeld. <code>@focus</code> en <code>@blur</code> zorgen ervoor dat de suggestiebox zichtbaar wordt of niet.
+            De <code>@keyup</code> events maken het mogelijk om de pijltjestoetsen te gebruik om een contactpersoon uit de lijst te
+            selecteren. het HTML-attribuut <code>autocomplete</code> wordt op <code>false</code> gezet. Dit om te voorkomen dat de
+            standaard suggestiebox van de browser tevoorschijn komt.
+        </p>
+        <p>
+            Bij de input hoort dan ook nog de suggestiebox zelf. Dit is een lijst van contactpersonen die absoluut gepositioneerd wordt
+            onder het input veld. Via <code>v-for</code> wordt de gefilterde lijst doorlopen. Dit is vergelijkbaar met <code>ng-repeat</code>
+            in Angular.
+        </p>
+        <pre class="language-html"><code><span class="token tag"><span class="token tag"><span class="token punctuation"><</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>suggestionbox-wrapper<span class="token punctuation">"</span></span>
+     <span class="token attr-name">v-show</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>query.length <span class="token punctuation">></span> 1 && showSuggestions<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation"><</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>suggestionbox<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation"><</span>p</span>  <span class="token attr-name">v-for</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>(index, contact) in filteredContacts<span class="token punctuation">"</span></span>
+            <span class="token attr-name">:class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>{ <span class="token punctuation">'</span>active<span class="token punctuation">'</span>: contact.id <span class="token punctuation">=</span><span class="token punctuation">=</span> highlightedContact.id }<span class="token punctuation">"</span></span>
+            <span class="token attr-name">@mouseenter</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>highlightContact(index)<span class="token punctuation">"</span></span>
+            <span class="token attr-name">@mousedown</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>selectContact(contact)<span class="token punctuation">"</span></span>
+        <span class="token punctuation">></span></span>
+            @{{contact.name}} (@{{contact.number}})
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span></code></pre>
+        <p>
+            De suggestiebox wordt pas zichtbaar wanneer de query minstens 2 letters bevat. Dit om een nodeloos lange lijst te voorkomen.
+            Elke contactpersoon krijgt zijn eigen <code>&lt;p&gt;</code> tag. Deze wordt herhaald met <code>v-for</code>. Met behulp van
+            de <code>:class</code> syntax kan er conditioneel een CSS class gebonden worden aan een element. in dit geval krijgt de
+            geselecteerde contactpersoon een andere achtergrondkleur.
+        </p>
+        <p>
+            De naam en het nummer van een contactpersoon worden getoond door middel van dubbele accolades. Omdat de Razer syntax van Laravel ook
+            deze van dubbele accolades, moeten deze voorafgegaan worden door een <code>@</code>. Op deze manier worden ze genegeerd door de
+            parser van Laravel.
+        </p>
+        <p>
+            De gebruiker krijgt de opkomende reminders te zien in een tabel. Omdat we hiervoor een aparte component gebruiken, bespaart dit heel
+            wat code op deze pagina.
+        </p>
+        <pre class="language-html"><code><span class="token tag"><span class="token tag"><span class="token punctuation"><</span>tbody</span> <span class="token attr-name">v-if</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>remindersState.upcomingReminders.length !<span class="token punctuation">=</span> 0<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation"><</span>tr</span> <span class="token attr-name">v-for</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>reminder in remindersState.upcomingReminders
+               | orderBy <span class="token punctuation">'</span>send_datetime<span class="token punctuation">'</span><span class="token punctuation">"</span></span>
+        <span class="token attr-name">is</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>reminder-row<span class="token punctuation">"</span></span> <span class="token attr-name">:repeats</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>repeats<span class="token punctuation">"</span></span>
+        <span class="token attr-name">:reminder.sync</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>reminder<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">
+    &lt;/</span>tr</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>tbody</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation"><</span>tbody</span> <span class="token attr-name">v-else</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation"><</span>tr</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation"><</span>td</span> <span class="token attr-name">colspan</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>4<span class="token punctuation">"</span></span> <span class="token attr-name">v-if</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>isLoading.getUpcomingReminders<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation"><</span>i</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>fa fa-spinner fa-pulse<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation"></</span>i</span><span class="token punctuation">></span></span> Loading...
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>td</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation"><</span>td</span> <span class="token attr-name">colspan</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>4<span class="token punctuation">"</span></span> <span class="token attr-name">v-else</span><span class="token punctuation">></span></span>
+            No reminders yet!
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>td</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>tr</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>tbody</span><span class="token punctuation">></span></span></code></pre>
+        <p>
+            Doorgaans wordt een component gebruikt zoals een HTML tag. Om bijvoorbeeld de <code>dateTimePicker</code> component te gebruiken,
+            kan deze op de volgende manier gedeclareerd worden:
+        </p>
+        <pre class="language-html"><code><span class="token tag"><span class="token tag"><span class="token punctuation"><</span>datetimepicker</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>datetimepicker</span><span class="token punctuation">></span></span></code></pre>
+        <p>
+            Omdat de browser standaard alle elementen uit een <code>&lt;table&gt;</code> haalt die er niet horen, kan de component niet op
+            deze manier gebruikt worden. In de plaats voorziet Vue de <code>is</code> syntax.
+        </p>
+        <p>
+            De reminders worden weer herhaald door <code>v-for</code>. <code>:reminder.sync</code> zorgt ervoor dat de component up-to-date
+            blijft met de model, en andersom.
+        </p>
+        <p>
+            Zijn er geen reminders om te tonen, dan krijgt de gebruiker "No reminders yet!" te zien. Dit gebeurt weer via <code>v-if</code>.
+            Op dezelfde manier wordt er ook een laadicoontje getoond als de contacten nog opgehaald moeten worden.
         </p>
     </div>
     <h2 class="subtitle" id="sub5-7">Contacts</h2>

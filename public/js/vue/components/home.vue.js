@@ -137,7 +137,7 @@ var Home = Vue.extend({
             }
         },
 
-        handleReminderSubmit() {
+        handleReminderSubmit: function() {
             if(this.user.reminder_credits == 0) {
                 // ToDo;
                 return;
