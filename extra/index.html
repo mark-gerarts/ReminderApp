@@ -1507,7 +1507,22 @@ router<span class="token punctuation">.</span><span class="token function">map</
     <h2 class="subtitle" id="sub5-6">Dashboard Home</h2>
     <div>
         <p>
-            ...
+            De homepage van het dashboard is, net zoals elke andere route, een Vue component. Het is ook veruit de grootste component
+            van de applicatie. Ze wordt dan ook best stapsgewijs overlopen. De volgende fragmenten code zijn telkens deel van de
+            <code>Home</code> component.
+        </p>
+        <p>
+            Als eerste wordt aangeduid welke view de component gebruikt. Dit wordt gedaan met de <code>template</code> property.
+        </p>
+        <pre class="language-javascript"><code>template<span class="token punctuation">:</span> <span class="token string">'#dashboard-home'</span><span class="token punctuation">,</span></code></pre>
+        <p>
+            Als volgende worden de gebruikte mixins aangeduid. Op de homepage kunnen nieuwe reminders gemaakt worden. Daarvoor zijn
+            de <code>remindersMixin</code> en de <code>validatorMixin</code> nodig. Om een suggestiebox te kunnen geven voor de
+            contactpersonen, is ook de <code>contactsMixin</code> nodig.
+        </p>
+        <pre class="language-javascript"><code>mixins<span class="token punctuation">:</span> <span class="token punctuation">[</span>contactsMixin<span class="token punctuation">,</span> remindersMixin<span class="token punctuation">,</span> validatorMixin<span class="token punctuation">]</span><span class="token punctuation">,</span></code></pre>
+        <p>
+            Wanneer de component geladen is, wordt er nagekeken ...
         </p>
     </div>
     <h2 class="subtitle" id="sub5-7">Contacts</h2>
