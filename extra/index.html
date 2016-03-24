@@ -7,7 +7,7 @@
     <title>Eindwerk Paper</title>
     <meta name="author" content="Mark gerarts"/>
     <meta name="subject" content="Eindwerk Syntra Webontwikkelaar 2015-2016: ReminderApp"/>
-    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700' rel='stylesheet' type='text/css'>
+    <!--<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700' rel='stylesheet' type='text/css'>-->
     <link rel="stylesheet" href="instantHighlightJS/prism.css" />
     <link rel="stylesheet" href="style.css" />
 </head>
@@ -1128,7 +1128,64 @@ views/
     <h2 class="subtitle" id="sub4-8">Unit Testing</h2>
     <div>
         <p>
-            //ToDo
+            Alle API controllers worden voorzien van unit tests. De pagina's van de website krijgen ook een aantal
+            kleine integratie testen. Op deze manier wordt bevestigd dat de applicatie werkt zoals verwacht.
+        </p>
+        <p>
+            Om de testen uit te voeren wordt er gebruik gemaakt van PHPUnit. Dit is standaard opgenomen in Laravel.
+            Buiten de verschillende methods van PHPUnit, biedt Laravel zelf ook nog enkele nuttige functies om een
+            applicatie te testen.
+        </p>
+        <p>
+            <span class="p-subtitle">Webpagina's</span><br />
+            Om de webpagina's de testen zijn er enkele kleine testen voorzien. Zo wordt voor alle links op de site
+            nagegaan of ze ook naar de jusite pagina verwijzen. De expressieve syntax van Laravel zorgt ervoor dat de
+            tests makkelijk te schrijven en te lezen zijn.
+        </p>
+        <pre class="language-php"><code><span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">visit</span><span class="token punctuation">(</span><span class="token string">'/'</span><span class="token punctuation">)</span>
+    <span class="token operator">-</span><span class="token operator">></span><span class="token function">click</span><span class="token punctuation">(</span><span class="token string">'Pricing'</span><span class="token punctuation">)</span>
+    <span class="token operator">-</span><span class="token operator">></span><span class="token function">seePageIs</span><span class="token punctuation">(</span><span class="token string">'/pricing'</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+        <p>
+            Met behulp van de <code>see()</code> method wordt er ook nagegaan of de verwachte informatie op de pagina staat.
+        </p>
+        <p>
+            <span class="p-subtitle">API</span><br />
+            Elke route van de API wordt getest. Buiten positief testen, wordt er ook zoveel mogelijk negatief getest.
+            Het aanmaken van een reminder wordt bijvoorbeeld op de volgende manier getest.
+        </p>
+        <pre class="language-php"><code><span class="token variable">$reminder</span> <span class="token operator">=</span> <span class="token function">factory</span><span class="token punctuation">(</span>App\<span class="token package">Models<span class="token punctuation">\</span>User_reminder</span><span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">make</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token variable">$request</span> <span class="token operator">=</span> <span class="token punctuation">[</span>
+    <span class="token string">"recipient"</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token variable">$reminder</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">recipient</span><span class="token punctuation">,</span>
+    <span class="token string">"send_datetime"</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token variable">$reminder</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">send_datetime</span><span class="token punctuation">,</span>
+    <span class="token string">"message"</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token variable">$reminder</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">message</span><span class="token punctuation">,</span>
+    <span class="token string">"repeat_id"</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token variable">$reminder</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">repeat_id</span>
+<span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+<span class="token variable">$creditsBefore</span> <span class="token operator">=</span> <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">_user</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">reminder_credits</span><span class="token punctuation">;</span>
+
+<span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">json</span><span class="token punctuation">(</span><span class="token string">'POST'</span><span class="token punctuation">,</span> <span class="token string">'api/reminders'</span><span class="token punctuation">,</span> <span class="token variable">$request</span><span class="token punctuation">,</span> <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">_headers</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token operator">-</span><span class="token operator">></span><span class="token function">assertResponseOk</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">seeInDatabase</span><span class="token punctuation">(</span><span class="token string">'user_reminders'</span><span class="token punctuation">,</span> <span class="token punctuation">[</span>
+    <span class="token string">"recipient"</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token variable">$request</span><span class="token punctuation">[</span><span class="token string">"recipient"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token string">"send_datetime"</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token variable">$request</span><span class="token punctuation">[</span><span class="token string">"send_datetime"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token string">"message"</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token variable">$request</span><span class="token punctuation">[</span><span class="token string">"message"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token string">"repeat_id"</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token variable">$request</span><span class="token punctuation">[</span><span class="token string">"repeat_id"</span><span class="token punctuation">]</span>
+<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">seeInDatabase</span><span class="token punctuation">(</span><span class="token string">"users"</span><span class="token punctuation">,</span> <span class="token punctuation">[</span>
+    <span class="token string">"id"</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">_user</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">id</span><span class="token punctuation">,</span>
+    <span class="token string">"reminder_credits"</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span><span class="token variable">$creditsBefore</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span>
+<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+        <p>
+            Eerst wordt er een reminder gemaakt met behulp van een <code>factory</code>. Dit maakt gebruik van de <code>Faker</code>
+             library om voor een model random data te genereren. Aan de hand van deze reminder wordt er een request gestuurd naar de
+            API. Vervolgens wordt er via <code>seeInDatabase()</code> nagegaan of de insert ook effectief is uitgevoerd.
+        </p>
+        <p>
+            Na de positieve test komen er een heel aantal negatieve testen. Hier wordt bijvoorbeeld onvolledige of incorrecte
+            data doorgestuurd.
         </p>
     </div>
 <h1 id="ch5" class="chapter">Frontend</h1>
@@ -1237,7 +1294,7 @@ views/
             verschillende HTTP requests bevat.
         </p>
         <p>
-            Om data te delen over de verschillende components, wordt er gebruikt gemaakt van stores. Dit zijn simpele JavaSCript objecten
+            Om data te delen over de verschillende components, wordt er gebruikt gemaakt van stores. Dit zijn simpele JavaScript objecten
             die de data bevat, samen met getters en setters.
         </p>
         <p>
@@ -1673,7 +1730,8 @@ router<span class="token punctuation">.</span><span class="token function">map</
         <pre class="language-html"><code><span class="token tag"><span class="token tag"><span class="token punctuation"><</span>tbody</span> <span class="token attr-name">v-if</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>remindersState.upcomingReminders.length !<span class="token punctuation">=</span> 0<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation"><</span>tr</span> <span class="token attr-name">v-for</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>reminder in remindersState.upcomingReminders
                | orderBy <span class="token punctuation">'</span>send_datetime<span class="token punctuation">'</span><span class="token punctuation">"</span></span>
-        <span class="token attr-name">is</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>reminder-row<span class="token punctuation">"</span></span> <span class="token attr-name">:repeats</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>repeats<span class="token punctuation">"</span></span>
+        <span class="token attr-name">is</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>reminder-row<span class="token punctuation">"</span></span>
+        <span class="token attr-name">:repeats</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>repeats<span class="token punctuation">"</span></span>
         <span class="token attr-name">:reminder.sync</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>reminder<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">
     &lt;/</span>tr</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>tbody</span><span class="token punctuation">></span></span>
@@ -1708,19 +1766,83 @@ router<span class="token punctuation">.</span><span class="token function">map</
     <h2 class="subtitle" id="sub5-7">Contacts</h2>
     <div>
         <p>
-            ...
+            Op de contacts pagina kan de gebruiker zijn contactpersonen beheren. Er is een klein formulier om een nieuwe contactpersoon aan te maken,
+            alsook een tabel om bestaande contacten te beheren.
+        </p>
+        <p>
+            De opbouw van de component komt overeen met die van de <code>Home</code> component. Ook de view is vergelijkbaar. De tabel maakt weer
+            gebruik van een component om contacten in een table row weer te geven. Deze is iets uitgebreider dan die van de reminders omdat de
+            contactpersonen ook geüpdate kunnen worden.
         </p>
     </div>
     <h2 class="subtitle" id="sub5-8">Account</h2>
     <div>
         <p>
-            ...
+            De accountpagina is de kleinste van alle components. De enige data die gebruikt wordt, is die van de <code>authStore</code>.
+            Hierdoor kan er informatie over de gebruiker weergegeven worden.
         </p>
+        <pre class="language-javascript"><code><span class="token keyword">var</span> Account <span class="token operator">=</span> Vue<span class="token punctuation">.</span><span class="token function">extend</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    template<span class="token punctuation">:</span> <span class="token string">'#dashboard-account'</span><span class="token punctuation">,</span>
+
+    data<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token punctuation">{</span>
+            state<span class="token punctuation">:</span> authStore<span class="token punctuation">.</span>state
+        <span class="token punctuation">}</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
     </div>
     <h2 class="subtitle" id="sub5-9">Authenticatie</h2>
     <div>
         <p>
-            ...
+            De <code>authMixin</code> vormt, in combinatie met de <code>authStore</code>, de kern van de authenticatie.
+        </p>
+        <pre class="language-javascript"><code><span class="token keyword">var</span> authMixin <span class="token operator">=</span> <span class="token punctuation">{</span>
+    methods<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+        authSignIn<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        authRegister<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        getUserInfo<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        authLogOut<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        setToken<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+        <p>
+            <code>authSignin()</code> stuurt een request naar de server met de logingegevens van de gebruiker. Als de gegevens kloppen wordt in de
+            <code>authStore</code> de authenticatiestatus op <code>true</code> gezet. Deze boolean wordt onder andere door de router gebruikt.
+            Het antwoord van de server bevat een JSON Web Token. Deze wordt via de <code>setToken</code> method aan de Vue headers toegevoegd, en
+            wordt vanaf dan met elk volgend request meegestuurd. Ook wordt het token opgeslagen in de <code>localStorage</code>.
+        </p>
+        <p>
+            De <code>authRegister()</code> method stuurt een request om een gebruiker te registreren. Lukt deze registratie, dan worden dezelfde
+            handelingen uitgevoerd als bij <code>authSignin()</code>.
+        </p>
+        <p>
+            <code>authLogout()</code> dient ervoor om een gebruiker uit te loggen. De authenticatiestatus in de <code>authStore</code> wordt terug
+            op <code>false</code> gezet, het token wordt uit de Vue headers verwijderd, en de <code>localStorage</code> wordt leeggemaakt.
+        </p>
+        <p>
+            De gebruiker kan zich inloggen op de <code>'/login'</code> pagina. Deze pagina hangt af van de <code>Login</code> component.
+            Buiten de gewoonlijke properties heeft deze component nog een extra <code>route</code> property.
+        </p>
+        <pre class="language-javascript"><code>route<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// Checks if the user is already logged in. If so, redirects to /home.</span>
+    activate<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span>transition<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span>authStore<span class="token punctuation">.</span><span class="token function">getAuthenticationStatus</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            router<span class="token punctuation">.</span><span class="token function">go</span><span class="token punctuation">(</span><span class="token string">'/home'</span><span class="token punctuation">)</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+            transition<span class="token punctuation">.</span><span class="token function">next</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+        <p>
+            Deze property wordt door de <code>vue-router</code> gebruikt. Wanneer de gebruiker al is ingelogd, zorgt dit ervoor dat
+            de pagina geredirect wordt. De <code>Register</code> component gebruikt dit ook.
+        </p>
+        <p>
+            Als de gebruiker het browservenster sluit, is alle data in de <code>authStore</code> verloren, dus ook de authenticatiestatus.
+            Om de gebruiksvriendelijkheid te verhogen moet er een manier gevonden worden om dit toch te onthouden.
+        </p>
+        <p>
+            Zoals eerder gezegd wordt er gebruik gemaakt van de <code>localStorage</code>.
         </p>
     </div>
     <h2 class="subtitle" id="sub5-10">Datetime picker</h2>

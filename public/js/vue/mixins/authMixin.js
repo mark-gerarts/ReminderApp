@@ -90,10 +90,10 @@ var authMixin = {
         setToken: function(token) {
             Vue.http.headers.common['Authorization'] = 'Bearer: ' + token;
         },
-        setLocalStorage(data) {
+        setLocalStorage: function(data) {
             localStorage.setItem('remindme_storage', JSON.stringify(data));
         },
-        getLocalStorage() {
+        getLocalStorage: function() {
             return JSON.parse(localStorage.getItem('remindme_storage'));
         }
     }

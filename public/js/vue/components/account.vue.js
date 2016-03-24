@@ -12,4 +12,4 @@ var Account = Vue.extend({
             state: authStore.state
         };
     }
-})
+});
