@@ -175,9 +175,27 @@ ul.toc a:after {
     content: leader('.') target-counter(attr(href), page);
 }
 
-/** Voorblad **/
+#front-naam {
+    position: absolute;
+    text-align: right;
+    top: 0;
+    right: 0;
+}
+#front-naam p {
+    margin: 5px 0;
+}
 #logo {
-    width: 200px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 75px;
+}
+#title {
+    margin: auto;
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
+    height: 200px;
+    text-align: center;
 }
 
 /** Database tabel **/
@@ -311,4 +329,8 @@ code[class*="language"], pre[class*="language-"] {
 #state-image {
     display: inline-block;
     width: 80%;
+}
+#screenshot {
+    display: inline-block;
+    width: 100%;
 }

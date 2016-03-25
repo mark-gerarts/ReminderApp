@@ -15,7 +15,12 @@
 <div class="frontcover">
     <img src="images/syntra-logo.jpg" id="logo" />
     <div id="title">
-        <h2>RemindMe</h2>
+        <h2>Opleiding Webontwikkelaar 2015-2016</h2>
+        <h3>Eindwerk</h3>
+    </div>
+    <div id="front-naam">
+        <p>Mark Gerarts</p>
+        <p>21 april 2016</p>
     </div>
 </div>
 <div class="contents">
@@ -52,27 +57,53 @@
             </ul>
         </li>
         <li><a href="#ch6"></a></li>
+        <li><a href="#ch7"></a></li>
     </ul>
 
 </div>
 
-<!-- Inleiding en samenvatting omwisselen, a la abstract //-->
-<h1 id="ch1" class="chapter">Inleiding</h1>
-    <div>
-        <p>
-            RemindMe is een webapplicatie waarmee gebruikers een herinnering kunnen maken, die ze later dan per sms toegestuurd krijgen. Er kan een account aangemaakt worden. Dit biedt
-            onder andere de mogelijkheid om contacten te beheren en herinneringen te laten herhalen. Registreren is echter niet nodig, er kon ook een
-            zogenaamde 'Quick reminder' gemaakt worden. Het nadeel hiervan is dat de prijs veel hoger ligt.
-        </p>
-        <p>
-            De applicatie is geschreven in Laravel. Wanneer een gebruiker zich inlogt, komt hij terecht bij het 'dashboard'. Dit deel van de site maakt gebruikt van het JavaScript
-            framework Vue.js. Deze communiceert met de backend door middel van een API.
+<h1 id="ch1" class="chapter">Samenvatting</h1>
+<div>
+    <p>
+        RemindMe is een webapplicatie waarmee een gebruiker reminders kan instellen die hij later per SMS toegestuurd krijgt. Registratie is
+        niet nodig, maar geeft wel verschillende voordelen, zoals bijvoorbeeld het bijhouden van contactpersonen.
+    </p>
+    <p>
+        De applicatie is gebouwd rond het framework Laravel. Er worden ook verschillende third-party libraries aangewend.
+        Om SMS-berichten te versturen wordt de Twilio API gebruikt. Betalingen kunnen uitgevoerd worden dankzij Mollie, en
+        authenticatie verloopt via JSON Web Tokens.
+    </p>
+    <p>
+        Het dashboard van de applicatie is een zogenaamde 'Single Page Application'. Hiervoor wordt Vue.js gebruikt, een JavaScript framework
+        dat is geïnspireerd door AngularJS en React. Dit betekent ook dat de applicatie een API voorziet, om via AJAX HTTP requests te kunnen
+        uitvoeren.
+    </p>
+    <p>
+        Er is getracht de applicatie zo volledig mogelijk te bouwen. Zo wordt de API voorzien va unit tests, en krijgen de models een extra
+        abstractielaag in de vorm van repositories.
+    </p>
+</div>
 
-        </p>
-    </div>
-
-<h1 id="ch2" class="chapter">Samenvatting</h1>
-    <p>Zie inleiding.</p>
+<h1 id="ch2" class="chapter">Inleiding</h1>
+<div>
+    <p>
+        RemindMe is een webapplicatie waarmee gebruikers een reminder kunnen maken, die ze later dan per sms toegestuurd krijgen. Er kan een account
+        aangemaakt worden. Dit biedt onder andere de mogelijkheid om contacten te beheren en herinneringen te laten herhalen. Registreren is echter
+        niet nodig, er kan ook een zogenaamde 'Quick reminder' gemaakt worden. Het enige nadeel hiervan is dat de prijs hoger ligt.
+    </p>
+    <p>
+        De applicatie is geschreven in Laravel. Dit is een populair PHP framework dat dankzij de vlotte syntax en vele features zorgt voor snelle
+        ontwikkeling en goede code.
+    </p>
+    <p>
+        Omdat het zo'n veelgebruikt framework is, zijn er ook vele libraries beschikbaar. Deze kunnen snel en makkelijk geïnstalleerd worden via
+        de package manager van PHP, Composer. De applicatie dan ook gebruik van een aantal libraries. Zo is er de Twilio API om berichten te versturen,
+        jwt-auth om authenticatie te vergemakkelijken, en Mollie om betalingen uit te voeren.
+    </p>
+    <p>
+        //ToDo
+    </p>
+</div>
 
 <h1 id="ch3" class="chapter">Database</h1>
     <div>
@@ -1824,7 +1855,8 @@ router<span class="token punctuation">.</span><span class="token function">map</
             Buiten de gewoonlijke properties heeft deze component nog een extra <code>route</code> property.
         </p>
         <pre class="language-javascript"><code>route<span class="token punctuation">:</span> <span class="token punctuation">{</span>
-    <span class="token comment" spellcheck="true">// Checks if the user is already logged in. If so, redirects to /home.</span>
+    <span class="token comment" spellcheck="true">// Checks if the user is already logged in.
+    // If so, redirects to /home.</span>
     activate<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span>transition<span class="token punctuation">)</span> <span class="token punctuation">{</span>
         <span class="token keyword">if</span><span class="token punctuation">(</span>authStore<span class="token punctuation">.</span><span class="token function">getAuthenticationStatus</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
             router<span class="token punctuation">.</span><span class="token function">go</span><span class="token punctuation">(</span><span class="token string">'/home'</span><span class="token punctuation">)</span>
@@ -1842,26 +1874,154 @@ router<span class="token punctuation">.</span><span class="token function">map</
             Om de gebruiksvriendelijkheid te verhogen moet er een manier gevonden worden om dit toch te onthouden.
         </p>
         <p>
-            Zoals eerder gezegd wordt er gebruik gemaakt van de <code>localStorage</code>.
+            Zoals eerder gezegd wordt er gebruik gemaakt van de <code>localStorage</code>. Wanneer de login succesvol verloopt, wordt hierin
+            de JWT en het aanmaaktijdstip opgeslagen. Wanneer de applicatie dan opstart, wordt eerst de <code>localStorage</code> nagekeken
+            op de aanwezigheid hiervan. Dit gebeurt in de root <code>App</code> component.
+        </p>
+        <p>
+            Als er data wordt gevonden, wordt het aanmaaktijdstip nagekeken. Als dit een tijdstip korter dan de token time to live is (60m)
+            , dan wordt aangenomen dat de gebruiker ingelogd is. Moest het token toch niet meer geldig zijn, of niet authentiek, dan wordt dit
+            opgevangen bij het eerste request dat verstuurd wordt. Dit zal dan een 401 statuscode terugsturen.
+        </p>
+        <p>
+            Is de <code>localStorage</code> leeg, of het aanmaaktijdstip te lang geleden, dan start de applicatie normaal op. De gebruiker zal
+            zich dan eerst moeten authenticeren.
         </p>
     </div>
     <h2 class="subtitle" id="sub5-10">Datetime picker</h2>
     <div>
         <p>
-            ...
+            Om een reminder te maken wordt er gebruikt gemaakt van een datetimepicker om de verzenddatum in te geven. Dit wordt geregeld
+            door een aparte component. Als op de parent component de datetimepicker als volgt gedefiniëerd wordt:
+        </p>
+        <pre class="language-javascript"><code>components<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+    <span class="token string">'datetimepicker'</span><span class="token punctuation">:</span> dateTimePicker
+<span class="token punctuation">}</span><span class="token punctuation">,</span></code></pre>
+        <p>
+            Dan kan een datetimpicker toegevoegd worden in een formulier op de volgende manier:
+        </p>
+        <pre class="language-html"><code><span class="token tag"><span class="token tag"><span class="token punctuation"><</span>datetimepicker</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation"></</span>datetimepicker</span><span class="token punctuation">></span></span></code></pre>
+        <p>
+            De structuur van de datetimepicker ziet er als volgt uit:
+        </p>
+        <pre class="language-javascript"><code><span class="token keyword">var</span> dateTimePicker <span class="token operator">=</span> Vue<span class="token punctuation">.</span><span class="token function">extend</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    template<span class="token punctuation">:</span> <span class="token string">'#datetimepicker-template'</span><span class="token punctuation">,</span>
+
+    props<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'name'</span><span class="token punctuation">,</span> <span class="token string">'result'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+
+    ready<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+    data<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+    computed<span class="token punctuation">:</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+    methods<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+        parseFromString<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        generateMonth<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        nextMonth<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        previousMonth<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        selectDay<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        format<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token function">increment</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+        <p>
+            De <code>props</code> property wordt gebruikt om variabelen te kunnen doorgeven vanuit de parent. In dit geval wordt <code>name</code>
+            gebruikt om de input een naam te geven, en zal <code>result</code> gebruikt worden voor de databinding.
+        </p>
+        <p>
+            In de <code>ready</code> functie wordt de datetimepicker geïnitialiseerd. De huidige maand wordt berekend en weergegeven, en de datum
+            en tijd worden op de huidige datum en tijd gezet.
+        </p>
+        <p>
+            In de <code>data</code> property worden weer de gebruikte models gedefiniëerd. Het gaat bijvoorbeeld om de labels van de dagen en maanden,
+            de geselecteerde datum, enz.
+        </p>
+        <p>
+            De <code>computed</code> property is speciaal voor deze component. Omdat de gebruiker enerzijds de datetimepicker kan gebruiken om een
+            datum en tijd te kiezen, maar ook gewoon een tijdstip kan invullen, moet er een getter en een setter gebruikt worden.
+        </p>
+        <pre class="language-javascript"><code>result<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+    <span class="token keyword">get</span><span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>selectedValues<span class="token punctuation">.</span>year <span class="token operator">+</span> <span class="token string">'-'</span>
+                <span class="token operator">+</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">format</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>selectedValues<span class="token punctuation">.</span>month<span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">'-'</span>
+                <span class="token operator">+</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">format</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>selectedValues<span class="token punctuation">.</span>date<span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">' '</span>
+                <span class="token operator">+</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">format</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>selectedValues<span class="token punctuation">.</span>hour<span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">':'</span>
+                <span class="token operator">+</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">format</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>selectedValues<span class="token punctuation">.</span>minute<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token keyword">set</span><span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span>newValue<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">parseFromString</span><span class="token punctuation">(</span>newValue<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+        <p>
+            In de <code>get</code> property wordt het resultaat weergegeven aan de hand van de <code>selectedValues</code>. Dit zijn de waardes
+            die de gebruiker selecteerd in de datetimepicker. De <code>set</code> gebruikt de <code>parseFromString()</code> method om handmatig
+            getypte input te verwerken. <code>parseFromString()</code> zal ook de <code>selectedValues</code> updaten, waardoor de getter de
+            juiste waardes teruggeeft.
+        </p>
+        <p>
+            de <code>generateMonth()</code> method wordt, zoals de naam al doet vermoeden, gebruikt om een maand te genereren. Aan de hand
+            van een gegeven jaar en maand, zal het een array van dagen teruggeven. Deze wordt gebruikt in de view om de tabel op te vullen.
+            Er wordt ook rekening gehouden met schrikkeljaren.
+        </p>
+        <p>
+            <code>nextMonth()</code> en <code>previousMonth()</code> zijn de functies die opgeroepen worden om de volgende of vorige maand
+            te berekenen.
+        </p>
+        <p>
+            <code>selectDay()</code> wordt opgeroepen wanneer de gebruiker een dag selecteert. <code>increment()</code> wordt gebruikt om
+            de tijd te kunnen selecteren. Ten slotte is er nog <code>format()</code>. Dit is een functie die de datum formateert, zodat
+            deze van het formaat <code>Y-m-d H:i:s</code> is.
         </p>
     </div>
     <h2 class="subtitle" id="sub5-11">Homepage</h2>
     <div>
         <p>
-            ...
+            De homepage van de website wordt ook ondersteunt door Vue. Dit omdat hier ook een formulier verzonden kan worden. Het
+            voorziet onder andere validatie, en zorgt ervoor dat de datetimepicker gebruikt kan worden.
         </p>
+        <p>
+            Het telefoonscherm rechts van het formulier wordt ook geüpdate wanneer de gebruiker iets invult. Dit gebeurt door de
+            databinding.
+        </p>
+        <div class="center-text">
+            <img src="images/screenshot.png" id="screenshot"/>
+        </div>
     </div>
-
-<h1 id="ch6" class="chapter">Conclusie</h1>
+<h1 id="ch6" class="chapter">Werkwijze</h1>
 <div>
     <p>
-        ...
+        Alvorens aan de ontwikkeling te beginnen, werd er eerst angedacht over de aanpak. Het project werd opgedeeld in kleine
+        deelproblemen. Deze deelproblemen werde vervolgens gesorteerd via het MoSCoW principe.
+    </p>
+    <p>
+        Taken die essentiëel waren, kregen de hoogste prioriteit. Dit waren de zogenaamde <strong>Must Have's</strong>. Het ging
+        dan bijvoorbeeld om het versturen van een SMS, of het aanmaken van een reminder. Deze functionaliteiten samen vormden het
+        MVP (Minimum Viable Product).
+    </p>
+    <p>
+        Vervolgens waren er de <strong>Should Have's</strong>. Deze taken kregen iets minder prioriteit. Het aanmaken van een account
+        was bijvoorbeeld zo'n Should have. Deze taken waren niet essentiëel, maar wel belangrijk voor een afgewerkt product.
+    </p>
+    <p>
+        De <strong>Could Have's</strong> en <strong>Won't Have's</strong> werden onder dezelfde categorie gebundeld. Deze functionaliteiten
+        waren niet belangrijk voor het eindresultaat, maak konden wel geïmplementeerd worden als er nog tijd over was. Het contactformulier is
+        een voorbeeld van deze categorie. Dit is uiteindelijk wel in de applicatie opgenomen. Een ander voorbeeld was het versturen van mails.
+        Dit is uiteindelijk weggevallen.
+    </p>
+    <p>
+        De taken werden vervolgens op een <em>kanban</em> bord geplaats. Hier werden de taken opgedeeld in 'To Do', 'In Progress' en 'Done'.
+        De taken in de 'To Do'-lijst werden dan gesorteerd op prioriteit.
+    </p>
+    <p>
+        Voor het project werd ook gebruik gemaakt van source control, meer specifiek <em>git</em>. Dit maakte het mogelijk om een rollback
+        uit te voeren wanneer er iets misliep. Ook vergemakkelijkte het de ontwikkeling op meerdere computers, alsook de deployment. Het project
+        is te vinden op <a href="https://github.com/mark-gerarts/ReminderApp">https://github.com/mark-gerarts/ReminderApp</a>.
+    </p>
+</div>
+<h1 id="ch7" class="chapter">Conclusie</h1>
+<div>
+    <p>
+        //ToDo
     </p>
 </div>
 
