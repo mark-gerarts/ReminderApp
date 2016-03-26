@@ -87,9 +87,9 @@
 <h1 id="ch2" class="chapter">Inleiding</h1>
 <div>
     <p>
-        RemindMe is een webapplicatie waarmee gebruikers een reminder kunnen maken, die ze later dan per sms toegestuurd krijgen. Er kan een account
+        RemindMe is een webapplicatie waarmee gebruikers een reminder kunnen maken, die ze later dan per SMS toegestuurd krijgen. Er kan een account
         aangemaakt worden. Dit biedt onder andere de mogelijkheid om contacten te beheren en herinneringen te laten herhalen. Registreren is echter
-        niet nodig, er kan ook een zogenaamde 'Quick reminder' gemaakt worden. Het enige nadeel hiervan is dat de prijs hoger ligt.
+        niet nodig, er kan ook een zogenaamde 'Quick reminder' gemaakt worden. Het nadeel hiervan is dat de prijs hoger ligt.
     </p>
     <p>
         De applicatie is geschreven in Laravel. Dit is een populair PHP framework dat dankzij de vlotte syntax en vele features zorgt voor snelle
@@ -101,7 +101,19 @@
         jwt-auth om authenticatie te vergemakkelijken, en Mollie om betalingen uit te voeren.
     </p>
     <p>
-        //ToDo
+        Het dashboard van de applicatie is, net zoals vele andere moderne applicaties, een SPA. Dit wil zeggen dat wanneer de gebruiker naar het
+        dashboard surft, er direct alle nodige code wordt geladen. Alle volgende interacties worden in de achtergrond geregeld via AJAX requests.
+        Dit zorgt voor een vlotte gebruikservaring waarbij de site niet meer herladen hoeft te worden.
+    </p>
+    <p>
+        Om dit mogelijk te maken wordt er gebruik gemaakt van Vue.js, een JavaScript framework dat veel lijkt op AngularJS en React. Het is een MV*
+        framework dat het onder andere mogelijk maakt om databinding toe te passen op HTML elementen. Het grote voordeel van dit framework is de
+        intuïtieve syntax.
+    </p>
+    <p>
+        Om de verschillende AJAX request af te kunnen handelen, voorziet de applicatie ook een API. Er is getracht deze zo 'RESTful' mogelijk te
+        maken. Zo worden de gepaste werkwoorden gebruikt in de requests: GET voor een Read, PUT voor een update, enz. Ook worden JSON Web Tokens
+        gebruikt om de API stateless te maken.
     </p>
 </div>
 
