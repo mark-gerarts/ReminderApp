@@ -79,7 +79,7 @@
         uitvoeren.
     </p>
     <p>
-        Er is getracht de applicatie zo volledig mogelijk te bouwen. Zo wordt de API voorzien va unit tests, en krijgen de models een extra
+        Er is getracht de applicatie zo volledig mogelijk te bouwen. Zo wordt de API voorzien van unit tests, en krijgen de models een extra
         abstractielaag in de vorm van repositories.
     </p>
 </div>
@@ -87,17 +87,17 @@
 <h1 id="ch2" class="chapter">Inleiding</h1>
 <div>
     <p>
-        RemindMe is een webapplicatie waarmee gebruikers een reminder kunnen maken, die ze later dan per SMS toegestuurd krijgen. Er kan een account
+        RemindMe is een webapplicatie waarmee gebruikers een reminder kunnen maken, die ze later dan per SMS toegestuurd krijgen. Er kan ook een account
         aangemaakt worden. Dit biedt onder andere de mogelijkheid om contacten te beheren en herinneringen te laten herhalen. Registreren is echter
         niet nodig, er kan ook een zogenaamde 'Quick reminder' gemaakt worden. Het nadeel hiervan is dat de prijs hoger ligt.
     </p>
     <p>
         De applicatie is geschreven in Laravel. Dit is een populair PHP framework dat dankzij de vlotte syntax en vele features zorgt voor snelle
-        ontwikkeling en goede code.
+        ontwikkeling en duidelijke code.
     </p>
     <p>
         Omdat het zo'n veelgebruikt framework is, zijn er ook vele libraries beschikbaar. Deze kunnen snel en makkelijk geïnstalleerd worden via
-        de package manager van PHP, Composer. De applicatie dan ook gebruik van een aantal libraries. Zo is er de Twilio API om berichten te versturen,
+        de package manager van PHP, Composer. De applicatie maakt dan ook gebruik van een aantal libraries. Zo is er de Twilio API om berichten te versturen,
         jwt-auth om authenticatie te vergemakkelijken, en Mollie om betalingen uit te voeren.
     </p>
     <p>
@@ -106,7 +106,7 @@
         Dit zorgt voor een vlotte gebruikservaring waarbij de site niet meer herladen hoeft te worden.
     </p>
     <p>
-        Om dit mogelijk te maken wordt er gebruik gemaakt van Vue.js, een JavaScript framework dat veel lijkt op AngularJS en React. Het is een MV*
+        Om de SPA te maken wordt er gebruik gemaakt van Vue.js, een JavaScript framework dat veel lijkt op AngularJS en React. Het is een MV*
         framework dat het onder andere mogelijk maakt om databinding toe te passen op HTML elementen. Het grote voordeel van dit framework is de
         intuïtieve syntax.
     </p>
@@ -148,15 +148,11 @@
                     <span class="db-datatype"> : int(11)</span>
                 </li>
                 <li>
-                    <img src="images/pma/varchar.png" />remember_token
-                    <span class="db-datatype"> : varchar(100)</span>
-                </li>
-                <li>
                     <img src="images/pma/datetime.png" />created_at
                     <span class="db-datatype"> : datetime</span>
                 </li>
                 <li>
-                    <img src="images/pma/datetime.png" />updated_at :
+                    <img src="images/pma/datetime.png" />updated_at
                     <span class="db-datatype"> : datetime</span>
                 </li>
             </ul>
@@ -192,7 +188,7 @@
                     <span class="db-datatype"> : int(11)</span>
                 </li>
                 <li>
-                    <img src="images/pma/datetime.png" />deleted_at :
+                    <img src="images/pma/datetime.png" />deleted_at
                     <span class="db-datatype"> : datetime</span>
                 </li>
             </ul>
@@ -220,15 +216,15 @@
                     <span class="db-datatype"> : int(11)</span>
                 </li>
                 <li>
-                    <img src="images/pma/datetime.png" />created_at :
+                    <img src="images/pma/datetime.png" />created_at
                     <span class="db-datatype"> : datetime</span>
                 </li>
                 <li>
-                    <img src="images/pma/datetime.png" />updated_at :
+                    <img src="images/pma/datetime.png" />updated_at
                     <span class="db-datatype"> : datetime</span>
                 </li>
                 <li>
-                    <img src="images/pma/datetime.png" />deleted_at :
+                    <img src="images/pma/datetime.png" />deleted_at
                     <span class="db-datatype"> : datetime</span>
                 </li>
             </ul>
@@ -252,19 +248,19 @@
                     <span class="db-datatype"> : text</span>
                 </li>
                 <li>
-                    <img src="images/pma/datetime.png" />created_at :
+                    <img src="images/pma/datetime.png" />created_at
                     <span class="db-datatype"> : datetime</span>
                 </li>
                 <li>
-                    <img src="images/pma/datetime.png" />updated_at :
+                    <img src="images/pma/datetime.png" />updated_at
                     <span class="db-datatype"> : datetime</span>
                 </li>
                 <li>
-                    <img src="images/pma/datetime.png" />deleted_at :
+                    <img src="images/pma/datetime.png" />deleted_at
                     <span class="db-datatype"> : datetime</span>
                 </li>
                 <li>
-                    <img src="images/pma/int.png" />is_payed :
+                    <img src="images/pma/int.png" />is_payed
                     <span class="db-datatype"> : tinyint(1)</span>
                 </li>
                 <li>
@@ -385,7 +381,7 @@
                     </td>
                     <td>
                         <span class="tech-title">Twilio</span><br />
-                        Om SMS-berichten te versturen kunnen maakt de applicatie gebruik van Twilio. Deze service voorziet een API, waardoor een bericht
+                        Om SMS-berichten te kunnen versturen maakt de applicatie gebruik van Twilio. Deze service voorziet een API, waardoor een bericht
                         verstuurd kan worden door middel van een HTTP request. Twilio voorziet ook een library die beschikbaar is via Composer. Dit zorgt ervoor
                         dat de service snel opgezet kan worden.
                         <br /><span class="tech-alts">Alternatieven:</span> Plivo, Nexmo
@@ -435,8 +431,10 @@
         </p>
         <p>
             De API voorziet een aantal endpoints om met de applicatie te werken. Ze maakt gebruik van de zogenaamde 'HTTP werkwoorden' die overeenstemmen met een CRUD operatie.
-            Zo staat een POST request voor een insert, GET voor een read, PUT voor een update, en een DELETE request zorgt voor een delete.<br />
-            Deze requests worden gebundeld onder de 'api' route. Om bijvoorbeeld alle contacten op te vragen, dient er een GET request gestuurd te worden naar '../api/contacts'.
+            Zo staat een POST request voor een insert, GET voor een read, PUT voor een update, en een DELETE request voor een delete.
+        </p>
+        <p>
+            De requests naar de API worden gebundeld onder de 'api' route. Om bijvoorbeeld alle contacten op te vragen, dient er een GET request gestuurd te worden naar '/api/contacts'.
             De API maakt gebruik van JSON als dataformaat. De server stuurt ook logische HTTP statuscodes. Een niet gevonden record geeft bijvoorbeeld een 404 als antwoord, of
             een niet geauthorizeerde actie levert een 403 op.
         </p>
@@ -537,9 +535,11 @@
         </p>
         <p>
             <span class="p-subtitle">Repository pattern</span><br />
-            De applicatie maakt gebruik van het repository pattern. Dit is een extra abstractie van de database layer. Een repository bundelt een aantal operaties op
+            De applicatie maakt gebruik van het repository pattern. Dit is een extra abstractie van de data access layer. Een repository bundelt een aantal operaties op
             een model in een class. De controller hoeft dan niet langer rechtstreeks de database layer aan te spreken via de models, maar gebruikt in de plaats de
-            repositories.<br />
+            repositories.
+        </p>
+        <p>
             De repository en het model zijn zo echter wel nog tightly coupled. Om dit tegen te gaan worden interfaces gebruikt. De interface definiëert een 'contract'
             waar de repository zich aan moet houden. In de controller wordt vervolgens de interface als dependency gebruikt. Nu maakt het niet meer uit hoe de data
             opgehaald wordt, als de implementatie zich maar aan de interface houdt. <br />
@@ -641,7 +641,7 @@ app/
         </div>
         <p>
             Alle repositories hebben enkele basis CRUD methods. De enige repository die hiervan afwijkt is de UserRepository. De <code>tymon/jwt-auth</code>
-            library gebruikt standaard het zijn eigen UserInterface. Daarom moet de UserRepository een extra interface implementeren. Ook moet in
+            library gebruikt standaard zijn eigen UserInterface. Daarom moet de UserRepository een extra interface implementeren. Ook moet in
             <code>config/jwt.php</code> een verwijzing toegevoegd worden naar de nieuwe implementatie.
         </p>
         <pre class="language-php"><code><span class="token keyword">namespace</span> <span class="token package">App<span class="token punctuation">\</span>Repositories<span class="token punctuation">\</span>User</span><span class="token punctuation">;</span>
@@ -657,7 +657,7 @@ app/
     <h2 class="subtitle" id="sub4-4">Controllers</h2>
     <div>
         <p>
-            De controllers worden opgesplits in twee delen. Enerzijds zijn er de controllers die verantwoordelijk zijn voor de API. Deze bevatten allerhande
+            De controllers worden opgesplitst in twee delen. Enerzijds zijn er de controllers die verantwoordelijk zijn voor de API. Deze bevatten allerhande
             methods om de gewenste database operaties uit te voeren. Anderzijds zijn er de controllers die de webpagina's genereren. Deze doen vaak niets anders
             dan een view returnen.
         </p>
@@ -715,14 +715,17 @@ Controllers/
     <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">_userReminderRepository</span> <span class="token operator">=</span> <span class="token variable">$userReminder</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span></code></pre>
         <p>
-            De ContactsController kan alleen maar gebruikt worden als de user geauthenticeerd is, en gebruikt daarom de <code>jwt.auth</code>
+            De ContactsController kan alleen maar gebruikt worden als de gebruiker geauthenticeerd is, en gebruikt daarom de <code>jwt.auth</code>
             middleware. Deze is gedefiniëerd in <code>routes.php</code>. De geauthenticeerde gebruiker wordt via de <code>toUser()</code> method
              in een property gestoken.
         </p>
         <p>
-            Vrijwel alle methods van de controller volgen de zelfde structuur. Eerst wordt de eventuele input gevalideerd. Vervolgens wordt de
+            Vrijwel alle methods van de controller volgen dezelfde structuur. Eerst wordt de eventuele input gevalideerd. Vervolgens wordt de
             logica uitgevoerd die van de method verwacht wordt. Ten slotte wordt er een JSON antwoord teruggestuurd. Moest er ergens in de method
-            iets foutlopen, dan wordt ook een logische HTTP code teruggestuurd. Zo zal foutieve data voor een 422 code zorgen.<br />
+            iets foutlopen, dan wordt ook een logische HTTP code teruggestuurd. Zo zal foutieve data voor een 422 code zorgen.
+        </p>
+        <div class="keep-together">
+        <p>
             Als voorbeeld de <code>delete()</code> method:
         </p>
         <!-- Delete contactscontroller //-->
@@ -759,6 +762,7 @@ Controllers/
     <span class="token variable">$result</span> <span class="token operator">=</span> <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">_contactRepository</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">deleteContact</span><span class="token punctuation">(</span><span class="token variable">$id</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token keyword">return</span> <span class="token function">response</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">json</span><span class="token punctuation">(</span><span class="token variable">$result</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span></code></pre>
+        </div>
         <p>
             <span class="p-subtitle">RemindersController</span><br />
             De RemindersController is verantwoordelijk voor de operaties op de User_reminders tabel. Deze is vrijwel analoog aan de ContactsController.
@@ -810,7 +814,7 @@ Controllers/
         <p>
             <span class="p-subtitle">HomeController</span><br />
             De HomeController zorgt voor alle pagina's van de 'gewone' website: de homepage, de pricing pagina, en de contactpagina.
-            Ook heeft de controller een method om het verzenden vanhet contactformulier af te handelen.
+            Ook heeft de controller een method om het verzenden van het contactformulier af te handelen.
         </p>
         <p>
             <span class="p-subtitle">PaymentController</span><br />
@@ -846,7 +850,7 @@ Controllers/
         </p>
         <p>
             Wanneer de gebruiker de betaling succesvol afhandelt, wordt hij doorverwezen naar de <code>redirect</code> method. Hier wordt nagegaan
-            of de betaling gelukt is. Vervolgens wordt het order geupdate, en wordt de actie uitgevoerd waar de gebruiker voor betaald heeft.
+            of de betaling gelukt is. Vervolgens wordt het order geüpdate, en wordt de actie uitgevoerd waar de gebruiker voor betaald heeft.
         </p>
         <p>
             In de constructor wordt eerst de Mollie API library geïnstantieerd. Dit gebeurt aan de hand van de API key. Vervolgens worden ook alle
@@ -901,16 +905,18 @@ Controllers/
     exit<span class="token punctuation">;</span>
 <span class="token punctuation">}</span></code></pre>
         <p>
-            Nadat het request gevalideerd is, wordt een nieuwe reminder aangemaakt in de database. De boolean <code>is_payed</code> wordt op <code>false</code>
-            gezet. Hierdoor zal de reminder genegeerd worden door de berichtenservice.<br />
+            Nadat het request gevalideerd is wordt een nieuwe reminder aangemaakt in de database. De boolean <code>is_payed</code> wordt op <code>false</code>
+            gezet. Hierdoor zal de reminder genegeerd worden door de berichtenservice.
+        </p>
+        <p>
             Het ID van de nieuwe reminder wordt meegegeven aan de Mollie API. Ook wordt dit ID verwerkt in de <code>redirectUrl</code>. Wanneer de betaling
             verstuurd is, wordt de reminder geüpdate met de <code>payment_id</code>. Dit ID wordt gebruikt om later de betaalstatus op te vragen.
         </p>
         <p>
-            Als de betaling is uitgevoerd, wordt de gebruik geredirect naar de opgegeven URL. Aan de hand van de orderID in deze URL wordt
+            Als de betaling is uitgevoerd, wordt de gebruik geredirect naar de opgegeven URL. Aan de hand van het orderID in deze URL wordt
             de reminder terug opgevraagd uit de database, en wordt de betalingsstatus nagekeken. Is alles goed verlopen, dan wordt de boolean
-            <code>is_payed</code> op <code>true</code> gezet, en krijgt de gebruiker te zijn dat de betaling gelukt is. De reminder is nu
-            klaar om verstuurd te worden.<br />
+            <code>is_payed</code> op <code>true</code> gezet, en krijgt de gebruiker te zien dat de betaling gelukt is. De reminder is nu
+            klaar om verstuurd te worden.
             Als er iets is misgelopen, of als de betaling nog niet voltooid is, dan krijgt de gebruiker dit ook te zien.
         </p>
         <pre class="language-php"><code><span class="token variable">$payment</span> <span class="token operator">=</span> <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">_mollie</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">payments</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">get</span><span class="token punctuation">(</span><span class="token variable">$reminder</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">payment_id</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -930,7 +936,9 @@ Controllers/
             <span class="p-subtitle">Blade templates</span><br />
             Alle pagina's maken gebruik van het Blade templating systeem van Laravel. Dit is een systeem dat veel gelijkenissen toont met Razor in
             ASP.NET. Het zorgt ervoor dat er gemakkelijk layouts gedefiniëerd kunnen worden, en dat scripts en styles op een overzichtelijke manier
-            kunnen worden ingeladen. <br />
+            kunnen worden ingeladen.
+        </p>
+        <p>
             Inline PHP code ziet er ook een stuk beter uit door het gebruik van accolades in plaats van <code>&lt;?php?&gt;</code> tags.
         </p>
         <p>
@@ -2033,7 +2041,7 @@ router<span class="token punctuation">.</span><span class="token function">map</
 <h1 id="ch7" class="chapter">Conclusie</h1>
 <div>
     <p>
-        //ToDo
+
     </p>
 </div>
 
