@@ -987,6 +987,7 @@ views/
     @yield('scripts')
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>html</span><span class="token punctuation">></span></span></code></pre>
+        <div class="keep-together">
         <p>
             Een pagina ziet er dan als volgt uit: eerst wordt aangeduid welke layout gebruikt wordt, en vervolgens wordt voor elke section specifieke
             code geschreven. Moest een pagina bijvoorbeeld geen speciaal script nodig hebben, dan kan deze section gewoon weggelaten worden.
@@ -1004,6 +1005,7 @@ views/
 @section('scripts')
     <span class="token tag"><span class="token tag"><span class="token punctuation"><</span>script</span> <span class="token attr-name">src"myscript.js"</span><span class="token punctuation">></span></span><span class="token script language-javascript"></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
 @endsection</code></pre>
+        </div>
         <p>
             De views in de Vue folder worden nog verder besproken in het deel frontend.
         </p>
@@ -1012,8 +1014,10 @@ views/
     <div>
         <p>
             De applicatie maakt gebruik van een RESTful API. Zo'n API is per definitie stateless. Concreet wil dit zeggen dat elk request alle nodige
-            informatie bevat om afgehandeld te worden door de server. Dit betekent dat de API technisch gezien geen gebruik mag maken van session
-            based authenticatie.<br />
+            informatie moet bevatten om afgehandeld te kunnen worden door de server. Dit betekent dat de API technisch gezien geen gebruik mag maken van session
+            based authenticatie.
+        </p>
+        <p>
             Alternatieven zoals OAuth en JSON Web Tokens (JWT) bieden hiervoor een oplossing. De applicatie maakt gebruik van dit laatste.
         </p>
         <p>
@@ -1023,7 +1027,9 @@ views/
         </p>
         <p>
             Een token bestaat uit 3 delen: header, payload en signature. Deze worden gescheiden door een punt. Een token heeft dus de volgende
-            vorm: <br />
+            vorm:
+        </p>
+        <p>
             <code>xxxx.yyyy.zzzz</code>
         </p>
         <p>
@@ -1043,7 +1049,7 @@ views/
         </p>
         <div class="keep-together">
             <p>
-                Een token kan er dan uitendelijk als volgt uitzien:
+                Een token kan er dan uiteindelijk als volgt uitzien:
             </p>
             <p>
                 <span class="jwt-color-1">eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9</span>.<br />
@@ -1136,9 +1142,10 @@ views/
             De <code>_getRecipient()</code> method is een helperfunctie die nagaat of de reminder een <code>contact_id</code> heeft. Als dit zo is,
             dan wordt het nummer van de bijhorende contactpersoon opgehaald.
         </p>
+        <div class="keep-together">
         <p>
             <span class="p-subtitle">Scheduler</span><br />
-            Laravel voorziet een Task Scheduler. Hier maakt de applicatie dan ook gebruik van. Om van de scheduler gebruik te kunnen maken, moet er
+            Laravel voorziet een Task Scheduler om taken te kunnen plannen. Om van de scheduler gebruik te kunnen maken, moet er
             een cronjob opgesteld worden op de server:
         </p>
             <code>* * * * * php /path/to/artisan schedule:run >> /dev/null 2>&1</code><br />
@@ -1175,8 +1182,9 @@ views/
         <span class="token variable">$schedule</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">command</span><span class="token punctuation">(</span><span class="token string">'reminders:check'</span><span class="token punctuation">)</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">everyMinute</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span></code></pre>
+        </div>
     </div>
-    <h2 class="subtitle" id="sub4-8">Unit Testing</h2>
+    <h2 class="subtitle page-break" id="sub4-8">Unit Testing</h2>
     <div>
         <p>
             Alle API controllers worden voorzien van unit tests. De pagina's van de website krijgen ook een aantal
@@ -1199,7 +1207,7 @@ views/
         <p>
             Met behulp van de <code>see()</code> method wordt er ook nagegaan of de verwachte informatie op de pagina staat.
         </p>
-        <p>
+        <p class="page-break">
             <span class="p-subtitle">API</span><br />
             Elke route van de API wordt getest. Buiten positief testen, wordt er ook zoveel mogelijk negatief getest.
             Het aanmaken van een reminder wordt bijvoorbeeld op de volgende manier getest.
@@ -1297,7 +1305,9 @@ views/
         <p>
             Vue maakt gebruik van de <code>Vue</code> class om een viewmodel te maken. Aan dit viewmodel wordt een view gebonden. In deze view
             kunnen dan Vue directives gebruikt worden. De applicatie is opgebouwd uit zogenaamde 'components'. Dit zijn Vue classes die makkelijk
-            door elkaar gebruikt kunnen worden. <br />
+            door elkaar gebruikt kunnen worden.
+        </p>
+        <p>
             De structuur van zo'n component ziet er als volgt uit:
         </p>
         <pre class="language-javascript"><code><span class="token keyword">var</span> vm <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Vue</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
@@ -1346,9 +1356,9 @@ views/
         </p>
         <p>
             Om data te delen over de verschillende components, wordt er gebruikt gemaakt van stores. Dit zijn simpele JavaScript objecten
-            die de data bevat, samen met getters en setters.
+            die de data bevatten, samen met getters en setters.
         </p>
-        <p>
+        <p class="page-break">
             De initialisatie van de applicatie gebeurt in <code>app.vue.js</code>. Dit zorgt voor volgende folderstructuur:
         </p>
         <pre class="folder-structure">vue/
@@ -1377,7 +1387,7 @@ views/
             voorziet dan de view en de logica voor de route. Ook krijgt elke route een <code>auth</code> property. Deze wordt gebruikt om bepaalde
             views enkel bereikbaar te maken voor een geauthenticeerde gebruiker.
         </p>
-        <p>
+        <p class="page-break">
             Om de router te kunnen gebruiker dient er eerst een basis Vue instantie gemaakt te worden. Deze zal dan dienen als parent voor alle
             routes.
         </p>
@@ -1461,7 +1471,7 @@ router<span class="token punctuation">.</span><span class="token function">map</
         submitQuickReminder<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">}</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span></code></pre>
-        <p>
+        <p class="page-break">
             Alle methods lijken erg op elkaar. Voor het request wordt verstuurd, worden er enkele variabelen geïnitialiseerd om bijvoorbeeld
             een laadicoontje te kunnen tonen. In het request worden dan een success- en errorfunctie gedefiniëerd. Ten slotte wordt er een
             <code>finally</code> functie gebruikt om de variabelen te resetten. Als voorbeeld de <code>getUpcomingReminders</code>.
@@ -1497,7 +1507,7 @@ router<span class="token punctuation">.</span><span class="token function">map</
             Deze mixin volgt hetzelfde principe als de remindersMixin. Het bevat methods om een contact te updaten, deleten en inserten.
             De requests zijn op dezelfde manier opgebouwd als eerder besproken.
         </p>
-        <p>
+        <p class="page-break">
             <span class="p-subtitle">ValidatorMixin</span><br />
             Alle input wordt clientside gevalideerd voor er een request versturd wordt. Deze validatie speelt zich volledig af in de
             validatorMixin.
@@ -1542,14 +1552,15 @@ router<span class="token punctuation">.</span><span class="token function">map</
             <img src="images/state.png" id="state-image" />
         </div>
         <p>
-            De applicatie maakt gebruik voor een store voor de contactpersonen, de reminders en de gebruikersgegevens. Een extra voordeel
-            van het gebruik van stores, is dat de data niet telkens opnieuw opgehaald dient te worden van de server.
+            De applicatie maakt gebruik van een store voor de contactpersonen, de reminders en de gebruikersgegevens. Een extra voordeel
+            van het gebruik van stores, is dat de data niet telkens opnieuw opgehaald dient te worden van de server bij het navigeren naar
+            een nieuwe route.
         </p>
         <pre class="folder-structure">|-- stores/
     |-- authStore.js
     |-- contactsStore.js
     `-- remindersStore.js </pre>
-        <p>
+        <p class="page-break">
             <span class="p-subtitle">ContactsStore</span><br />
             Zoals eerder vermeld bestaat een store enerzijds uit de gedeelde state, en anderzijds uit een aantal methods om
             deze state te manipuleren. Zoals de naam al doet vermoeden, bestaat de state van de contactsStore uit een array
@@ -1584,7 +1595,7 @@ router<span class="token punctuation">.</span><span class="token function">map</
             <span class="p-subtitle">RemindersStore</span><br />
             Deze store bevat alle reminders. De werking ervan is volledig analoog aan de <code>contactsStore</code>.
         </p>
-        <p>
+        <p class="page-break">
             <span class="p-subtitle">AuthStore</span><br />
             De authStore is een kleine store die enerzijds de gegevens over de gebruiker bijhoudt, en anderzijds de authenticatiestatus.
             Deze status wordt door de router gebruikt om te bepalen welke routes getoond mogen worden en welke niet.
@@ -1918,9 +1929,9 @@ router<span class="token punctuation">.</span><span class="token function">map</
     <span class="token string">'datetimepicker'</span><span class="token punctuation">:</span> dateTimePicker
 <span class="token punctuation">}</span><span class="token punctuation">,</span></code></pre>
         <p>
-            Dan kan een datetimpicker toegevoegd worden in een formulier op de volgende manier:
+            Dan kan een datetimepicker toegevoegd worden in een formulier op de volgende manier:
         </p>
-        <pre class="language-html"><code><span class="token tag"><span class="token tag"><span class="token punctuation"><</span>datetimepicker</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation"></</span>datetimepicker</span><span class="token punctuation">></span></span></code></pre>
+        <pre class="language-html"><code><span class="token tag"><span class="token tag"><span class="token punctuation"><</span>datetimepicker</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>datetimepicker</span><span class="token punctuation">></span></span></code></pre>
         <p>
             De structuur van de datetimepicker ziet er als volgt uit:
         </p>
@@ -1993,7 +2004,7 @@ router<span class="token punctuation">.</span><span class="token function">map</
             deze van het formaat <code>Y-m-d H:i:s</code> is.
         </p>
     </div>
-    <h2 class="subtitle" id="sub5-11">Homepage</h2>
+    <h2 class="subtitle page-break" id="sub5-11">Homepage</h2>
     <div>
         <p>
             De homepage van de website wordt ook ondersteunt door Vue. Dit omdat hier ook een formulier verzonden kan worden. Het
@@ -2010,8 +2021,8 @@ router<span class="token punctuation">.</span><span class="token function">map</
 <h1 id="ch6" class="chapter">Werkwijze</h1>
 <div>
     <p>
-        Alvorens aan de ontwikkeling te beginnen, werd er eerst angedacht over de aanpak. Het project werd opgedeeld in kleine
-        deelproblemen. Deze deelproblemen werde vervolgens gesorteerd via het MoSCoW principe.
+        Alvorens aan de ontwikkeling te beginnen, werd er eerst nagedacht over de aanpak. Het project werd opgedeeld in kleine
+        deelproblemen. Deze deelproblemen werden vervolgens gesorteerd via het MoSCoW principe.
     </p>
     <p>
         Taken die essentiëel waren, kregen de hoogste prioriteit. Dit waren de zogenaamde <strong>Must Have's</strong>. Het ging
@@ -2041,7 +2052,21 @@ router<span class="token punctuation">.</span><span class="token function">map</
 <h1 id="ch7" class="chapter">Conclusie</h1>
 <div>
     <p>
-
+        De applicatie is op een moderne manier opgebouwd. Omdat er hevig gebruik wordt gemaakt van een API, zou hij makkelijk omgezet
+        kunnen worden naar andere platformen.
+    </p>
+    <p>
+        Het gebruik van Unit Tests zorgt ervoor dat de applicatie robuuster en betrouwbaarder is. Ook wanneer de applicatie eventueel
+        uitgebreid zou worden, kan er gemakkelijk nagekeken worden of alle functionaliteiten nog werken.
+    </p>
+    <p>
+        De data access layer heeft een extra abstractielaag in de vorm van repositories. Hierdoor kan de interactie met de database
+        veilig herschreven worden, moest dit ooit nodig zijn. Ook biedt het een betere ondersteuning voor unit tests.
+    </p>
+    <p>
+        Voor de frontend wordt er gebruik gemaakt van Vue.js. Dit is een vrij jong framework, wat misschien niet altijd de beste
+        keuze is. Het is echter ook een klein framework, wat het een geschikte optie maakt voor deze applicatie. Een framework
+        zoals AngularJS bevat vele functionaliteiten die nooit gebruikt zouden worden in een relatief kleine applicatie.
     </p>
 </div>
 
